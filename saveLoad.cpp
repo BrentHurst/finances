@@ -21,7 +21,9 @@ const int c1 = '\n';
 const int esc = '`';
 
 #define PutLine PutDelimitedLine(f,c0,c1,esc,v)
+#define PutLines PutDelimitedFile(f,c0,c1,esc,subaccounts)
 #define GetLine GetDelimitedLine(f,c0,c1,esc,v)
+#define GetLines GetDelimitedFile(f,c0,c1,esc,file)
 
 string dtos(double d)
 {
@@ -52,36 +54,45 @@ int stoi(string& s)
 	return i;
 }
 
-void LoadGenericAccount(FILE* f,map<string,Account*>& m)
+void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 {
-	vector<string> v;
 	Account* acc;
+	int i;
 
-	while(GetLine && v[0] != "TRANSACTIONS")
+	for(i=a, i<b; i++)
 	{
-		acc = new Account(v[0],v[2]);
-		acc->amount = stod(v[1]);
-		v.clear();
-
-		if(!GetLine)
-			//error
-		if(v[0] != "")
-			//set superaccount
-		//set subaccounts
-		v.clear();
+		acc = new Account(file[i][0],file[i][2]);
+		acc->amount = stod(file[i][1]);
+		allaccounts.insert(make_pair(acc->name,acc));
+		switch(acc->type)
+		{
+			case location: locations.insert(make_pair(acc->name,acc)); break;
+			case earmark:  earmarks.insert(mark_pair(acc->name,acc));  break;
+			case tag:      tags.insert(make_pair(acc->name,acc));      break;
+			case tofrom:   tofroms.insert(mark_pair(acc->name,acc));   break;
+		}
 	}
 }
 
-void Finances::LoadAccounts(FILE* f)
+void Finances::LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
 {
+	Account* acc;
+	int i,j;
+
+	for(i=a; i<b; i++)
+	{
+		acc = file[i][0];
+		acc->superaccount = allaccounts[file[i][1]];
+		allaccounts[file[i][1]]->subaccounts.insert(make_pair(acc->name,acc));
+	}
 }
 
-void Finances::LoadTransactions(FILE* f)
+void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 {
 
 }
 
-void Finances::LoadTransfers(FILE* f)
+void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 {
 
 }
@@ -89,28 +100,50 @@ void Finances::LoadTransfers(FILE* f)
 void Finances::Load(const string& filename)
 {
 	FILE* f;
-	vector<string> v;
+	vector<vector<string> > file;
+	int i;
+	int acc = -1;
+	int subacc = -1;
+	int transac = -1;
+	int transfe = -1;
+
 
 	f = fopen(filename.c_str(),"r");
-
-	if(!GetLine)
-		//error
-	amount = stod(v[0]);
-
-	LoadAccounts(f);
-	LoadTransactions(f);
-	LoadTransfers(f);
-
+	if(!GetLines) {fprintf(stderr,"couldn't get file\n"); exit(1);}
 	fclose(f);
+
+	amount = stod(file[0][0]);
+
+	for(i=0; i<file.size(); i++)
+	{
+		if(file[i][0]=="ACCOUNTS")
+			acc = i;
+		else if(file[i][0]=="SUBACCOUNTS")
+			subacc = i;
+		else if(file[i][0]=="TRANSACTIONS")
+			transac = i;
+		else if(file[i][0]=="TRANSFERS")
+			transfe = i;
+	}
+
+	LoadAccounts(file,acc+1,subacc);
+	LoadSubaccounts(file,subacc+1,transac);
+	LoadTransactions(file,transac+1,transfe);
+	LoadTransfers(file,transfe+1,file.size());
 }
 
-void SaveGenericAccount(FILE* f,map<string,Account*>& m)
+void Finances::SaveAccounts(FILE* f)
 {
 	vector<string> v;
+	vector<vector<string> > subaccounts;
 	map<string,Account*>::iterator mit;
 	map<string,Account*>::iterator mit2;
 
-	for(mit = m.begin(); mit != m.end(); mit++)
+	v.push_back("ACCOUNTS");
+	PutLine;
+	v.clear();
+
+	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
 	{
 		v.push_back(mit->second->name);
 		v.push_back(dtos(mit->second->amount));
@@ -119,26 +152,17 @@ void SaveGenericAccount(FILE* f,map<string,Account*>& m)
 		v.clear();
 
 		if(mit->second->superaccount)
-			v.push_back(mit->second->superaccount->name);
-		else
-			v.push_back("");
-		for(mit2=mit->second->subaccounts.begin(); mit2 != mit->second->subaccounts.end(); mit++)
-			v.push_back(mit2->second->name);
-		PutLine;
-		v.clear();
+		{
+			subaccounts.resize(subaccounts.size()+1);
+			subaccounts.back().push_back(mit->second->name);
+			subaccounts.back().push_back(mit->second->superaccount->name);
+		}
 	}
-}
-
-void Finances::SaveAccounts(FILE* f)
-{
-	vector<string> v;
-	v.push_back("ACCOUNTS");
+	v.push_back("SUBACCOUNTS");
 	PutLine;
+	v.clear();
 
-	SaveGenericAccount(f,locations);
-	SaveGenericAccount(f,earmarks);
-	SaveGenericAccount(f,tags);
-	SaveGenericAccount(f,tofroms);
+	PutLines;
 }
 void Finances::SaveTransactions(FILE* f)
 {

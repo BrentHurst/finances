@@ -95,6 +95,8 @@ class Transfer
 class Finances
 {
 	protected:
+		map<string,Account*> allaccounts;
+
 		map<string,Account*> locations;
 		map<string,Account*> earmarks;
 		map<string,Account*> tags;
@@ -111,9 +113,13 @@ class Finances
 		void SaveAccounts(FILE* f);
 		void SaveTransactions(FILE* f);
 		void SaveTransfers(FILE* f);
-		void LoadAccounts(FILE* f);
-		void LoadTransactions(FILE* f);
-		void LoadTransfers(FILE* f);
+		void LoadAccounts(const vector<vector<string> >& file,int a,int b);
+		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
+		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
+		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
+		void SaveAccounts(FILE* f);
+		void SaveTransactions(FILE* f);
+		void SaveTransfers(FILE* f);
 
 	public:
 		//loadSave.cpp
