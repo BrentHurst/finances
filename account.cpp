@@ -38,6 +38,29 @@ Account::Account(const string& n,AccountType ty)
 	unreconciledtransfers.clear();
 }
 
+Account::Account(const string& n,const string& ty)
+{
+	amount = 0;
+	name = n;
+	t = ty;
+	if(ty=="location")
+		type = location;
+	else if(ty=="earmark")
+		type = earmark;
+	else if(ty=="tag")
+		type = tag;
+	else
+		type = tofrom;
+
+	subaccounts.clear();
+	superaccount = NULL;
+
+	transactions.clear();
+	unreconciledtransactions.clear();
+	transfers.clear();
+	unreconciledtransfers.clear();
+}
+
 void Account::Print()
 {
 	printf("%9.2f %s\n",amount,name.c_str());

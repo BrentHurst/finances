@@ -40,6 +40,7 @@ class Account
 		multiset<class Transfer*> unreconciledtransfers;
 
 		Account(const string& n,AccountType ty);
+		Account(const string& n,const string& ty);
 		void Print();
 		void Rename(const string& n);
 };

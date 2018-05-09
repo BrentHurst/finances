@@ -21,6 +21,7 @@ const int c1 = '\n';
 const int esc = '`';
 
 #define PutLine PutDelimitedLine(f,c0,c1,esc,v)
+#define GetLine GetDelimitedLine(f,c0,c1,esc,v)
 
 string dtos(double d)
 {
@@ -51,6 +52,26 @@ int stoi(string& s)
 	return i;
 }
 
+void LoadGenericAccount(FILE* f,map<string,Account*>& m)
+{
+	vector<string> v;
+	Account* acc;
+
+	while(GetLine && v[0] != "TRANSACTIONS")
+	{
+		acc = new Account(v[0],v[2]);
+		acc->amount = stod(v[1]);
+		v.clear();
+
+		if(!GetLine)
+			//error
+		if(v[0] != "")
+			//set superaccount
+		//set subaccounts
+		v.clear();
+	}
+}
+
 void Finances::LoadAccounts(FILE* f)
 {
 }
@@ -67,6 +88,20 @@ void Finances::LoadTransfers(FILE* f)
 
 void Finances::Load(const string& filename)
 {
+	FILE* f;
+	vector<string> v;
+
+	f = fopen(filename.c_str(),"r");
+
+	if(!GetLine)
+		//error
+	amount = stod(v[0]);
+
+	LoadAccounts(f);
+	LoadTransactions(f);
+	LoadTransfers(f);
+
+	fclose(f);
 }
 
 void SaveGenericAccount(FILE* f,map<string,Account*>& m)
