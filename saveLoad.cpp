@@ -89,12 +89,48 @@ void Finances::LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
 
 void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 {
+	int i;
+	Transaction* t;
+	Date* d;
 
+	for(i=a; i<b; i++)
+	{
+		d = new Date();
+		d->setWithTotalDay(stoi(file[i][0]));
+		t = new Transaction(
+								d,
+								allaccounts[file[i][1]],
+								allaccounts[file[i][2]],
+								allaccounts[file[i][3]],
+								allaccounts[file[i][4]],
+								file[i][5],
+								stoi(file[i][6]),
+								stod(file[i][7])
+						   );
+		LinkTransaction(t);
+	}
 }
 
 void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 {
+	int i;
+	Transfer* t;
+	Date* d;
 
+	for(i=a; i<b; i++)
+	{
+		d = new Date();
+		d->setWithTotalDay(stoi(file[i][0]));
+		t = new Transfer(
+							d,
+							allaccounts[file[i][1]],
+							allaccounts[file[i][2]],
+							file[i][3],
+							stoi(file[i][4]),
+							stod(file[i][5])
+						);
+		LinkTransfer(t);
+	}
 }
 
 void Finances::Load(const string& filename)
@@ -181,8 +217,8 @@ void Finances::SaveTransactions(FILE* f)
 		v.push_back((*sit)->earmark->name);
 		v.push_back((*sit)->tofrom->name);
 		v.push_back((*sit)->info);
-		v.push_back(dtos((*sit)->amount));
 		v.push_back(itos((*sit)->reconciled));
+		v.push_back(dtos((*sit)->amount));
 		PutLine;
 		v.clear();
 	}
@@ -203,8 +239,8 @@ void Finances::SaveTransfers(FILE* f)
 		v.push_back((*sit)->from->name);
 		v.push_back((*sit)->to->name);
 		v.push_back((*sit)->info);
-		v.push_back(dtos((*sit)->amount));
 		v.push_back(itos((*sit)->reconciled));
+		v.push_back(dtos((*sit)->amount));
 		PutLine;
 		v.clear();
 	}

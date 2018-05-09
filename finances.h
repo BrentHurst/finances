@@ -117,9 +117,6 @@ class Finances
 		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
 		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
-		void SaveAccounts(FILE* f);
-		void SaveTransactions(FILE* f);
-		void SaveTransfers(FILE* f);
 
 	public:
 		//loadSave.cpp
@@ -132,6 +129,8 @@ class Finances
 		//void ReadNewTransfer();
 		//void ReadNewAccount();
 		Finances();
+		void LinkTransaction(Transaction* t);
+		void LinkTransfer(Transfer* t);
 };
 
 
