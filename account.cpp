@@ -20,6 +20,14 @@ Account::Account(const string& n,AccountType ty)
 	amount = 0;
 	name = n;
 	type = ty;
+	if(type==location)
+		t = "location";
+	else if(type==earmark)
+		t = "earmark";
+	else if(type==tag)
+		t = "tag";
+	else
+		t = "tofrom";
 
 	subaccounts.clear();
 	superaccount = NULL;

@@ -21,7 +21,7 @@
 using namespace std;
 
 
-enum AccountType {tag,location,earmark,tofrom}
+enum AccountType {tag,location,earmark,tofrom};
 
 class Account
 {
@@ -29,6 +29,7 @@ class Account
 		double amount;
 		string name;
 		AccountType type;
+		string t;
 
 		map<string,Account*> subaccounts;
 		Account* superaccount;
@@ -46,12 +47,12 @@ class Account
 class Transaction
 {
 	public:
-		string info;
+		Date* date;
 		Account* tag;
 		Account* location;
 		Account* earmark;
 		Account* tofrom;
-		Date* date;
+		string info;
 		int reconciled;
 		double amount;
 
@@ -63,8 +64,8 @@ class Transaction
 		int operator!=(const Transaction& t);
 
 		Transaction(Date* d, Account* tg, Account* l,
-					 Account* e,Account* tf,string& i,
-					 int r,double t);
+					Account* e,Account* tf,string& i,
+					int r,double t);
 		void Print();
 };
 
@@ -86,7 +87,7 @@ class Transfer
 		int operator!=(const Transfer& t);
 
 		Transfer(Date* d,Account* f,Account* t_,
-			   string& info,int r,double t);
+			     string& info,int r,double t);
 		void Print();
 };
 
@@ -105,21 +106,25 @@ class Finances
 
 		double amount;
 
-		//loadSave
-			//void SaveAccounts(FILE* f);
-			//void SaveTransactions(FILE* f);
-			//void SaveTransfers(FILE* f);
+		//loadSave.cpp
+		void SaveAccounts(FILE* f);
+		void SaveTransactions(FILE* f);
+		void SaveTransfers(FILE* f);
+		void LoadAccounts(FILE* f);
+		void LoadTransactions(FILE* f);
+		void LoadTransfers(FILE* f);
 
 	public:
-		//loadSave
-			//void Load(const string& filename);
-			//void Save(const string& filename);
+		//loadSave.cpp
+		void Load(const string& filename);
+		void Save(const string& filename);
+
 		//finances.cpp
-			//void Account* ReadInAccount
-			//void ReadNewTransaction();
-			//void ReadNewTransfer();
-			//void ReadNewAccount();
-			Finances();
+		//void Account* ReadInAccount();
+		//void ReadNewTransaction();
+		//void ReadNewTransfer();
+		//void ReadNewAccount();
+		Finances();
 };
 
 
