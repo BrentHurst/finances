@@ -52,6 +52,20 @@ int AskToAdd(const string& type,const string& str)
 	return (c=='y' || c=='Y');
 }
 
+int AskIfCorrectTransaction(Transaction* t)
+{
+	char c='r';
+
+	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
+	{
+		printf("Is the following transaction correct?\n");
+		t->Print();
+		printf("[y/n]: ");
+		scanf("%c\n",&c);
+	}
+	return (c=='y' || c=='Y');
+}
+
 void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
 {
 	char c='r';
@@ -160,8 +174,15 @@ void Finances::ReadNewTransaction()
 
 	transaction = new Transaction(date,tg,l,e,tf,info,0,t);
 
-	//ask for confirmation
-	//put this in the correct maps
+	if(!AskIfCorrectTransaction(transaction))
+	{
+		delete date;
+		delete transaction;
+		printf("That transaction has been discarded.\n");
+		return;
+	}
+	else
+		LinkTransaction(transaction,0);
 }
 
 void Finances::ReadNewTransfer()
@@ -178,14 +199,14 @@ void LinkRecurTransaction(Transaction* t,Account* a,int multiplier)
 {
 	if(!a) return;
 	a->amount += multiplier * t->amount;
-	LinkRecur(t,a->superaccount,multiplier);
+	LinkRecurTransaction(t,a->superaccount,multiplier);
 }
 
 void LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
 {
 	if(!a) return;
 	a->amount += multiplier * t->amount;
-	LinkRecur(t,a->superaccount,multiplier);
+	LinkRecurTransfer(t,a->superaccount,multiplier);
 }
 
 void Finances::LinkTransaction(Transaction* t,int loading)
