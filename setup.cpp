@@ -10,6 +10,8 @@
 
 
 #include "finances.h"
+#include <cstdio>
+#include <cstdlib>
 using namespace std;
 
 void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)

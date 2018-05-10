@@ -14,6 +14,7 @@
 #include "iogbh.h"
 #include <vector>
 #include <cstdio>
+#include <cstdlib>
 using namespace std;
 
 const char c0 = '\0';
@@ -41,13 +42,13 @@ string itos(int i)
 	s = c;
 	return s;
 }
-double stod(string& s)
+double stod(string s)
 {
 	double d;
 	sscanf(s.c_str(),"%lf",&d);
 	return d;
 }
-int stoi(string& s)
+int stoi(string s)
 {
 	int i;
 	sscanf(s.c_str(),"%d",&i);
@@ -59,7 +60,7 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 	Account* acc;
 	int i;
 
-	for(i=a, i<b; i++)
+	for(i=a; i<b; i++)
 	{
 		acc = new Account(file[i][0],file[i][2]);
 		acc->amount = stod(file[i][1]);
@@ -67,9 +68,9 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 		switch(acc->type)
 		{
 			case location: locations.insert(make_pair(acc->name,acc)); break;
-			case earmark:  earmarks.insert(mark_pair(acc->name,acc));  break;
+			case earmark:  earmarks.insert(make_pair(acc->name,acc));  break;
 			case tag:      tags.insert(make_pair(acc->name,acc));      break;
-			case tofrom:   tofroms.insert(mark_pair(acc->name,acc));   break;
+			case tofrom:   tofroms.insert(make_pair(acc->name,acc));   break;
 		}
 	}
 }
@@ -77,11 +78,11 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 void Finances::LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
 {
 	Account* acc;
-	int i,j;
+	int i;
 
 	for(i=a; i<b; i++)
 	{
-		acc = file[i][0];
+		acc = allaccounts[file[i][0]];
 		acc->superaccount = allaccounts[file[i][1]];
 		allaccounts[file[i][1]]->subaccounts.insert(make_pair(acc->name,acc));
 	}
@@ -92,22 +93,24 @@ void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 	int i;
 	Transaction* t;
 	Date* d;
+	string s;
 
 	for(i=a; i<b; i++)
 	{
 		d = new Date;
 		d->setWithTotalDay(stoi(file[i][0]));
+		s = file[i][5];
 		t = new Transaction(
 								d,
 								allaccounts[file[i][1]],
 								allaccounts[file[i][2]],
 								allaccounts[file[i][3]],
 								allaccounts[file[i][4]],
-								file[i][5],
+								s,
 								stoi(file[i][6]),
 								stod(file[i][7])
 						   );
-		LinkTransaction(t);
+		LinkTransaction(t,1);
 	}
 }
 
@@ -116,20 +119,22 @@ void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 	int i;
 	Transfer* t;
 	Date* d;
+	string s;
 
 	for(i=a; i<b; i++)
 	{
 		d = new Date;
 		d->setWithTotalDay(stoi(file[i][0]));
+		s = file[i][3];
 		t = new Transfer(
 							d,
 							allaccounts[file[i][1]],
 							allaccounts[file[i][2]],
-							file[i][3],
+							s,
 							stoi(file[i][4]),
 							stod(file[i][5])
 						);
-		LinkTransfer(t);
+		LinkTransfer(t,1);
 	}
 }
 
@@ -137,7 +142,7 @@ void Finances::Load(const string& filename)
 {
 	FILE* f;
 	vector<vector<string> > file;
-	int i;
+	unsigned int i;
 	int acc = -1;
 	int subacc = -1;
 	int transac = -1;
@@ -146,7 +151,7 @@ void Finances::Load(const string& filename)
 
 
 	f = fopen(filename.c_str(),"r");
-	if(!GetLines)
+	if(!f)
 	{
 		while(c!='y' && c!='n' && c!='Y' && c!='N')
 		{
@@ -163,6 +168,7 @@ void Finances::Load(const string& filename)
 	}
 	fclose(f);
 
+	GetLines;
 	amount = stod(file[0][0]);
 
 	for(i=0; i<file.size(); i++)
