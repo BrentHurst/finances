@@ -95,7 +95,7 @@ void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 
 	for(i=a; i<b; i++)
 	{
-		d = new Date();
+		d = new Date;
 		d->setWithTotalDay(stoi(file[i][0]));
 		t = new Transaction(
 								d,
@@ -119,7 +119,7 @@ void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 
 	for(i=a; i<b; i++)
 	{
-		d = new Date();
+		d = new Date;
 		d->setWithTotalDay(stoi(file[i][0]));
 		t = new Transfer(
 							d,

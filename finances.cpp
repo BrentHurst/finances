@@ -29,55 +29,185 @@ Finances::Finances()
 	amount=0;
 }
 
-Account* ReadInAccount(map<string,Account*>& m,string type)
+int AskForContinue()
+{
+	char c = 'r';
+	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
+	{
+		printf("Would you like to try again? [y/n]: ");
+		scanf("%c\n",&c);
+	}
+	return (c=='y' || c=='Y');
+}
+
+int AskToAdd(const string& type,const string& str)
+{
+	char c='r';
+
+	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
+	{
+		printf("The %s \"%s\" doesn't exist. Would you like to add it? [y/n]: ",type.c_str(),str.c_str());
+		scanf("%c\n",&c);
+	}
+	return (c=='y' || c=='Y');
+}
+
+void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
+{
+	char c='r';
+
+	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
+	{
+		printf("Does %s have a superaccount? [y/n]: ",str.c_str());
+		scanf("%c\n",&c);
+	}
+	if(c=='n' || c=='N') return;
+
+	printf("Please enter superaccount name. ");
+	a->superaccount = ReadInAccount(m,type);
+	if(a->superaccount)
+		a->superaccount->subaccounts.insert(make_pair(a->name,a));
+}
+
+Account* Finances::ReadInAccount(map<string,Account*>& m,string type)
+{
+	char s[100];
+	string str;
+	Account* a;
+	map<string,Account*>::iterator mit;
+
+	while(1)
+	{
+		printf("%s: ",type.c_str());
+		scanf("%s\n",s);
+		str = s;
+
+		//str not in m
+		if((mit=m.find(str))==m.end())
+		{
+			//str in another account map
+			if(allaccounts.find(str) != allaccounts.end())
+			{
+				printf("\"%s\" already exists as a %s.\n",str.c_str(),(*allaccounts.find(str)).second->t.c_str());
+				if(!AskForContinue()) return 0;
+				else continue;
+			}
+			//str doesn't exist yet as an account
+			else
+			{
+				if(AskToAdd(type,str))
+				{
+					a = new Account(str,type);
+					m[str] = a;
+					allaccounts[str] = a;
+
+					return a;
+				}
+				else
+				{
+					if(!AskForContinue()) return 0;
+					else continue;
+				}
+			}
+		}
+
+		//str in m
+		else
+		{
+			return mit->second;
+		}
+	}
+}
+
+string ReadInInformation()
+{
+	char s[100];
+	printf("info: ");
+	scanf("%s\n",s);
+	string str = s;
+	return str;
+}
+
+double ReadInTotal()
+{
+	double d;
+	printf("Amount: (positive for income or transfer, - for spent): ");
+	scanf("%lf\n",&d);
+	return d;
+}
+
+void Finances::ReadNewTransaction()
+{
+	Date* date;
+	Account* tg;
+	Account* l;
+	Account* e;
+	Account* tf;
+	string info;
+	double t;
+	Transaction* transaction;
+
+	date = new Date;
+	date->ReadInDate();
+
+	if(!(tg = ReadInAccount(tags,"tag"))) {delete date; return;}
+	if(!(l = ReadInAccount(locations,"location"))) {delete date; return;}
+	if(!(e = ReadInAccount(earmarks,"earmark"))) {delete date; return;}
+	if(!(tf = ReadInAccount(tofroms,"to/from"))) {delete date; return;}
+
+	info = ReadInInformation();
+	t = ReadInTotal();
+
+	transaction = new Transaction(date,tg,l,e,tf,info,0,t);
+
+	//ask for confirmation
+	//put this in the correct maps
+}
+
+void Finances::ReadNewTransfer()
 {
 
 }
 
-//void Finances::ReadNewTransaction()
-//{
-	//Date* date;
-	//Account* tg;
-	//Account* l;
-	//Account* a;
-	//Account* tf;
-	//string info;
-	//double t;
-	//Transaction* transaction;
+void Finances::ReadNewAccount()
+{
 
-	//date = new Date;
-	//date->ReadInDate();
+}
 
-	//if(!(tg = ReadInAccount(tags,"tag"))) {delete date; return;}
-	//if(!(l = ReadInAccount(locations,"location"))) {delete date; return;}
-	//if(!(a = ReadInAccount(accounts,"account"))) {delete date; return;}
-	//if(!(tf = ReadInAccount(tofroms,"to/from"))) {delete date; return;}
+void LinkRecurTransaction(Transaction* t,Account* a,int multiplier)
+{
+	if(!a) return;
+	a->amount += multiplier * t->amount;
+	LinkRecur(t,a->superaccount,multiplier);
+}
 
-	//info = ReadInInformation();
-	//t = ReadInTotal();
+void LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
+{
+	if(!a) return;
+	a->amount += multiplier * t->amount;
+	LinkRecur(t,a->superaccount,multiplier);
+}
 
-	//transaction = new Transaction(date,tg,l,a,tf,info,0,t);
-
-	//put this in the correct maps
-//}
-
-//void Finances::ReadNewTransfer()
-//{
-
-//}
-
-//void Finances::ReadNewAccount()
-//{
-
-//}
-
-void Finances::LinkTransaction(Transaction* t)
+void Finances::LinkTransaction(Transaction* t,int loading)
 {
 	transactions.insert(t);
+
+	if(!loading)
+		amount += t->amount;
+
 	t->location->transactions.insert(t);
 	t->earmark->transactions.insert(t);
 	t->tag->transactions.insert(t);
 	t->tofrom->transactions.insert(t);
+
+	if(!loading)
+	{
+		LinkRecurTransaction(t,t->location,1);
+		LinkRecurTransaction(t,t->earmark,1);
+		LinkRecurTransaction(t,t->tag,1);
+		LinkRecurTransaction(t,t->tofrom,1);
+	}
+
 
 	if(!t->reconciled)
 	{
@@ -89,11 +219,17 @@ void Finances::LinkTransaction(Transaction* t)
 	}
 }
 
-void Finances::LinkTransfer(Transfer* t)
+void Finances::LinkTransfer(Transfer* t,int loading)
 {
 	transfers.insert(t);
 	t->from->transfers.insert(t);
 	t->to->transfers.insert(t);
+
+	if(!loading)
+	{
+		LinkRecurTransfer(t,t->from,-1);
+		LinkRecurTransfer(t,t->to,1);
+	}
 
 	if(!t->reconciled)
 	{

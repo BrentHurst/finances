@@ -124,13 +124,16 @@ class Finances
 		void Save(const string& filename);
 
 		//finances.cpp
-		//void Account* ReadInAccount();
-		//void ReadNewTransaction();
-		//void ReadNewTransfer();
-		//void ReadNewAccount();
+		Account* ReadInAccount(map<string,Account*>& m,string type);
+		void ReadNewTransaction();
+		void ReadNewTransfer();
+		void ReadNewAccount();
 		Finances();
-		void LinkTransaction(Transaction* t);
-		void LinkTransfer(Transfer* t);
+		void LinkTransaction(Transaction* t,int loading);
+		void LinkTransfer(Transfer* t,int loading);
+		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
+
+		void Setup();
 };
 
 
