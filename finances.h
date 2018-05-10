@@ -17,6 +17,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 #include "Date.h"
 using namespace std;
 
@@ -42,7 +43,7 @@ class Account
 		Account(const string& n,AccountType ty);
 		Account(const string& n,const string& ty);
 
-		void Print();
+		void Print(string indent);
 		void Rename(const string& n);
 };
 
@@ -115,9 +116,18 @@ class Finances
 		void SaveTransactions(FILE* f);
 		void SaveTransfers(FILE* f);
 		void LoadAccounts(const vector<vector<string> >& file,int a,int b);
-		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
+		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b);
 		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
+
+		//finances.cpp
+		void LinkTransaction(Transaction* t,int loading);
+		void LinkTransfer(Transfer* t,int loading);
+		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type);
+		Account* ReadInAccount(map<string,Account*>& m,string type,int z);
+
+		//print.cpp
+		void PrintAccountRecur(Account* a,string indent);
 
 	public:
 		//saveLoad.cpp
@@ -125,19 +135,24 @@ class Finances
 		void Save(const string& filename);
 
 		//finances.cpp
-		Account* ReadInAccount(map<string,Account*>& m,string type,int z);
 		void ReadNewTransaction();
 		void ReadNewTransfer();
 		void ReadNewAccount();
 		Finances();
-		void LinkTransaction(Transaction* t,int loading);
-		void LinkTransfer(Transfer* t,int loading);
-		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type);
 
 		//setup.cpp
 		void Setup();
+
+		//print.cpp
+		void PrintTransactions();
+		void PrintTransfers();
+		void PrintEarmarks();
+		void PrintLocations();
+		void PrintTags();
+		void PrintTofroms();
+		void PrintAllAccounts();
 };
 
 
-void PrintTransactions(const multiset<Transaction*>& transactions);
-void PrintTransfers(const multiset<Transfer*>& transfers);
+void PrintTransactionsGlobal(const multiset<Transaction*>& transactions);
+void PrintTransfersGlobal(const multiset<Transfer*>& transfers);

@@ -61,9 +61,9 @@ Account::Account(const string& n,const string& ty)
 	unreconciledtransfers.clear();
 }
 
-void Account::Print()
+void Account::Print(string indent)
 {
-	printf("%9.2f %s\n",amount,name.c_str());
+	printf("%s%9.2f %s\n",indent.c_str(),amount,name.c_str());
 }
 
 void Account::Rename(const string& n)
