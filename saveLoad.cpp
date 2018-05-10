@@ -142,10 +142,25 @@ void Finances::Load(const string& filename)
 	int subacc = -1;
 	int transac = -1;
 	int transfe = -1;
+	char c='r';
 
 
 	f = fopen(filename.c_str(),"r");
-	if(!GetLines) {fprintf(stderr,"couldn't get file\n"); exit(1);}
+	if(!GetLines)
+	{
+		while(c!='y' && c!='n' && c!='Y' && c!='N')
+		{
+			printf("Couldn't find file. Set up new finances? [y/n]: ");
+			scanf("%c\n",&c);
+		}
+		if(c=='n' || c=='N')
+			exit(0);
+		else
+		{
+			Setup(filename);
+			return;
+		}
+	}
 	fclose(f);
 
 	amount = stod(file[0][0]);

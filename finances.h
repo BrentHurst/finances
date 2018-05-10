@@ -129,6 +129,9 @@ class Finances
 		//print.cpp
 		void PrintAccountRecur(Account* a,string indent);
 
+		//setup.cpp
+		void SetupAddAccounts(const string& type,map<string,Account*>& m);
+
 	public:
 		//saveLoad.cpp
 		void Load(const string& filename);
@@ -141,7 +144,7 @@ class Finances
 		Finances();
 
 		//setup.cpp
-		void Setup();
+		void Setup(const string& filename);
 
 		//print.cpp
 		void PrintTransactions();

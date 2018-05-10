@@ -91,7 +91,7 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 	}
 	if(c=='n' || c=='N') return;
 
-	printf("Please enter superaccount name. ");
+	printf("Please enter superaccount name: ");
 	a->superaccount = ReadInAccount(m,type,1);
 	if(a->superaccount)
 		a->superaccount->subaccounts.insert(make_pair(a->name,a));
