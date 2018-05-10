@@ -66,6 +66,20 @@ int AskIfCorrectTransaction(Transaction* t)
 	return (c=='y' || c=='Y');
 }
 
+int AskIfCorrectTransfer(Transfer* t)
+{
+	char c='r';
+
+	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
+	{
+		printf("Is the following transfer correct?\n");
+		t->Print();
+		printf("[y/n]: ");
+		scanf("%c\n",&c);
+	}
+	return (c=='y' || c=='Y');
+}
+
 void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
 {
 	char c='r';
@@ -145,7 +159,7 @@ string ReadInInformation()
 double ReadInTotal()
 {
 	double d;
-	printf("Amount: (positive for income or transfer, - for spent): ");
+	printf("Amount: (positive for income or transfer, negative for spent): ");
 	scanf("%lf\n",&d);
 	return d;
 }
@@ -182,12 +196,59 @@ void Finances::ReadNewTransaction()
 		return;
 	}
 	else
+	{
 		LinkTransaction(transaction,0);
+		printf("Your transaction has been saved.\n");
+	}
 }
 
 void Finances::ReadNewTransfer()
 {
+	Date* date;
+	Account* from;
+	Account* to;
+	string info;
+	double amount;
+	Transfer* t;
+	char type='r';
 
+	date = new Date;
+	date->ReadInDate();
+
+	while(type != '1' && type != '2')
+	{
+		printf("If earmarks, enter '1', and if physical locations, enter '2': ");
+		scanf("%c\n",&type);
+	}
+
+	if(type=='1')
+	{
+		if(!(from = ReadInAccount(earmarks,"from"))) {delete date; return;}
+		if(!(to = ReadInAccount(earmarks,"to"))) {delete date; return;}
+	}
+	else if(type=='2')
+	{
+		if(!(from = ReadInAccount(locations,"from"))) {delete date; return;}
+		if(!(to = ReadInAccount(locations,"to"))) {delete date; return;}
+	}
+
+	info = ReadInInformation();
+	amount = ReadInTotal();
+
+	t = new Transfer(date,from,to,info,0,amount);
+
+	if(!AskIfCorrectTransfer(t))
+	{
+		delete date;
+		delete t;
+		printf("That transfer has been discarded.\n");
+		return;
+	}
+	else
+	{
+		LinkTransfer(t,0);
+		printf("Your transfer has been saved.\n");
+	}
 }
 
 void Finances::ReadNewAccount()
