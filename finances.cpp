@@ -2,7 +2,7 @@
  *   G BRENT HURST
  *   finances.cpp
  *   December 27, 2017 (original)
- *   May 8, 2018 (last edit)
+ *   May 10, 2018 (last edit)
  *
  *   #include "finances.h"
  *
@@ -92,12 +92,12 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 	if(c=='n' || c=='N') return;
 
 	printf("Please enter superaccount name. ");
-	a->superaccount = ReadInAccount(m,type);
+	a->superaccount = ReadInAccount(m,type,1);
 	if(a->superaccount)
 		a->superaccount->subaccounts.insert(make_pair(a->name,a));
 }
 
-Account* Finances::ReadInAccount(map<string,Account*>& m,string type)
+Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z)
 {
 	char s[100];
 	string str;
@@ -129,6 +129,8 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type)
 					m[str] = a;
 					allaccounts[str] = a;
 
+					FindSuperAccount(str,a,m,type);
+
 					return a;
 				}
 				else
@@ -142,6 +144,8 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type)
 		//str in m
 		else
 		{
+			if(!z)
+				printf("\"%s\" already exists.\n",str.c_str());
 			return mit->second;
 		}
 	}
@@ -178,10 +182,10 @@ void Finances::ReadNewTransaction()
 	date = new Date;
 	date->ReadInDate();
 
-	if(!(tg = ReadInAccount(tags,"tag"))) {delete date; return;}
-	if(!(l = ReadInAccount(locations,"location"))) {delete date; return;}
-	if(!(e = ReadInAccount(earmarks,"earmark"))) {delete date; return;}
-	if(!(tf = ReadInAccount(tofroms,"to/from"))) {delete date; return;}
+	if(!(tg = ReadInAccount(tags,"tag",1))) {delete date; return;}
+	if(!(l = ReadInAccount(locations,"location",1))) {delete date; return;}
+	if(!(e = ReadInAccount(earmarks,"earmark",1))) {delete date; return;}
+	if(!(tf = ReadInAccount(tofroms,"to/from",1))) {delete date; return;}
 
 	info = ReadInInformation();
 	t = ReadInTotal();
@@ -223,13 +227,13 @@ void Finances::ReadNewTransfer()
 
 	if(type=='1')
 	{
-		if(!(from = ReadInAccount(earmarks,"from"))) {delete date; return;}
-		if(!(to = ReadInAccount(earmarks,"to"))) {delete date; return;}
+		if(!(from = ReadInAccount(earmarks,"from",1))) {delete date; return;}
+		if(!(to = ReadInAccount(earmarks,"to",1))) {delete date; return;}
 	}
 	else if(type=='2')
 	{
-		if(!(from = ReadInAccount(locations,"from"))) {delete date; return;}
-		if(!(to = ReadInAccount(locations,"to"))) {delete date; return;}
+		if(!(from = ReadInAccount(locations,"from",1))) {delete date; return;}
+		if(!(to = ReadInAccount(locations,"to",1))) {delete date; return;}
 	}
 
 	info = ReadInInformation();
@@ -251,9 +255,24 @@ void Finances::ReadNewTransfer()
 	}
 }
 
+
 void Finances::ReadNewAccount()
 {
+	char c='r';
 
+	printf("1. earmark\n2. location\n3. tag\n4. to/from\n");
+	while(c<'1' || c>'4')
+	{
+		printf("Please enter the number of the type of account you are creating: ");
+		scanf("%c\n",&c);
+	}
+	switch(c)
+	{
+		case '1': ReadInAccount(earmarks,"earmark",0); break;
+		case '2': ReadInAccount(locations,"location",0); break;
+		case '3': ReadInAccount(tags,"tag",0); break;
+		case '4': ReadInAccount(tofroms,"to/from",0); break;
+	}
 }
 
 void LinkRecurTransaction(Transaction* t,Account* a,int multiplier)

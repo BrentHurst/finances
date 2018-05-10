@@ -2,7 +2,7 @@
  *   G BRENT HURST
  *   finances.h
  *   December 27, 2017 (original)
- *   May 8, 2018 (last edit)
+ *   May 10, 2018 (last edit)
  *
  *   #include "Date.h"
  *
@@ -41,6 +41,7 @@ class Account
 
 		Account(const string& n,AccountType ty);
 		Account(const string& n,const string& ty);
+
 		void Print();
 		void Rename(const string& n);
 };
@@ -109,7 +110,7 @@ class Finances
 
 		double amount;
 
-		//loadSave.cpp
+		//saveLoad.cpp
 		void SaveAccounts(FILE* f);
 		void SaveTransactions(FILE* f);
 		void SaveTransfers(FILE* f);
@@ -119,20 +120,21 @@ class Finances
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
 
 	public:
-		//loadSave.cpp
+		//saveLoad.cpp
 		void Load(const string& filename);
 		void Save(const string& filename);
 
 		//finances.cpp
-		Account* ReadInAccount(map<string,Account*>& m,string type);
+		Account* ReadInAccount(map<string,Account*>& m,string type,int z);
 		void ReadNewTransaction();
 		void ReadNewTransfer();
 		void ReadNewAccount();
 		Finances();
 		void LinkTransaction(Transaction* t,int loading);
 		void LinkTransfer(Transfer* t,int loading);
-		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
+		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type);
 
+		//setup.cpp
 		void Setup();
 };
 
