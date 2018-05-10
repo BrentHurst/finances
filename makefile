@@ -1,6 +1,7 @@
 EXECUTABLE = finances.exe
 SOURCE = $(wildcard *.cpp)
 HEADER = $(wildcard *.h)
+OBJECTS = $(wildcard *.o)
 
 CC = g++
 LANGUAGE = cpp
@@ -11,5 +12,8 @@ LFLAGS = -g
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(SOURCE) $(HEADER) makefile
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SOURCE)
+$(EXECUTABLE): $(SOURCE) $(HEADER) *.o
+	$(CC) $(LFLAGS) -o $(EXECUTABLE) $(OBJECTS)
+
+%.o: %.$(LANGUAGE)
+	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
