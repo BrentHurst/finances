@@ -13,7 +13,6 @@
 #include "iogbh.h"
 #include <vector>
 #include <cstdio>
-#include <iostream>
 using namespace std;
 
 Finances::Finances()
@@ -27,57 +26,6 @@ Finances::Finances()
 	transfers.clear();
 	unreconciledtransfers.clear();
 	amount=0;
-}
-
-int AskForContinue()
-{
-	char c = 'r';
-	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-	{
-		printf("Would you like to try again? [y/n]: ");
-		scanf("%c\n",&c);
-	}
-	return (c=='y' || c=='Y');
-}
-
-int AskToAdd(const string& type,const string& str)
-{
-	char c='r';
-
-	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-	{
-		printf("The %s \"%s\" doesn't exist. Would you like to add it? [y/n]: ",type.c_str(),str.c_str());
-		scanf("%c\n",&c);
-	}
-	return (c=='y' || c=='Y');
-}
-
-int AskIfCorrectTransaction(Transaction* t)
-{
-	char c='r';
-
-	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-	{
-		printf("Is the following transaction correct?\n");
-		t->Print();
-		printf("[y/n]: ");
-		scanf("%c\n",&c);
-	}
-	return (c=='y' || c=='Y');
-}
-
-int AskIfCorrectTransfer(Transfer* t)
-{
-	char c='r';
-
-	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-	{
-		printf("Is the following transfer correct?\n");
-		t->Print();
-		printf("[y/n]: ");
-		scanf("%c\n",&c);
-	}
-	return (c=='y' || c=='Y');
 }
 
 void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
@@ -255,7 +203,6 @@ void Finances::ReadNewTransfer()
 	}
 }
 
-
 void Finances::ReadNewAccount()
 {
 	char c='r';
@@ -272,70 +219,5 @@ void Finances::ReadNewAccount()
 		case '2': ReadInAccount(locations,"location",0); break;
 		case '3': ReadInAccount(tags,"tag",0); break;
 		case '4': ReadInAccount(tofroms,"to/from",0); break;
-	}
-}
-
-void LinkRecurTransaction(Transaction* t,Account* a,int multiplier)
-{
-	if(!a) return;
-	a->amount += multiplier * t->amount;
-	LinkRecurTransaction(t,a->superaccount,multiplier);
-}
-
-void LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
-{
-	if(!a) return;
-	a->amount += multiplier * t->amount;
-	LinkRecurTransfer(t,a->superaccount,multiplier);
-}
-
-void Finances::LinkTransaction(Transaction* t,int loading)
-{
-	transactions.insert(t);
-
-	if(!loading)
-		amount += t->amount;
-
-	t->location->transactions.insert(t);
-	t->earmark->transactions.insert(t);
-	t->tag->transactions.insert(t);
-	t->tofrom->transactions.insert(t);
-
-	if(!loading)
-	{
-		LinkRecurTransaction(t,t->location,1);
-		LinkRecurTransaction(t,t->earmark,1);
-		LinkRecurTransaction(t,t->tag,1);
-		LinkRecurTransaction(t,t->tofrom,1);
-	}
-
-
-	if(!t->reconciled)
-	{
-		unreconciledtransactions.insert(t);
-		t->location->unreconciledtransactions.insert(t);
-		t->earmark->unreconciledtransactions.insert(t);
-		t->tag->unreconciledtransactions.insert(t);
-		t->tofrom->unreconciledtransactions.insert(t);
-	}
-}
-
-void Finances::LinkTransfer(Transfer* t,int loading)
-{
-	transfers.insert(t);
-	t->from->transfers.insert(t);
-	t->to->transfers.insert(t);
-
-	if(!loading)
-	{
-		LinkRecurTransfer(t,t->from,-1);
-		LinkRecurTransfer(t,t->to,1);
-	}
-
-	if(!t->reconciled)
-	{
-		unreconciledtransfers.insert(t);
-		t->from->unreconciledtransfers.insert(t);
-		t->to->unreconciledtransfers.insert(t);
 	}
 }

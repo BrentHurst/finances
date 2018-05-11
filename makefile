@@ -5,15 +5,19 @@ OBJECTS = $(wildcard *.o)
 
 CC = g++
 LANGUAGE = cpp
-INCLUDES =
-LIBS =
-CFLAGS = -g -Wall $(INCLUDES:%=-I%)
+INCLUDES = -lDate
+LIBS = 
+CFLAGS = -g -Wall $(INCLUDES) #$(INCLUDES:%=-I%)
 LFLAGS = -g
 
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(SOURCE) $(HEADER) *.o
-	$(CC) $(LFLAGS) -o $(EXECUTABLE) $(OBJECTS)
+	$(CC) $(LFLAGS) $(LIBS) -o $(EXECUTABLE) $(OBJECTS)
 
 %.o: %.$(LANGUAGE)
 	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
+
+.PHONY: clean
+clean:
+	rm *.o
