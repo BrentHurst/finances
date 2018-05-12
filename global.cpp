@@ -2,7 +2,7 @@
  *   G BRENT HURST
  *   global.cpp
  *   December 27, 2017 (original)
- *   December 27, 2017 (last edit)
+ *   May 11, 2018 (last edit)
  *
  *   #include "finances.h"
  *

@@ -2,7 +2,7 @@
  *   G BRENT HURST
  *   setup.cpp
  *   May 9, 2018 (original)
- *   May 10, 2018 (last edit)
+ *   May 11, 2018 (last edit)
  *
  *   #include "finances.h"
  *

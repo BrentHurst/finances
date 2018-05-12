@@ -2,7 +2,7 @@
  *   G BRENT HURST
  *   main.cpp (finances)
  *   December 28, 2017 (original)
- *   May 11, 2017 (last edit)
+ *   May 11, 2018 (last edit)
  *
  *   #include "finances.h"
  *
