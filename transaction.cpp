@@ -40,7 +40,7 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 	tofrom = tf;
 	info = i;
 	reconciled = r;
-	amount = t;
+	amount = Round2Decimals(t);
 }
 
 void Transaction::Print()

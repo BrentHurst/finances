@@ -15,14 +15,14 @@ using namespace std;
 void Finances::LinkRecurTransaction(Transaction* t,Account* a,int multiplier)
 {
 	if(!a) return;
-	a->amount += multiplier * t->amount;
+	a->amount = Round2Decimals(a->amount + multiplier * t->amount);
 	LinkRecurTransaction(t,a->superaccount,multiplier);
 }
 
 void Finances::LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
 {
 	if(!a) return;
-	a->amount += multiplier * t->amount;
+	a->amount = Round2Decimals(a->amount + multiplier * t->amount);
 	LinkRecurTransfer(t,a->superaccount,multiplier);
 }
 
@@ -31,7 +31,7 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 	transactions.insert(t);
 
 	if(!loading)
-		amount += t->amount;
+		amount = Round2Decimals(amount + t->amount);
 
 	t->location->transactions.insert(t);
 	t->earmark->transactions.insert(t);

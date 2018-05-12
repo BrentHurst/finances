@@ -81,7 +81,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 						printf("Enter the starting amount in this %s: $",type.c_str());
 						scanf("%lf",&d);
 						FlushInputBuffer;
-						a->amount = d;
+						a->amount = Round2Decimals(d);
 					}
 					m[str] = a;
 					allaccounts[str] = a;
@@ -196,7 +196,7 @@ void Finances::ReadNewTransfer()
 	}
 
 	info = ReadInInformation();
-	amount = ReadInTotal();
+	amount = Round2Decimals(ReadInTotal());
 
 	t = new Transfer(date,from,to,info,0,amount);
 

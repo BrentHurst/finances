@@ -35,7 +35,7 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 	to = t_;
 	info = i;
 	reconciled = r;
-	amount = t;
+	amount = Round2Decimals(t);
 }
 
 void Transfer::Print()

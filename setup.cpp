@@ -85,7 +85,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		if(c=='y' || c=='Y')
 		{
 			a = new Account(str,type);
-			a->amount = d;
+			a->amount = Round2Decimals(d);
 			m[str] = a;
 			allaccounts[str] = a;
 			FindSuperAccount(str,a,m,type,1);

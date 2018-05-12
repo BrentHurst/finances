@@ -25,7 +25,7 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 	for(i=a; i<b; i++)
 	{
 		acc = new Account(file[i][0],file[i][2]);
-		acc->amount = stod_(file[i][1]);
+		acc->amount = Round2Decimals(stod_(file[i][1]));
 		allaccounts.insert(make_pair(acc->name,acc));
 		switch(acc->type)
 		{
@@ -134,7 +134,7 @@ void Finances::Load(const string& filename)
 	GetLines;
 	fclose(f);
 
-	amount = stod_(file[0][0]);
+	amount = Round2Decimals(stod_(file[0][0]));
 
 	for(i=0; i<file.size(); i++)
 	{

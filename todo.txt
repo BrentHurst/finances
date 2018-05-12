@@ -1,1 +1,14 @@
-Figure out if there are rounding errors on input
+PROBLEMS
+--------
+
+
+
+GOALS
+-----
+
+Reconcile
+Select Account
+Delete account
+New year
+Load my transactions
+
