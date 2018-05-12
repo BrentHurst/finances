@@ -1,2 +1,1 @@
-Make sure locations and earmarks created have the same amount in them
 Set amount of new accounts in setup calling readinaccount for superaccounts
