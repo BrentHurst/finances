@@ -27,7 +27,7 @@ using namespace std;
 #define GetLines GetDelimitedFile(f,c0,c1,esc,file)
 #define FlushInputBuffer while((junk=getchar()) != '\n' && junk != EOF)
 
-const char c0 = '\0';
+const char c0 = ',';
 const int c1 = '\n';
 const int esc = '`';
 
@@ -186,6 +186,8 @@ string itos_(int i);
 double stod_(string s);
 int stoi_(string s);
 double abs(double f);
+double Round2Decimals(double d);
+string ReadString();
 
 
 //ask.cpp

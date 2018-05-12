@@ -10,7 +10,9 @@
 
 
 #include "finances.h"
+#include <string.h>
 #include <cstdio>
+#include <cmath>
 using namespace std;
 
 
@@ -67,4 +69,18 @@ int stoi_(string s)
 }
 
 double abs(double f) { return (f>=0) ? f : -1*f; }
+double Round2Decimals(double d) { return round(d*100)/100; }
 
+string ReadString()
+{
+	unsigned int SIZE = 100;
+	char s[SIZE];
+	string str;
+	//int junk;
+	fgets(s,SIZE,stdin);
+	if(strlen(s)>0 && s[strlen(s)-1]=='\n')
+		s[strlen(s)-1]='\0';
+	//FlushInputBuffer;
+	str = s;
+	return str;
+}

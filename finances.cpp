@@ -49,7 +49,6 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 
 Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int setup)
 {
-	char s[100];
 	string str;
 	Account* a;
 	map<string,Account*>::iterator mit;
@@ -59,9 +58,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 	while(1)
 	{
 		printf("%s: ",type.c_str());
-		scanf("%s",s);
-		FlushInputBuffer;
-		str = s;
+		str = ReadString();
 
 		//str not in m
 		if((mit=m.find(str))==m.end())
@@ -113,12 +110,8 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 
 string ReadInInformation()
 {
-	int junk;
-	char s[100];
 	printf("info: ");
-	scanf("%s",s);
-	FlushInputBuffer;
-	string str = s;
+	string str = ReadString();
 	return str;
 }
 

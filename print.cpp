@@ -47,7 +47,7 @@ void Finances::PrintLocations()
 	printf("\n\nLOCATIONS\n---------\n\n");
 	printf("%9.2f TOTAL\n",amount);
 
-	for(mit=earmarks.begin(); mit != earmarks.end(); mit++)
+	for(mit=locations.begin(); mit != locations.end(); mit++)
 		if(!mit->second->superaccount)
 			PrintAccountRecur(mit->second,"    ");
 }
@@ -57,7 +57,7 @@ void Finances::PrintTags()
 
 	printf("\n\nTAGS\n----\n\n");
 
-	for(mit=earmarks.begin(); mit != earmarks.end(); mit++)
+	for(mit=tags.begin(); mit != tags.end(); mit++)
 		if(!mit->second->superaccount)
 			PrintAccountRecur(mit->second,"    ");
 }
@@ -67,7 +67,7 @@ void Finances::PrintTofroms()
 
 	printf("\n\nTO/FROMS\n--------\n\n");
 
-	for(mit=earmarks.begin(); mit != earmarks.end(); mit++)
+	for(mit=tofroms.begin(); mit != tofroms.end(); mit++)
 		if(!mit->second->superaccount)
 			PrintAccountRecur(mit->second,"    ");
 }

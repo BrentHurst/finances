@@ -61,6 +61,7 @@ void PrintCommands()
 {
 	map<char,string>::iterator mit;
 
+	printf("\n");
 	for(mit=cmdList.begin(); mit != cmdList.end(); mit++)
 		if(mit->second != "")
 			printf("%c. %s\n",mit->first,mit->second.c_str());

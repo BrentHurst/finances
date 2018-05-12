@@ -130,9 +130,10 @@ void Finances::Load(const string& filename)
 			return;
 		}
 	}
-	fclose(f);
 
 	GetLines;
+	fclose(f);
+
 	amount = stod_(file[0][0]);
 
 	for(i=0; i<file.size(); i++)

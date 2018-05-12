@@ -17,12 +17,11 @@ using namespace std;
 void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 {
 	char c;
-	char s[100];
 	string str;
 	double d;
 	Account* a;
 	int junk;
-	int earmarkAmount;
+	double earmarkAmount;
 	map<string,Account*>::iterator mit;
 
 
@@ -31,12 +30,15 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		amount = 0;
 		for(mit = locations.begin(); mit != locations.end(); mit++)
 			if(!mit->second->superaccount)
-				amount += mit->second->amount;
+				amount = Round2Decimals(amount + mit->second->amount);
 
 		earmarkAmount = 0;
 		for(mit = earmarks.begin(); mit != earmarks.end(); mit++)
 			if(!mit->second->superaccount)
-				earmarkAmount += mit->second->amount;
+				earmarkAmount = Round2Decimals(earmarkAmount + mit->second->amount);
+
+		printf("locations amount: $%9.2f\n",amount);
+		printf("earmarks  amount: $%9.2f\n",earmarkAmount);
 
 		if(!m.empty() && type=="location")
 		{
@@ -55,18 +57,17 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		else if(type=="earmark" && earmarkAmount>amount)
 		{
 			printf("You've entered more money in earmarks than you did in accounts.\n");
+			printf("%f - %f = %f\n",earmarkAmount,amount,earmarkAmount-amount);
 			printf("Please try again.\n");
 			exit(0);
 		}
 
 		printf("Enter %s name: ",type.c_str());
-		scanf("%s",s);
-		FlushInputBuffer;
-		str = s;
+		str = ReadString();
 
-		if(allaccounts.find(s) != allaccounts.end())
+		if(allaccounts.find(str) != allaccounts.end())
 		{
-			printf("\"%s\" already exists as a %s.\n",s,(*allaccounts.find(str)).second->t.c_str());
+			printf("\"%s\" already exists as a %s.\n",str.c_str(),(*allaccounts.find(str)).second->t.c_str());
 			continue;
 		}
 
@@ -76,7 +77,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 
 		do
 		{
-			printf("Is \"%s\" with $%9.2f correct? [y/n]: ",s,d);
+			printf("Is \"%s\" with $%9.2f correct? [y/n]: ",str.c_str(),d);
 			scanf("%c",&c);
 			FlushInputBuffer;
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');

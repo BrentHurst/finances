@@ -1,1 +1,1 @@
-read strings with spaces
+Figure out if there are rounding errors on input
