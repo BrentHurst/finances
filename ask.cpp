@@ -22,7 +22,7 @@ int AskForContinue()
 	{
 		printf("Would you like to try again? [y/n]: ");
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	return (c=='y' || c=='Y');
 }
@@ -36,7 +36,7 @@ int AskToAdd(const string& type,const string& str)
 	{
 		printf("The %s \"%s\" doesn't exist. Would you like to add it? [y/n]: ",type.c_str(),str.c_str());
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	return (c=='y' || c=='Y');
 }
@@ -52,7 +52,7 @@ int AskIfCorrectTransaction(Transaction* t)
 		t->Print();
 		printf("[y/n]: ");
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	return (c=='y' || c=='Y');
 }
@@ -68,7 +68,7 @@ int AskIfCorrectTransfer(Transfer* t)
 		t->Print();
 		printf("[y/n]: ");
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	return (c=='y' || c=='Y');
 }

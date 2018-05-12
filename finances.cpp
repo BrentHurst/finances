@@ -37,7 +37,7 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 	{
 		printf("Does %s have a superaccount? [y/n]: ",str.c_str());
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	if(c=='n' || c=='N') return;
 
@@ -59,7 +59,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z)
 	{
 		printf("%s: ",type.c_str());
 		scanf("%s",s);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 		str = s;
 
 		//str not in m
@@ -109,7 +109,7 @@ string ReadInInformation()
 	char s[100];
 	printf("info: ");
 	scanf("%s",s);
-	while((junk=getchar()) != '\n' && junk != EOF);
+	FlushInputBuffer;
 	string str = s;
 	return str;
 }
@@ -120,7 +120,7 @@ double ReadInTotal()
 	double d;
 	printf("Amount: (positive for income or transfer, negative for spent): ");
 	scanf("%lf",&d);
-	while((junk=getchar()) != '\n' && junk != EOF);
+	FlushInputBuffer;
 	return d;
 }
 
@@ -180,7 +180,7 @@ void Finances::ReadNewTransfer()
 	{
 		printf("If earmarks, enter '1', and if physical locations, enter '2': ");
 		scanf("%c",&type);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 
 	if(type=='1')
@@ -223,7 +223,7 @@ void Finances::ReadNewAccount()
 	{
 		printf("Please enter the number of the type of account you are creating: ");
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 	}
 	switch(c)
 	{

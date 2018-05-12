@@ -120,7 +120,7 @@ void Finances::Load(const string& filename)
 		{
 			printf("Couldn't find file. Set up new finances? [y/n]: ");
 			scanf("%c",&c);
-			while((junk=getchar()) != '\n' && junk != EOF);
+			FlushInputBuffer;
 		}
 		if(c=='n' || c=='N')
 			exit(0);

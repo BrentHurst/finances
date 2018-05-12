@@ -77,7 +77,7 @@ char GetCommand()
 	{
 		printf("Please choose a command: ");
 		scanf("%c",&c);
-		while((junk=getchar()) != '\n' && junk != EOF);
+		FlushInputBuffer;
 		if(c>='A' && c<='Z')
 			c += ('a' - 'A');
 	}
@@ -126,7 +126,7 @@ int RunCommand(Finances& f,char cmd)
 				  {
 					  printf("Are you sure you want to quit without saving? [y/n]: ");
 					  scanf("%c",&c);
-					  while((junk=getchar()) != '\n' && junk != EOF);
+					  FlushInputBuffer;
 				  }
 				  if(c=='y') return 0;
 				  else return 1;
