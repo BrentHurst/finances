@@ -184,6 +184,8 @@ string dtos_(double d);
 string itos_(int i);
 double stod_(string s);
 int stoi_(string s);
+double abs(double f);
+
 
 //ask.cpp
 int AskForContinue();

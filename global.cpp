@@ -66,3 +66,5 @@ int stoi_(string s)
 	return i;
 }
 
+double abs(double f) { return (f>=0) ? f : -1*f; }
+

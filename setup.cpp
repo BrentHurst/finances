@@ -21,6 +21,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	string str;
 	double d;
 	Account* a;
+	int junk;
 
 	while(1)
 	{
@@ -29,7 +30,8 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			do
 			{
 				printf("Enter another %s? [y/n]: ",type.c_str());
-				scanf("%c\n",&c);
+				scanf("%c",&c);
+				while((junk=getchar()) != '\n' && junk != EOF);
 			}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 			if(c=='n' || c=='N')
@@ -37,14 +39,17 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		}
 
 		printf("Enter a %s name: ",type.c_str());
-		scanf("%s\n",s);
+		scanf("%s",s);
+		while((junk=getchar()) != '\n' && junk != EOF);
 		printf("Enter the starting amount in this %s: $",type.c_str());
-		scanf("%lf\n",&d);
+		scanf("%lf",&d);
+		while((junk=getchar()) != '\n' && junk != EOF);
 
 		do
 		{
-			printf("Is \"%s\" with $%f correct? [y/n]: ",s,d);
-			scanf("%c\n",&c);
+			printf("Is \"%s\" with $%9.2f correct? [y/n]: ",s,d);
+			scanf("%c",&c);
+			while((junk=getchar()) != '\n' && junk != EOF);
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 		if(c=='y' || c=='Y')
@@ -62,6 +67,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 void Finances::Setup(const string& filename)
 {
 	char c;
+	int junk;
 
 	SetupAddAccounts("location",locations);
 	SetupAddAccounts("earmark",earmarks);
@@ -70,7 +76,8 @@ void Finances::Setup(const string& filename)
 	{
 		printf("Would you like to save changes or discard changes?");
 		printf("Enter 1 for save, and enter 2 for discard: ");
-		scanf("%c\n",&c);
+		scanf("%c",&c);
+		while((junk=getchar()) != '\n' && junk != EOF);
 	}while(c!='1' && c!='2');
 
 	if(c=='1')

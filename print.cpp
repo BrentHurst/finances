@@ -21,7 +21,7 @@ void Finances::PrintTransfers()
 	PrintTransfersGlobal(transfers);
 }
 
-void PrintAccountRecur(Account* a,string indent)
+void Finances::PrintAccountRecur(Account* a,string indent)
 {
 	map<string,Account*>::iterator mit;
 

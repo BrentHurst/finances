@@ -31,11 +31,13 @@ Finances::Finances()
 void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type)
 {
 	char c='r';
+	int junk;
 
 	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
 	{
 		printf("Does %s have a superaccount? [y/n]: ",str.c_str());
-		scanf("%c\n",&c);
+		scanf("%c",&c);
+		while((junk=getchar()) != '\n' && junk != EOF);
 	}
 	if(c=='n' || c=='N') return;
 
@@ -51,11 +53,13 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z)
 	string str;
 	Account* a;
 	map<string,Account*>::iterator mit;
+	int junk;
 
 	while(1)
 	{
 		printf("%s: ",type.c_str());
-		scanf("%s\n",s);
+		scanf("%s",s);
+		while((junk=getchar()) != '\n' && junk != EOF);
 		str = s;
 
 		//str not in m
@@ -101,18 +105,22 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z)
 
 string ReadInInformation()
 {
+	int junk;
 	char s[100];
 	printf("info: ");
-	scanf("%s\n",s);
+	scanf("%s",s);
+	while((junk=getchar()) != '\n' && junk != EOF);
 	string str = s;
 	return str;
 }
 
 double ReadInTotal()
 {
+	int junk;
 	double d;
 	printf("Amount: (positive for income or transfer, negative for spent): ");
-	scanf("%lf\n",&d);
+	scanf("%lf",&d);
+	while((junk=getchar()) != '\n' && junk != EOF);
 	return d;
 }
 
@@ -163,6 +171,7 @@ void Finances::ReadNewTransfer()
 	double amount;
 	Transfer* t;
 	char type='r';
+	int junk;
 
 	date = new Date;
 	date->ReadInDate();
@@ -170,7 +179,8 @@ void Finances::ReadNewTransfer()
 	while(type != '1' && type != '2')
 	{
 		printf("If earmarks, enter '1', and if physical locations, enter '2': ");
-		scanf("%c\n",&type);
+		scanf("%c",&type);
+		while((junk=getchar()) != '\n' && junk != EOF);
 	}
 
 	if(type=='1')
@@ -206,12 +216,14 @@ void Finances::ReadNewTransfer()
 void Finances::ReadNewAccount()
 {
 	char c='r';
+	int junk;
 
 	printf("1. earmark\n2. location\n3. tag\n4. to/from\n");
 	while(c<'1' || c>'4')
 	{
 		printf("Please enter the number of the type of account you are creating: ");
-		scanf("%c\n",&c);
+		scanf("%c",&c);
+		while((junk=getchar()) != '\n' && junk != EOF);
 	}
 	switch(c)
 	{

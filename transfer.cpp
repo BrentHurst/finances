@@ -38,8 +38,6 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 	amount = t;
 }
 
-double abs(double f) { return (f>=0) ? f : -1*f; }
-
 void Transfer::Print()
 {
 	printf("%s: $%9.2f %15s -> %15s %c\n\t%s\n",

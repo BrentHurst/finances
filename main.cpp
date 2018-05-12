@@ -69,13 +69,15 @@ void PrintCommands()
 char GetCommand()
 {
 	char c='1';
+	int junk;
 
 	PrintCommands();
 
 	while(c<'a' || c>'z')
 	{
 		printf("Please choose a command: ");
-		scanf("%c\n",&c);
+		scanf("%c",&c);
+		while((junk=getchar()) != '\n' && junk != EOF);
 		if(c>='A' && c<='Z')
 			c += ('a' - 'A');
 	}
@@ -86,6 +88,7 @@ char GetCommand()
 int RunCommand(Finances& f,char cmd)
 {
 	char c='r';
+	int junk;
 
 	if(cmdList[cmd]=="")
 		return 0;
@@ -122,7 +125,8 @@ int RunCommand(Finances& f,char cmd)
 				  while(c!='y' && c!='n')
 				  {
 					  printf("Are you sure you want to quit without saving? [y/n]: ");
-					  scanf("%c\n",&c);
+					  scanf("%c",&c);
+					  while((junk=getchar()) != '\n' && junk != EOF);
 				  }
 				  if(c=='y') return 0;
 				  else return 1;

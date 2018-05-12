@@ -43,8 +43,6 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 	amount = t;
 }
 
-double abs(double f) { return (f>=0) ? f : -1*f; }
-
 void Transaction::Print()
 {
 	printf("%s %15s %15s %15s %15s %c$%9.2f %c\n\t%s\n",
