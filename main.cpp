@@ -83,6 +83,8 @@ char GetCommand()
 			c += ('a' - 'A');
 	}
 
+	printf("\n");
+
 	return c;
 }
 

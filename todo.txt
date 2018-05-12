@@ -11,4 +11,4 @@ Select Account
 Delete account
 New year
 Load my transactions
-
+Foreign cash

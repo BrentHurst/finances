@@ -73,6 +73,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 			//str doesn't exist yet as an account
 			else
 			{
+				PrintCorrectAccountMap(type);
 				if(AskToAdd(type,str))
 				{
 					a = new Account(str,type);

@@ -27,7 +27,7 @@ using namespace std;
 #define GetLines GetDelimitedFile(f,c0,c1,esc,file)
 #define FlushInputBuffer while((junk=getchar()) != '\n' && junk != EOF)
 
-const char c0 = ',';
+const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
 
@@ -175,6 +175,7 @@ class Finances
 		void PrintTags();
 		void PrintTofroms();
 		void PrintAllAccounts();
+		void PrintCorrectAccountMap(const string& type);
 };
 
 

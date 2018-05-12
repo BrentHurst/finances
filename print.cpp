@@ -78,3 +78,15 @@ void Finances::PrintAllAccounts()
 	PrintTags();
 	PrintTofroms();
 }
+
+void Finances::PrintCorrectAccountMap(const string& type)
+{
+	if(type=="location")
+		PrintLocations();
+	else if(type=="earmark")
+		PrintEarmarks();
+	else if(type=="tag")
+		PrintTags();
+	else if(type=="to/from")
+		PrintTofroms();
+}
