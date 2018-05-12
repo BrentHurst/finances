@@ -22,10 +22,22 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	double d;
 	Account* a;
 	int junk;
-	int earmarkAmount = 0;
+	int earmarkAmount;
+	map<string,Account*>::iterator mit;
+
 
 	while(1)
 	{
+		amount = 0;
+		for(mit = locations.begin(); mit != locations.end(); mit++)
+			if(!mit->second->superaccount)
+				amount += mit->second->amount;
+
+		earmarkAmount = 0;
+		for(mit = earmarks.begin(); mit != earmarks.end(); mit++)
+			if(!mit->second->superaccount)
+				earmarkAmount += mit->second->amount;
+
 		if(!m.empty() && type=="location")
 		{
 			do
@@ -73,13 +85,9 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		{
 			a = new Account(str,type);
 			a->amount = d;
-			if(type=="location")
-				amount += d;
-			else
-				earmarkAmount += d;
 			m[str] = a;
 			allaccounts[str] = a;
-			FindSuperAccount(str,a,m,type);
+			FindSuperAccount(str,a,m,type,1);
 		}
 	}
 }

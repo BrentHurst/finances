@@ -142,8 +142,8 @@ class Finances
 		void LinkTransfer(Transfer* t,int loading);
 
 		//finances.cpp
-		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type);
-		Account* ReadInAccount(map<string,Account*>& m,string type,int z);
+		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type,int setup);
+		Account* ReadInAccount(map<string,Account*>& m,string type,int z,int setup);
 
 		//print.cpp
 		void PrintAccountRecur(Account* a,string indent);

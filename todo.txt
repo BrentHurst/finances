@@ -1,1 +1,1 @@
-Set amount of new accounts in setup calling readinaccount for superaccounts
+read strings with spaces
