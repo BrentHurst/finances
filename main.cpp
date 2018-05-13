@@ -115,8 +115,7 @@ int RunCommand(Finances& f,char cmd)
 		//case 'o': break;
 		case 'p': f.PrintAllAccounts(); return 1;
 		//case 'q': break;
-		case 'r': //Reconcile
-				  return 1;
+		case 'r': f.Reconcile(); return 1;
 		case 's': f.Save(filename); return 1;
 		//case 't': break;
 		//case 'u': break;

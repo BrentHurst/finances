@@ -45,7 +45,7 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 
 void Transaction::Print()
 {
-	printf("%s %15s %15s %15s %15s %c$%9.2f %c\n\t%s\n",
+	printf("%s %15s %15s %15s %15s %c$%9.2f \t%c\n\t%s\n",
 			date->getDate_ddMyyyy_nothing().c_str(),
 			tag->name.c_str(),
 			location->name.c_str(),
@@ -56,3 +56,5 @@ void Transaction::Print()
 			(reconciled) ? 'R' : '-',
 			info.c_str());
 }
+
+void Transaction::Reconcile() { reconciled = 1; }

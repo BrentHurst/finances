@@ -40,7 +40,7 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 
 void Transfer::Print()
 {
-	printf("%s: $%9.2f %15s -> %15s %c\n\t%s\n",
+	printf("%s: $%9.2f %15s -> %15s \t%c\n\t%s\n",
 			date->getDate_ddMyyyy_nothing().c_str(),
 			abs(amount),
 			from->name.c_str(),
@@ -48,3 +48,5 @@ void Transfer::Print()
 			(reconciled) ? 'R' : '-',
 			info.c_str());
 }
+
+void Transfer::Reconcile() { reconciled = 1; }

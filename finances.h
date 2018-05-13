@@ -53,9 +53,12 @@ class Account
 		//account.cpp
 		Account(const string& n,AccountType ty);
 		Account(const string& n,const string& ty);
-
 		void Print(string indent);
 		void Rename(const string& n);
+
+		//reconcile.cpp
+		void Reconcile();
+		void Reconcile(int i);
 };
 
 class Transaction
@@ -82,6 +85,7 @@ class Transaction
 					Account* e,Account* tf,string& i,
 					int r,double t);
 		void Print();
+		void Reconcile();
 };
 
 class Transfer
@@ -105,6 +109,7 @@ class Transfer
 		Transfer(Date* d,Account* f,Account* t_,
 			     string& info,int r,double t);
 		void Print();
+		void Reconcile();
 };
 
 class Finances
@@ -164,6 +169,9 @@ class Finances
 		void ReadNewAccount();
 		Finances();
 
+		//reconcile.cpp
+		void Reconcile();
+
 		//setup.cpp
 		void Setup(const string& filename);
 
@@ -190,6 +198,9 @@ double abs(double f);
 double Round2Decimals(double d);
 string ReadString();
 
+//reconcile.cpp
+void Reconcile_(multiset<Transaction*>& s,int i);
+void Reconcile_(multiset<Transfer*>& s,int i);
 
 //ask.cpp
 int AskForContinue();

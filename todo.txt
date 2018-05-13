@@ -6,9 +6,9 @@ PROBLEMS
 GOALS
 -----
 
-Reconcile
 Select Account
 Delete account
+Move accounts around as subaccounts
 New year
-Load my transactions
 Foreign cash
+Automatic Round-Up

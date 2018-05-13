@@ -41,6 +41,7 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 	}
 	if(c=='n' || c=='N') return;
 
+	PrintCorrectAccountMap(type);
 	printf("Please enter superaccount name. ");
 	a->superaccount = ReadInAccount(m,type,1,setup);
 	if(a->superaccount)
@@ -57,6 +58,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 
 	while(1)
 	{
+		PrintCorrectAccountMap(type);
 		printf("%s: ",type.c_str());
 		str = ReadString();
 
@@ -74,6 +76,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 			else
 			{
 				PrintCorrectAccountMap(type);
+				printf("\n");
 				if(AskToAdd(type,str))
 				{
 					a = new Account(str,type);
