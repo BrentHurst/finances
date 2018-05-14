@@ -84,3 +84,34 @@ string ReadString()
 	str = s;
 	return str;
 }
+
+void PrintCommands(map<char,string>& cmdList)
+{
+	map<char,string>::iterator mit;
+
+	printf("\n");
+	for(mit=cmdList.begin(); mit != cmdList.end(); mit++)
+		if(mit->second != "")
+			printf("%c. %s\n",mit->first,mit->second.c_str());
+}
+
+char GetCommand(map<char,string>& cmdList)
+{
+	char c;
+	int junk;
+
+	PrintCommands(cmdList);
+
+	do
+	{
+		printf("Please choose a command: ");
+		scanf("%c",&c);
+		FlushInputBuffer;
+		if(c>='A' && c<='Z')
+			c += ('a' - 'A');
+	}while(c<'a' || c>'z');
+
+	printf("\n");
+
+	return c;
+}

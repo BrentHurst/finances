@@ -65,8 +65,3 @@ void Account::Print(string indent)
 {
 	printf("%s%c$%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',amount,name.c_str());
 }
-
-void Account::Rename(const string& n)
-{
-	name = n;
-}

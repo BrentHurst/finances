@@ -1,14 +1,35 @@
 PROBLEMS
 --------
-
+Not sure if transactions are in chronological order
 
 
 GOALS
 -----
+Always read in char with one function,
+			string in another,
+			double in another
 
 Select Account
-Delete account
+	Delete Account
+	Select Transfer
+	Select Transaction
+
+Select Transfer
+	Edit Transfer
+	Delete Transfer
+Select Transaction
+	Edit Transaction
+	Delete Transaction
+
 Move accounts around as subaccounts
+
+Force subaccounts
+
 New year
+
 Foreign cash
+	154.3
+
 Automatic Round-Up
+
+Make Fake Data

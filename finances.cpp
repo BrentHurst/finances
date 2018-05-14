@@ -238,3 +238,58 @@ void Finances::ReadNewAccount()
 		case '4': ReadInAccount(tofroms,"to/from",0,0); break;
 	}
 }
+
+void Finances::RenameAccount(Account* a)
+{
+	string s;
+	char c;
+	int junk;
+
+	while(1)
+	{
+		printf("Please enter what you would like to rename %s to: ",a->name.c_str());
+		s = ReadString();
+		if(allaccounts.find(s)==allaccounts.end())
+			break;
+		do
+		{
+			printf("\"%s\" already exists. Try again? [y/n]: ",s.c_str());
+			scanf("%c",&c);
+			FlushInputBuffer;
+		}while(c!='y' && c!='Y' && c!='n' && c!='N');
+
+		if(c=='n' || c=='N')
+			return;
+	}
+
+	allaccounts[s] = a;
+	allaccounts.erase(allaccounts.find(a->name));
+
+	if(a->superaccount)
+	{
+		a->superaccount->subaccounts[s] = a;
+		a->superaccount->subaccounts.erase(a->superaccount->subaccounts.find(a->name));
+	}
+
+	switch(a->type)
+	{
+		case location:
+					   locations[s] = a;
+					   locations.erase(locations.find(a->name));
+					   break;
+		case earmark:
+					   earmarks[s] = a;
+					   earmarks.erase(earmarks.find(a->name));
+					   break;
+		case tag:
+					   tags[s] = a;
+					   tags.erase(tags.find(a->name));
+					   break;
+		case tofrom:
+					   tofroms[s] = a;
+					   tofroms.erase(tofroms.find(a->name));
+					   break;
+	}
+
+	a->name = s;
+}

@@ -23,9 +23,9 @@ const char save = 's';
 const char quitSave = 'y';
 const char quitNoSave = 'z';
 
-map<char,string> cmdList;
+static map<char,string> cmdList;
 
-void FillCmdList()
+static void FillCmdList()
 {
 	cmdList.clear();
 	cmdList['a']="New Transaction";
@@ -37,9 +37,9 @@ void FillCmdList()
 	cmdList['g']="List Locations";
 	cmdList['h']="List Tags";
 	cmdList['i']="List To/Froms";
-	cmdList['j']="";
-	cmdList['k']="";
-	cmdList['l']="";
+	cmdList['j']="Select Account (earmark/location/tag/tofrom)";
+	cmdList['k']="Select Transaction";
+	cmdList['l']="Select Transfer";
 	cmdList['m']="";
 	cmdList['n']="";
 	cmdList['o']="";
@@ -54,38 +54,6 @@ void FillCmdList()
 	cmdList['x']="";
 	cmdList['y']="Save and Quit";
 	cmdList['z']="Quit WITHOUT Saving";
-
-}
-
-void PrintCommands()
-{
-	map<char,string>::iterator mit;
-
-	printf("\n");
-	for(mit=cmdList.begin(); mit != cmdList.end(); mit++)
-		if(mit->second != "")
-			printf("%c. %s\n",mit->first,mit->second.c_str());
-}
-
-char GetCommand()
-{
-	char c='1';
-	int junk;
-
-	PrintCommands();
-
-	while(c<'a' || c>'z')
-	{
-		printf("Please choose a command: ");
-		scanf("%c",&c);
-		FlushInputBuffer;
-		if(c>='A' && c<='Z')
-			c += ('a' - 'A');
-	}
-
-	printf("\n");
-
-	return c;
 }
 
 int RunCommand(Finances& f,char cmd)
@@ -107,9 +75,11 @@ int RunCommand(Finances& f,char cmd)
 		case 'g': f.PrintLocations(); return 1;
 		case 'h': f.PrintTags(); return 1;
 		case 'i': f.PrintTofroms(); return 1;
-		//case 'j': break;
-		//case 'k': break;
-		//case 'l': break;
+		case 'j': f.SelectAccount(); return 1;
+		//case 'k': Select Transaction
+		//break;
+		//case 'l': Select Transfer
+		//break;
 		//case 'm': break;
 		//case 'n': break;
 		//case 'o': break;
@@ -144,7 +114,7 @@ int main(int argc, char ** argv)
 
 	f.Load(filename);
 
-	while(RunCommand(f,GetCommand()));
+	while(RunCommand(f,GetCommand(cmdList)));
 
 	return 0;
 }

@@ -54,7 +54,6 @@ class Account
 		Account(const string& n,AccountType ty);
 		Account(const string& n,const string& ty);
 		void Print(string indent);
-		void Rename(const string& n);
 
 		//reconcile.cpp
 		void Reconcile();
@@ -168,6 +167,7 @@ class Finances
 		void ReadNewTransfer();
 		void ReadNewAccount();
 		Finances();
+		void RenameAccount(Account* a);
 
 		//reconcile.cpp
 		void Reconcile();
@@ -184,6 +184,10 @@ class Finances
 		void PrintTofroms();
 		void PrintAllAccounts();
 		void PrintCorrectAccountMap(const string& type);
+
+		//select.cpp
+		Account* GetAccountFromUser(map<string,Account*>& m);
+		void SelectAccount();
 };
 
 
@@ -197,6 +201,8 @@ int stoi_(string s);
 double abs(double f);
 double Round2Decimals(double d);
 string ReadString();
+char GetCommand(map<char,string>& cmdList);
+void PrintCommands(map<char,string>& cmdList);
 
 //reconcile.cpp
 void Reconcile_(multiset<Transaction*>& s,int i);
