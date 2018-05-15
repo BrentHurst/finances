@@ -1,6 +1,6 @@
 PROBLEMS
 --------
-Not sure if transactions are in chronological order
+Transactions aren't in chronological order
 
 
 GOALS
@@ -9,7 +9,6 @@ GOALS
 Gas
 
 Select Account
-	Delete Account
 	Select Transfer
 	Select Transaction
 	Reconcile
@@ -38,3 +37,9 @@ Foreign cash
 Automatic Round-Up
 
 Make Fake Data
+
+
+
+MAYBE LATER
+-----------
+Delete Account
