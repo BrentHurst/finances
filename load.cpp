@@ -110,7 +110,6 @@ void Finances::Load(const string& filename)
 	int transac = -1;
 	int transfe = -1;
 	char c='r';
-	int junk;
 
 
 	f = fopen(filename.c_str(),"r");
@@ -119,8 +118,7 @@ void Finances::Load(const string& filename)
 		while(c!='y' && c!='n' && c!='Y' && c!='N')
 		{
 			printf("Couldn't find file. Set up new finances? [y/n]: ");
-			scanf("%c",&c);
-			FlushInputBuffer;
+			c = ReadChar();
 		}
 		if(c=='n' || c=='N')
 			exit(0);

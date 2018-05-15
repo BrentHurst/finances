@@ -16,13 +16,11 @@ using namespace std;
 int GetDecision()
 {
 	char c;
-	int junk;
 	do
 	{
 		printf("Would you like to go ahead and reconcile all, or reconcile one-by-one?\n");
 		printf("a. Reconcile all\nb. Reconcile one-by-one\n[a/b]: ");
-		scanf("%c",&c);
-		FlushInputBuffer;
+		c = ReadChar();
 	}while(c!='a' && c!='b' && c!='A' && c!='B');
 	return (c=='a' || c=='A');
 }
@@ -50,7 +48,6 @@ void Reconcile_(multiset<Transaction*>& s,int i)
 	multiset<Transaction*>::iterator sit;
 	multiset<Transaction*>::iterator sit2;
 	char c;
-	int junk;
 
 	for(sit=s.begin(); sit != s.end();   )
 	{
@@ -60,8 +57,7 @@ void Reconcile_(multiset<Transaction*>& s,int i)
 			{
 				(*sit)->Print();
 				printf("Reconcile this transaction? [y/n]: ");
-				scanf("%c",&c);
-				FlushInputBuffer;
+				c = ReadChar();
 			}while(c!='y' && c!='Y' && c!='n' && c!='N');
 		}
 		printf("\n");
@@ -85,7 +81,6 @@ void Reconcile_(multiset<Transfer*>& s,int i)
 	multiset<Transfer*>::iterator sit;
 	multiset<Transfer*>::iterator sit2;
 	char c;
-	int junk;
 
 	for(sit=s.begin(); sit != s.end();   )
 	{
@@ -95,8 +90,7 @@ void Reconcile_(multiset<Transfer*>& s,int i)
 			{
 				(*sit)->Print();
 				printf("Reconcile this transfer? [y/n]: ");
-				scanf("%c",&c);
-				FlushInputBuffer;
+				c = ReadChar();
 			}while(c!='y' && c!='Y' && c!='n' && c!='N');
 		}
 		printf("\n");

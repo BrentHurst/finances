@@ -59,7 +59,6 @@ static void FillCmdList()
 int RunCommand(Finances& f,char cmd)
 {
 	char c='r';
-	int junk;
 
 	if(cmdList[cmd]=="")
 		return 0;
@@ -97,8 +96,7 @@ int RunCommand(Finances& f,char cmd)
 				  while(c!='y' && c!='n')
 				  {
 					  printf("Are you sure you want to quit without saving? [y/n]: ");
-					  scanf("%c",&c);
-					  FlushInputBuffer;
+					  c = ReadChar();
 				  }
 				  if(c=='y') return 0;
 				  else return 1;

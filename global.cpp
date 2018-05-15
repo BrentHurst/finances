@@ -85,6 +85,24 @@ string ReadString()
 	return str;
 }
 
+char ReadChar()
+{
+	char c;
+	int junk;
+	scanf("%c",&c);
+	FlushInputBuffer;
+	return c;
+}
+
+double ReadDouble()
+{
+	double d;
+	int junk;
+	scanf("%lf",&d);
+	FlushInputBuffer;
+	return d;
+}
+
 void PrintCommands(map<char,string>& cmdList)
 {
 	map<char,string>::iterator mit;
@@ -98,15 +116,13 @@ void PrintCommands(map<char,string>& cmdList)
 char GetCommand(map<char,string>& cmdList)
 {
 	char c;
-	int junk;
 
 	PrintCommands(cmdList);
 
 	do
 	{
 		printf("Please choose a command: ");
-		scanf("%c",&c);
-		FlushInputBuffer;
+		c = ReadChar();
 		if(c>='A' && c<='Z')
 			c += ('a' - 'A');
 	}while(c<'a' || c>'z');

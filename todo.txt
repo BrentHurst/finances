@@ -5,14 +5,14 @@ Not sure if transactions are in chronological order
 
 GOALS
 -----
-Always read in char with one function,
-			string in another,
-			double in another
+
+Gas
 
 Select Account
 	Delete Account
 	Select Transfer
 	Select Transaction
+	Reconcile
 
 Select Transfer
 	Edit Transfer
@@ -21,6 +21,11 @@ Select Transaction
 	Edit Transaction
 	Delete Transaction
 
+Macros
+	Will need:
+		CopyTransaction()
+		CopyTransfer()
+
 Move accounts around as subaccounts
 
 Force subaccounts
@@ -28,7 +33,7 @@ Force subaccounts
 New year
 
 Foreign cash
-	154.3
+	€154.30
 
 Automatic Round-Up
 

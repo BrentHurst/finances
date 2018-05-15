@@ -48,7 +48,6 @@ Account* Finances::GetAccountFromUser(map<string,Account*>& m)
 {
 	string s;
 	char c;
-	int junk;
 
 	while(1)
 	{
@@ -61,8 +60,7 @@ Account* Finances::GetAccountFromUser(map<string,Account*>& m)
 		do
 		{
 			printf("\"%s\" doesn't exist. Try again? [y/n]: ",s.c_str());
-			scanf("%c",&c);
-			FlushInputBuffer;
+			c = ReadChar();
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 		if(c=='n' || c=='N')

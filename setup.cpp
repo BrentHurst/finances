@@ -20,7 +20,6 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	string str;
 	double d;
 	Account* a;
-	int junk;
 	double earmarkAmount;
 	map<string,Account*>::iterator mit;
 
@@ -45,8 +44,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			do
 			{
 				printf("Enter another %s? [y/n]: ",type.c_str());
-				scanf("%c",&c);
-				FlushInputBuffer;
+				c = ReadChar();
 			}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 			if(c=='n' || c=='N')
@@ -72,14 +70,12 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 		}
 
 		printf("Enter the starting amount in this %s: $",type.c_str());
-		scanf("%lf",&d);
-		FlushInputBuffer;
+		d = ReadDouble();
 
 		do
 		{
 			printf("Is \"%s\" with $%9.2f correct? [y/n]: ",str.c_str(),d);
-			scanf("%c",&c);
-			FlushInputBuffer;
+			c = ReadChar();
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 		if(c=='y' || c=='Y')
@@ -96,7 +92,6 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 void Finances::Setup(const string& filename)
 {
 	char c;
-	int junk;
 
 	SetupAddAccounts("location",locations);
 	SetupAddAccounts("earmark",earmarks);
@@ -105,8 +100,7 @@ void Finances::Setup(const string& filename)
 	{
 		printf("Would you like to save changes or discard changes?\n");
 		printf("Enter 1 for save, and enter 2 for discard: ");
-		scanf("%c",&c);
-		FlushInputBuffer;
+		c = ReadChar();
 	}while(c!='1' && c!='2');
 
 	if(c=='1')

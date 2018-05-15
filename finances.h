@@ -201,6 +201,8 @@ int stoi_(string s);
 double abs(double f);
 double Round2Decimals(double d);
 string ReadString();
+char ReadChar();
+double ReadDouble();
 char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
 

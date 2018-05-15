@@ -31,13 +31,11 @@ Finances::Finances()
 void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type,int setup)
 {
 	char c='r';
-	int junk;
 
 	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
 	{
 		printf("Does %s have a superaccount? [y/n]: ",str.c_str());
-		scanf("%c",&c);
-		FlushInputBuffer;
+		c = ReadChar();
 	}
 	if(c=='n' || c=='N') return;
 
@@ -53,7 +51,6 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 	string str;
 	Account* a;
 	map<string,Account*>::iterator mit;
-	int junk;
 	double d;
 
 	while(1)
@@ -83,8 +80,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 					if(setup)
 					{
 						printf("Enter the starting amount in this %s: $",type.c_str());
-						scanf("%lf",&d);
-						FlushInputBuffer;
+						d = ReadDouble();
 						a->amount = Round2Decimals(d);
 					}
 					m[str] = a;
@@ -121,11 +117,9 @@ string ReadInInformation()
 
 double ReadInTotal()
 {
-	int junk;
 	double d;
 	printf("Amount: (positive for income or transfer, negative for spent): ");
-	scanf("%lf",&d);
-	FlushInputBuffer;
+	d = ReadDouble();
 	return d;
 }
 
@@ -176,7 +170,6 @@ void Finances::ReadNewTransfer()
 	double amount;
 	Transfer* t;
 	char type='r';
-	int junk;
 
 	date = new Date;
 	date->ReadInDate();
@@ -184,8 +177,7 @@ void Finances::ReadNewTransfer()
 	while(type != '1' && type != '2')
 	{
 		printf("If earmarks, enter '1', and if physical locations, enter '2': ");
-		scanf("%c",&type);
-		FlushInputBuffer;
+		type = ReadChar();
 	}
 
 	if(type=='1')
@@ -221,14 +213,12 @@ void Finances::ReadNewTransfer()
 void Finances::ReadNewAccount()
 {
 	char c='r';
-	int junk;
 
 	printf("1. earmark\n2. location\n3. tag\n4. to/from\n");
 	while(c<'1' || c>'4')
 	{
 		printf("Please enter the number of the type of account you are creating: ");
-		scanf("%c",&c);
-		FlushInputBuffer;
+		c = ReadChar();
 	}
 	switch(c)
 	{
@@ -243,7 +233,6 @@ void Finances::RenameAccount(Account* a)
 {
 	string s;
 	char c;
-	int junk;
 
 	while(1)
 	{
@@ -254,8 +243,7 @@ void Finances::RenameAccount(Account* a)
 		do
 		{
 			printf("\"%s\" already exists. Try again? [y/n]: ",s.c_str());
-			scanf("%c",&c);
-			FlushInputBuffer;
+			c = ReadChar();
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
 		if(c=='n' || c=='N')
