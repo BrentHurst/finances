@@ -63,5 +63,5 @@ Account::Account(const string& n,const string& ty)
 
 void Account::Print(string indent)
 {
-	printf("%s%c$%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',amount,name.c_str());
+	printf("%s%c$%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',abs(amount),name.c_str());
 }

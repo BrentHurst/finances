@@ -16,9 +16,9 @@
 using namespace std;
 
 
-void PrintTransactionsGlobal(const multiset<Transaction*>& transactions)
+void PrintTransactionsGlobal(const TransactionSet& transactions)
 {
-	multiset<Transaction*>::iterator iter;
+	TransactionSet::iterator iter;
 
 	//need headings
 
@@ -27,9 +27,9 @@ void PrintTransactionsGlobal(const multiset<Transaction*>& transactions)
 
 	printf("\n");
 }
-void PrintTransfersGlobal(const multiset<Transfer*>& transfers)
+void PrintTransfersGlobal(const TransferSet& transfers)
 {
-	multiset<Transfer*>::iterator iter;
+	TransferSet::iterator iter;
 
 	//need headings
 

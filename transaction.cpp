@@ -14,18 +14,18 @@
 using namespace std;
 
 
-int Transaction::operator<(const Transaction& t)
-{ return (*(this->date) < *(t.date)); }
-int Transaction::operator>(const Transaction& t)
-{ return (*(this->date) > *(t.date)); }
-int Transaction::operator<=(const Transaction& t)
-{ return (*(this->date) <= *(t.date)); }
-int Transaction::operator>=(const Transaction& t)
-{ return (*(this->date) >= *(t.date)); }
-int Transaction::operator==(const Transaction& t)
-{ return (*(this->date) == *(t.date)); }
-int Transaction::operator!=(const Transaction& t)
-{ return (*(this->date) != *(t.date)); }
+//int Transaction::operator<(const Transaction& t)
+//{ return (*(this->date) < *(t.date)); }
+//int Transaction::operator>(const Transaction& t)
+//{ return (*(this->date) > *(t.date)); }
+//int Transaction::operator<=(const Transaction& t)
+//{ return (*(this->date) <= *(t.date)); }
+//int Transaction::operator>=(const Transaction& t)
+//{ return (*(this->date) >= *(t.date)); }
+//int Transaction::operator==(const Transaction& t)
+//{ return (*(this->date) == *(t.date)); }
+//int Transaction::operator!=(const Transaction& t)
+//{ return (*(this->date) != *(t.date)); }
 
 
 

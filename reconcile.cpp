@@ -43,10 +43,10 @@ void Account::Reconcile(int i)
 	Reconcile_(unreconciledtransfers,i);
 }
 
-void Reconcile_(multiset<Transaction*>& s,int i)
+void Reconcile_(TransactionSet& s,int i)
 {
-	multiset<Transaction*>::iterator sit;
-	multiset<Transaction*>::iterator sit2;
+	TransactionSet::iterator sit;
+	TransactionSet::iterator sit2;
 	char c;
 
 	for(sit=s.begin(); sit != s.end();   )
@@ -76,10 +76,10 @@ void Reconcile_(multiset<Transaction*>& s,int i)
 	printf("\nSave and quit for your changes to these transactions to take full effect.\n\n");
 }
 
-void Reconcile_(multiset<Transfer*>& s,int i)
+void Reconcile_(TransferSet& s,int i)
 {
-	multiset<Transfer*>::iterator sit;
-	multiset<Transfer*>::iterator sit2;
+	TransferSet::iterator sit;
+	TransferSet::iterator sit2;
 	char c;
 
 	for(sit=s.begin(); sit != s.end();   )

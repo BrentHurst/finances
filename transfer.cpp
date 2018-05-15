@@ -13,18 +13,18 @@
 using namespace std;
 
 
-int Transfer::operator<(const Transfer& t)
-{ return (*(this->date) < *(t.date)); }
-int Transfer::operator>(const Transfer& t)
-{ return (*(this->date) > *(t.date)); }
-int Transfer::operator<=(const Transfer& t)
-{ return (*(this->date) <= *(t.date)); }
-int Transfer::operator>=(const Transfer& t)
-{ return (*(this->date) >= *(t.date)); }
-int Transfer::operator==(const Transfer& t)
-{ return (*(this->date) == *(t.date)); }
-int Transfer::operator!=(const Transfer& t)
-{ return (*(this->date) != *(t.date)); }
+//int Transfer::operator<(const Transfer& t)
+//{ return (*(this->date) < *(t.date)); }
+//int Transfer::operator>(const Transfer& t)
+//{ return (*(this->date) > *(t.date)); }
+//int Transfer::operator<=(const Transfer& t)
+//{ return (*(this->date) <= *(t.date)); }
+//int Transfer::operator>=(const Transfer& t)
+//{ return (*(this->date) >= *(t.date)); }
+//int Transfer::operator==(const Transfer& t)
+//{ return (*(this->date) == *(t.date)); }
+//int Transfer::operator!=(const Transfer& t)
+//{ return (*(this->date) != *(t.date)); }
 
 
 Transfer::Transfer(Date* d,Account* f,Account* t_,

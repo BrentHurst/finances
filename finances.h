@@ -27,9 +27,24 @@ using namespace std;
 #define GetLines GetDelimitedFile(f,c0,c1,esc,file)
 #define FlushInputBuffer while((junk=getchar()) != '\n' && junk != EOF)
 
+//#define TransactionSet multiset<Transaction*,tracomp<Transaction*> >
+//#define TransferSet multiset<Transfer*,tracomp<Transfer*> >
+#define TransactionSet multiset<Transaction*>
+#define TransferSet multiset<Transfer*>
+
 const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
+
+class Transaction;
+class Transfer;
+
+template <class T>
+class tracomp
+{
+	public:
+		bool operator() (T const& a,T const& b);
+};
 
 
 enum AccountType {tag,location,earmark,tofrom};
@@ -45,10 +60,10 @@ class Account
 		map<string,Account*> subaccounts;
 		Account* superaccount;
 
-		multiset<class Transaction*> transactions;
-		multiset<class Transaction*> unreconciledtransactions;
-		multiset<class Transfer*> transfers;
-		multiset<class Transfer*> unreconciledtransfers;
+		TransactionSet transactions;
+		TransactionSet unreconciledtransactions;
+		TransferSet transfers;
+		TransferSet unreconciledtransfers;
 
 		//account.cpp
 		Account(const string& n,AccountType ty);
@@ -73,12 +88,12 @@ class Transaction
 		double amount;
 
 		//transaction.cpp
-		int operator<(const Transaction& t);
-		int operator>(const Transaction& t);
-		int operator<=(const Transaction& t);
-		int operator>=(const Transaction& t);
-		int operator==(const Transaction& t);
-		int operator!=(const Transaction& t);
+		//int operator<(const Transaction& t);
+		//int operator>(const Transaction& t);
+		//int operator<=(const Transaction& t);
+		//int operator>=(const Transaction& t);
+		//int operator==(const Transaction& t);
+		//int operator!=(const Transaction& t);
 
 		Transaction(Date* d, Account* tg, Account* l,
 					Account* e,Account* tf,string& i,
@@ -98,18 +113,19 @@ class Transfer
 		double amount;
 
 		//transfer.cpp
-		int operator<(const Transfer& t);
-		int operator>(const Transfer& t);
-		int operator<=(const Transfer& t);
-		int operator>=(const Transfer& t);
-		int operator==(const Transfer& t);
-		int operator!=(const Transfer& t);
+		//int operator<(const Transfer t);
+		//int operator>(const Transfer t);
+		//int operator<=(const Transfer t);
+		//int operator>=(const Transfer t);
+		//int operator==(const Transfer t);
+		//int operator!=(const Transfer t);
 
 		Transfer(Date* d,Account* f,Account* t_,
 			     string& info,int r,double t);
 		void Print();
 		void Reconcile();
 };
+
 
 class Finances
 {
@@ -121,10 +137,10 @@ class Finances
 		map<string,Account*> tags;
 		map<string,Account*> tofroms;
 
-		multiset<Transaction*> transactions;
-		multiset<Transaction*> unreconciledtransactions;
-		multiset<Transfer*> transfers;
-		multiset<Transfer*> unreconciledtransfers;
+		TransactionSet transactions;
+		TransactionSet unreconciledtransactions;
+		TransferSet transfers;
+		TransferSet unreconciledtransfers;
 
 		double amount;
 
@@ -192,8 +208,8 @@ class Finances
 
 
 //global.cpp
-void PrintTransactionsGlobal(const multiset<Transaction*>& transactions);
-void PrintTransfersGlobal(const multiset<Transfer*>& transfers);
+void PrintTransactionsGlobal(const TransactionSet& transactions);
+void PrintTransfersGlobal(const TransferSet& transfers);
 string dtos_(double d);
 string itos_(int i);
 double stod_(string s);
@@ -207,8 +223,8 @@ char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
 
 //reconcile.cpp
-void Reconcile_(multiset<Transaction*>& s,int i);
-void Reconcile_(multiset<Transfer*>& s,int i);
+void Reconcile_(TransactionSet& s,int i);
+void Reconcile_(TransferSet& s,int i);
 
 //ask.cpp
 int AskForContinue();

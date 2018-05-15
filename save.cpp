@@ -52,7 +52,7 @@ void Finances::SaveAccounts(FILE* f)
 void Finances::SaveTransactions(FILE* f)
 {
 	vector<string> v;
-	multiset<Transaction*>::iterator sit;
+	TransactionSet::iterator sit;
 
 	v.push_back("TRANSACTIONS");
 	PutLine;
@@ -76,7 +76,7 @@ void Finances::SaveTransactions(FILE* f)
 void Finances::SaveTransfers(FILE* f)
 {
 	vector<string> v;
-	multiset<Transfer*>::iterator sit;
+	TransferSet::iterator sit;
 
 	v.push_back("TRANSFERS");
 	PutLine;
