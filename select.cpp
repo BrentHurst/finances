@@ -21,7 +21,7 @@ static void FillCmdList()
 	cmdList['b']="List Transfers";
 	cmdList['c']="List Unreconciled Transactions";
 	cmdList['d']="List Unreconciled Transfers";
-	cmdList['e']="";
+	cmdList['e']="Reconcile";
 	cmdList['f']="";
 	cmdList['g']="";
 	cmdList['h']="";
@@ -79,6 +79,7 @@ int RunCommand(Finances* f,Account* a,char cmd)
 		case 'b': PrintTransfersGlobal(a->transfers); return 1;
 		case 'c': PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
 		case 'd': PrintTransfersGlobal(a->unreconciledtransfers); return 1;
+		case 'e': a->Reconcile(); return 1;
 		case 'k': //Select Transaction
 				  return 1;
 		case 'l':// Select Transfer
