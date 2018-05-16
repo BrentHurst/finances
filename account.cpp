@@ -29,6 +29,8 @@ Account::Account(const string& n,AccountType ty)
 	else
 		t = "tofrom";
 
+	roundups.clear();
+
 	subaccounts.clear();
 	superaccount = NULL;
 
@@ -63,5 +65,15 @@ Account::Account(const string& n,const string& ty)
 
 void Account::Print(string indent)
 {
-	printf("%s%c$%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',abs(amount),name.c_str());
+	printf("%s%c$%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',abs_(amount),name.c_str());
+}
+
+void Account::PrintRoundUps()
+{
+	multimap<double,Account*>::iterator mit;
+
+	Print("");
+
+	for(mit = roundups.begin(); mit != roundups.end(); mit++)
+		printf("%f%% of round-up goes to %s.\n",100 * mit->first,mit->second->name.c_str());
 }

@@ -28,6 +28,11 @@ void Finances::LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
 
 void Finances::LinkTransaction(Transaction* t,int loading)
 {
+	Transfer* transfer;
+	Date* d;
+	multimap<double,Account*>::iterator mit;
+	string s = "Automatic Round-Up Transfer";
+
 	transactions.insert(t);
 
 	if(!loading)
@@ -37,6 +42,40 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 	t->earmark->transactions.insert(t);
 	t->tag->transactions.insert(t);
 	t->tofrom->transactions.insert(t);
+
+	if(!loading && Round2Decimals(FindRoundUpAmount(t->amount)) && !t->location->roundups.empty())
+	{
+		for(mit = t->location->roundups.begin(); mit != t->location->roundups.end();  mit++)
+		{
+			d = new Date;
+			d->setWithTotalDay(t->date->getTotalDay());
+			transfer = new Transfer(d,
+									t->location,
+									mit->second,
+									s,
+									0,
+									Round2Decimals(mit->first * FindRoundUpAmount(t->amount))
+									);
+			LinkTransfer(transfer,0);
+		}
+	}
+
+	if(!loading && Round2Decimals(FindRoundUpAmount(t->amount)) && !t->earmark->roundups.empty())
+	{
+		for(mit = t->earmark->roundups.begin(); mit != t->earmark->roundups.end();  mit++)
+		{
+			d = new Date;
+			d->setWithTotalDay(t->date->getTotalDay());
+			transfer = new Transfer(d,
+									t->earmark,
+									mit->second,
+									s,
+									0,
+									Round2Decimals(mit->first * FindRoundUpAmount(t->amount))
+									);
+			LinkTransfer(transfer,0);
+		}
+	}
 
 	if(!loading)
 	{

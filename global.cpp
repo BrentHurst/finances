@@ -68,7 +68,7 @@ int stoi_(string s)
 	return i;
 }
 
-double abs(double f) { return (f>=0) ? f : -1*f; }
+double abs_(double f) { return (f>=0) ? f : -1*f; }
 double Round2Decimals(double d) { return round(d*100)/100; }
 
 string ReadString()
@@ -139,4 +139,10 @@ char GetCommand(map<char,string>& cmdList)
 	printf("\n");
 
 	return c;
+}
+
+double FindRoundUpAmount(double d)
+{
+	d = abs_(d);
+	return Round2Decimals(ceil(d) - d);
 }

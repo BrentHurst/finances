@@ -5,9 +5,6 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Select Account
-	Automatic Round-Up Transfer
-
 Merge Transfers
 
 Macros

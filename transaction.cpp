@@ -52,7 +52,7 @@ void Transaction::Print()
 			earmark->name.c_str(),
 			tofrom->name.c_str(),
 			(amount>=0) ? ' ' : '-',
-			abs(amount),
+			abs_(amount),
 			(reconciled) ? 'R' : '-',
 			info.c_str());
 }

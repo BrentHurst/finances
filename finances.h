@@ -57,6 +57,7 @@ class Account
 		AccountType type;
 		string t;
 
+		multimap<double,Account*> roundups;
 		map<string,Account*> subaccounts;
 		Account* superaccount;
 
@@ -69,6 +70,7 @@ class Account
 		Account(const string& n,AccountType ty);
 		Account(const string& n,const string& ty);
 		void Print(string indent);
+		void PrintRoundUps();
 
 		//reconcile.cpp
 		void Reconcile();
@@ -140,12 +142,14 @@ class Finances
 		void SaveAccounts(FILE* f);
 		void SaveTransactions(FILE* f);
 		void SaveTransfers(FILE* f);
+		void SaveRoundUps(FILE* f);
 
 		//load.cpp
 		void LoadAccounts(const vector<vector<string> >& file,int a,int b);
 		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b);
 		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
+		void LoadRoundUps(const vector<vector<string> >& file,int a,int b);
 
 		//link.cpp
 		void LinkRecurTransaction(Transaction* t,Account* a,int multiplier);
@@ -208,9 +212,10 @@ class Finances
 		void PrintAllAccounts();
 		void PrintCorrectAccountMap(const string& type);
 
-		//selectaccounts.cpp
+		//selectaccount.cpp
 		Account* GetAccountFromUser(map<string,Account*>& m);
 		void SelectAccount();
+		void AddRoundUp(Account* a);
 
 		//selecttra.cpp
 		void SelectTransaction(TransactionSet& ts);
@@ -225,7 +230,7 @@ string dtos_(double d);
 string itos_(int i);
 double stod_(string s);
 int stoi_(string s);
-double abs(double f);
+double abs_(double f);
 double Round2Decimals(double d);
 string ReadString();
 char ReadChar();
@@ -235,6 +240,7 @@ char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
 string ReadInInformation();
 double ReadInTotal();
+double FindRoundUpAmount(double d);
 
 //reconcile.cpp
 void Reconcile_(TransactionSet& s,int i);

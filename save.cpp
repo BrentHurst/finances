@@ -95,6 +95,32 @@ void Finances::SaveTransfers(FILE* f)
 	}
 }
 
+void Finances::SaveRoundUps(FILE* f)
+{
+	vector<string> v;
+	map<string,Account*>::iterator mit;
+	multimap<double,Account*>::iterator rit;
+
+	v.push_back("ROUND-UPS");
+	PutLine;
+	v.clear();
+
+	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
+	{
+		if(mit->second->roundups.empty())
+			continue;
+
+		v.push_back(mit->first);
+		for(rit = mit->second->roundups.begin(); rit != mit->second->roundups.end(); rit++)
+		{
+			v.push_back(dtos_(rit->first));
+			v.push_back(rit->second->name);
+		}
+		PutLine;
+		v.clear();
+	}
+}
+
 void Finances::Save(const string& filename)
 {
 	FILE* f;
@@ -108,6 +134,7 @@ void Finances::Save(const string& filename)
 	SaveAccounts(f);
 	SaveTransactions(f);
 	SaveTransfers(f);
+	SaveRoundUps(f);
 
 	fclose(f);
 }

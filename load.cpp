@@ -100,6 +100,16 @@ void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 	}
 }
 
+void Finances::LoadRoundUps(const vector<vector<string> >& file,int a,int b)
+{
+	int i;
+	unsigned int j;
+
+	for(i=a; i<b; i++)
+		for(j=1; j<file[i].size(); j+=2)
+			allaccounts[file[i][0]]->roundups.insert(make_pair(stod_(file[i][j]),allaccounts[file[i][j+1]]));
+}
+
 void Finances::Load(const string& filename)
 {
 	FILE* f;
@@ -109,6 +119,7 @@ void Finances::Load(const string& filename)
 	int subacc = -1;
 	int transac = -1;
 	int transfe = -1;
+	int ru = -1;
 	char c='r';
 
 
@@ -144,10 +155,13 @@ void Finances::Load(const string& filename)
 			transac = i;
 		else if(file[i][0]=="TRANSFERS")
 			transfe = i;
+		else if(file[i][0]=="ROUND-UPS")
+			ru = i;
 	}
 
 	LoadAccounts(file,acc+1,subacc);
 	LoadSubaccounts(file,subacc+1,transac);
 	LoadTransactions(file,transac+1,transfe);
-	LoadTransfers(file,transfe+1,file.size());
+	LoadTransfers(file,transfe+1,ru);
+	LoadRoundUps(file,ru+1,file.size());
 }
