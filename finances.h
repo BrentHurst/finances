@@ -178,6 +178,10 @@ class Finances
 		//save.cpp
 		void Save(const string& filename);
 
+		//link.cpp
+		void UnlinkTransaction(Transaction* t);
+		void UnlinkTransfer(Transfer* t);
+
 		//finances.cpp
 		void ReadNewTransaction();
 		void ReadNewTransfer();
@@ -226,6 +230,7 @@ double ReadDouble();
 int ReadInt();
 char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
+string ReadInInformation();
 
 //reconcile.cpp
 void Reconcile_(TransactionSet& s,int i);

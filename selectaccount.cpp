@@ -29,8 +29,8 @@ static void FillCmdList()
 	cmdList['j']="";
 	cmdList['k']="Select Transaction";
 	cmdList['l']="Select Transfer";
-	cmdList['m']="";
-	cmdList['n']="";
+	cmdList['m']="Select from Unreconciled Transactions";
+	cmdList['n']="Select from Unreconciled Transfers";
 	cmdList['o']="";
 	cmdList['p']="List Account Info";
 	cmdList['q']="";
@@ -83,10 +83,10 @@ int RunCommand(Finances* f,Account* a,char cmd)
 		case 'e': a->Reconcile(); return 1;
 		case 'f': //add automatic round-up
 				  return 1;
-		case 'k': //Select Transaction
-				  return 1;
-		case 'l':// Select Transfer
-				  return 1;
+		case 'k': f->SelectTransaction(a->transactions); return 1;
+		case 'l': f->SelectTransfer(a->transfers); return 1;
+		case 'm': f->SelectTransaction(a->unreconciledtransactions); return 1;
+		case 'n': f->SelectTransfer(a->unreconciledtransfers); return 1;
 		case 'p': a->Print(""); return 1;
 		case 'r': f->RenameAccount(a); return 1;
 		case 'y': return 0;

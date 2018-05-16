@@ -57,6 +57,32 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 	}
 }
 
+void Finances::UnlinkTransaction(Transaction* t)
+{
+	transactions.erase(transactions.find(t));
+
+	amount = Round2Decimals(amount - t->amount);
+
+	t->location->transactions.erase(t->location->transactions.find(t));
+	t->earmark->transactions.erase(t->earmark->transactions.find(t));
+	t->tag->transactions.erase(t->tag->transactions.find(t));
+	t->tofrom->transactions.erase(t->tofrom->transactions.find(t));
+
+	LinkRecurTransaction(t,t->location,-1);
+	LinkRecurTransaction(t,t->earmark,-1);
+	LinkRecurTransaction(t,t->tag,-1);
+	LinkRecurTransaction(t,t->tofrom,-1);
+
+	if(!t->reconciled)
+	{
+		unreconciledtransactions.erase(unreconciledtransactions.find(t));
+		t->location->unreconciledtransactions.erase(t->location->unreconciledtransactions.find(t));
+		t->earmark->unreconciledtransactions.erase(t->earmark->unreconciledtransactions.find(t));
+		t->tag->unreconciledtransactions.erase(t->tag->unreconciledtransactions.find(t));
+		t->tofrom->unreconciledtransactions.erase(t->tofrom->unreconciledtransactions.find(t));
+	}
+}
+
 void Finances::LinkTransfer(Transfer* t,int loading)
 {
 	transfers.insert(t);
@@ -74,6 +100,24 @@ void Finances::LinkTransfer(Transfer* t,int loading)
 		unreconciledtransfers.insert(t);
 		t->from->unreconciledtransfers.insert(t);
 		t->to->unreconciledtransfers.insert(t);
+	}
+}
+
+void Finances::UnlinkTransfer(Transfer* t)
+{
+	transfers.erase(transfers.find(t));
+
+	t->from->transfers.erase(t->from->transfers.find(t));
+	t->to->transfers.erase(t->to->transfers.find(t));
+
+	LinkRecurTransfer(t,t->from,1);
+	LinkRecurTransfer(t,t->to,-1);
+
+	if(!t->reconciled)
+	{
+		unreconciledtransfers.erase(unreconciledtransfers.find(t));
+		t->from->unreconciledtransfers.erase(t->from->unreconciledtransfers.find(t));
+		t->to->unreconciledtransfers.erase(t->to->unreconciledtransfers.find(t));
 	}
 }
 

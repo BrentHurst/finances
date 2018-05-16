@@ -7,15 +7,9 @@ GOALS
 -----
 Select Account
 	Automatic Round-Up Transfer
-	Select Transfer
-	Select Transaction
 
 Select Transfer
-	Edit Transfer
-	Delete Transfer
 Select Transaction
-	Edit Transaction
-	Delete Transaction
 
 Macros
 	Will need:

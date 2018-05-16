@@ -70,27 +70,65 @@ Transfer* GetTransferFromUser(TransferSet& ts)
 	return v[i];
 }
 
-int RunCommand(Transfer* t,char cmd)
+static void Reconcile(Transfer* t,int i)
+{
+	if(t->reconciled == i)
+	{
+		printf("You set it to what it already was.\n");
+		return;
+	}
+	else
+	{
+		t->reconciled = i;
+		printf("\nSave and quit for your change to this transaction to take full effect.\n\n");
+	}
+}
+
+static void ChangeDate(Transfer* t)
+{
+	delete t->date;
+	t->date = new Date;
+	t->date->ReadInDate();
+}
+
+static void Delete(Finances* f,Transfer* t)
+{
+	char c;
+
+	do
+	{
+		t->Print();
+		printf("Are you sure you want to permanently delete this transfer? [y/n]: ");
+		c = ReadChar();
+	}while(c!='y' && c!='Y' && c!='n' && c!='N');
+
+	if(c=='y' || c=='Y')
+	{
+		f->UnlinkTransfer(t);
+		delete t->date;
+		delete t;
+		printf("This transfer has been deleted.\n");
+	}
+	else
+		printf("This transfer hasn't been deleted.\n");
+}
+
+int RunCommand(Finances* f,Transfer* t,char cmd)
 {
 	if(cmdList[cmd]=="")
 		return 1;
 
 	switch(cmd)
 	{
-		case 'a': //Delete
-			return 1;
-		case 'b': //Change Date
-			return 1;
+		case 'a': Delete(f,t); return 1; return 1;
+		case 'b': ChangeDate(t); return 1;
 		case 'c': //Change From
 			return 1;
 		case 'd': //Change To
 			return 1;
-		case 'e': //Change Info
-			return 1;
-		case 'f': //Reconcile
-			return 1;
-		case 'g': //Unreconcile
-			return 1;
+		case 'e': t->info = ReadInInformation(); return 1;
+		case 'f': Reconcile(t,1); return 1;
+		case 'g': Reconcile(t,0); return 1;
 		case 'h': //Change Amount
 			return 1;
 		case 'y': return 0;
@@ -110,7 +148,7 @@ void Finances::SelectTransfer(TransferSet& ts)
 
 	printf("\n");
 	t->Print();
-	while(RunCommand(t,GetCommand(cmdList)));
+	while(RunCommand(this,t,GetCommand(cmdList)));
 	{
 		printf("\n");
 		t->Print();
