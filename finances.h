@@ -201,9 +201,13 @@ class Finances
 		void PrintAllAccounts();
 		void PrintCorrectAccountMap(const string& type);
 
-		//select.cpp
+		//selectaccounts.cpp
 		Account* GetAccountFromUser(map<string,Account*>& m);
 		void SelectAccount();
+
+		//selecttra.cpp
+		void SelectTransaction(TransactionSet& ts);
+		void SelectTransfer(TransferSet& ts);
 };
 
 
@@ -219,6 +223,7 @@ double Round2Decimals(double d);
 string ReadString();
 char ReadChar();
 double ReadDouble();
+int ReadInt();
 char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
 

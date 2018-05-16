@@ -103,6 +103,15 @@ double ReadDouble()
 	return d;
 }
 
+int ReadInt()
+{
+	int i;
+	int junk;
+	scanf("%d",&i);
+	FlushInputBuffer;
+	return i;
+}
+
 void PrintCommands(map<char,string>& cmdList)
 {
 	map<char,string>::iterator mit;

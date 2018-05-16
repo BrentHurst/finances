@@ -1,6 +1,6 @@
 /*************************************************
  *   G BRENT HURST
- *   select.cpp
+ *   selectaccount.cpp
  *   May 14, 2018 (original)
  *   May 14, 2018 (last edit)
  *
@@ -22,7 +22,7 @@ static void FillCmdList()
 	cmdList['c']="List Unreconciled Transactions";
 	cmdList['d']="List Unreconciled Transfers";
 	cmdList['e']="Reconcile";
-	cmdList['f']="";
+	cmdList['f']="Add Automatic Round-Up Transfer";
 	cmdList['g']="";
 	cmdList['h']="";
 	cmdList['i']="";
@@ -41,9 +41,10 @@ static void FillCmdList()
 	cmdList['v']="";
 	cmdList['w']="";
 	cmdList['x']="";
-	cmdList['y']="";
+	cmdList['y']="Return to Main Menu";
 	cmdList['z']="Return to Main Menu";
 }
+
 Account* Finances::GetAccountFromUser(map<string,Account*>& m)
 {
 	string s;
@@ -80,12 +81,15 @@ int RunCommand(Finances* f,Account* a,char cmd)
 		case 'c': PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
 		case 'd': PrintTransfersGlobal(a->unreconciledtransfers); return 1;
 		case 'e': a->Reconcile(); return 1;
+		case 'f': //add automatic round-up
+				  return 1;
 		case 'k': //Select Transaction
 				  return 1;
 		case 'l':// Select Transfer
 				  return 1;
 		case 'p': a->Print(""); return 1;
 		case 'r': f->RenameAccount(a); return 1;
+		case 'y': return 0;
 		case 'z': return 0;
 	}
 	return 1;

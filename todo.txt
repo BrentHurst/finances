@@ -5,13 +5,10 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-
-Gas
-
 Select Account
+	Automatic Round-Up Transfer
 	Select Transfer
 	Select Transaction
-	Reconcile
 
 Select Transfer
 	Edit Transfer
@@ -33,8 +30,8 @@ New year
 
 Foreign cash
 	€154.30
+		Maybe new accounts with Macros
 
-Automatic Round-Up
 
 Make Fake Data
 
@@ -44,5 +41,4 @@ MAYBE LATER
 -----------
 Delete Account
 
-Users
-Passwords
+Users and Passwords
