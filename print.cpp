@@ -37,8 +37,12 @@ void Finances::PrintEarmarks()
 	printf("%9.2f TOTAL\n",amount);
 
 	for(mit=earmarks.begin(); mit != earmarks.end(); mit++)
-		if(!mit->second->superaccount)
+		if(mit->second && !mit->second->superaccount)
 			PrintAccountRecur(mit->second,"    ");
+		else if(!mit->second)
+		{
+			printf("Error here, mit->first is %s\n",mit->first.c_str());
+		}
 }
 void Finances::PrintLocations()
 {

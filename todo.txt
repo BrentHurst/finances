@@ -8,13 +8,9 @@ GOALS
 Select Account
 	Automatic Round-Up Transfer
 
-Select Transfer
-Select Transaction
+Merge Transfers
 
 Macros
-	Will need:
-		CopyTransaction()
-		CopyTransfer()
 
 Move accounts around as subaccounts
 
@@ -25,7 +21,6 @@ New year
 Foreign cash
 	€154.30
 		Maybe new accounts with Macros
-
 
 Make Fake Data
 

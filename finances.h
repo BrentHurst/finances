@@ -100,6 +100,7 @@ class Transaction
 					int r,double t);
 		void Print();
 		void Reconcile();
+		Transaction* Copy();
 };
 
 class Transfer
@@ -124,6 +125,7 @@ class Transfer
 			     string& info,int r,double t);
 		void Print();
 		void Reconcile();
+		Transfer* Copy();
 };
 
 
@@ -131,16 +133,6 @@ class Finances
 {
 	protected:
 		map<string,Account*> allaccounts;
-
-		map<string,Account*> locations;
-		map<string,Account*> earmarks;
-		map<string,Account*> tags;
-		map<string,Account*> tofroms;
-
-		TransactionSet transactions;
-		TransactionSet unreconciledtransactions;
-		TransferSet transfers;
-		TransferSet unreconciledtransfers;
 
 		double amount;
 
@@ -158,12 +150,9 @@ class Finances
 		//link.cpp
 		void LinkRecurTransaction(Transaction* t,Account* a,int multiplier);
 		void LinkRecurTransfer(Transfer* t,Account* a,int multiplier);
-		void LinkTransaction(Transaction* t,int loading);
-		void LinkTransfer(Transfer* t,int loading);
 
 		//finances.cpp
 		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type,int setup);
-		Account* ReadInAccount(map<string,Account*>& m,string type,int z,int setup);
 
 		//print.cpp
 		void PrintAccountRecur(Account* a,string indent);
@@ -172,6 +161,17 @@ class Finances
 		void SetupAddAccounts(const string& type,map<string,Account*>& m);
 
 	public:
+		map<string,Account*> locations;
+		map<string,Account*> earmarks;
+		map<string,Account*> tags;
+		map<string,Account*> tofroms;
+
+		TransactionSet transactions;
+		TransactionSet unreconciledtransactions;
+		TransferSet transfers;
+		TransferSet unreconciledtransfers;
+
+
 		//load.cpp
 		void Load(const string& filename);
 
@@ -179,6 +179,8 @@ class Finances
 		void Save(const string& filename);
 
 		//link.cpp
+		void LinkTransaction(Transaction* t,int loading);
+		void LinkTransfer(Transfer* t,int loading);
 		void UnlinkTransaction(Transaction* t);
 		void UnlinkTransfer(Transfer* t);
 
@@ -188,6 +190,7 @@ class Finances
 		void ReadNewAccount();
 		Finances();
 		void RenameAccount(Account* a);
+		Account* ReadInAccount(map<string,Account*>& m,string type,int z,int setup);
 
 		//reconcile.cpp
 		void Reconcile();
@@ -231,6 +234,7 @@ int ReadInt();
 char GetCommand(map<char,string>& cmdList);
 void PrintCommands(map<char,string>& cmdList);
 string ReadInInformation();
+double ReadInTotal();
 
 //reconcile.cpp
 void Reconcile_(TransactionSet& s,int i);

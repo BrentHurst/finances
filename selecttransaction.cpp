@@ -65,7 +65,7 @@ Transaction* GetTransactionFromUser(TransactionSet& ts)
 	{
 		printf("Please choose a transaction: ");
 		i = ReadInt();
-	}while(i>=v.size());
+	}while(i>=v.size() || !v[i]);
 
 	return v[i];
 }
@@ -113,6 +113,61 @@ static void Delete(Finances* f,Transaction* t)
 		printf("This transaction hasn't been deleted.\n");
 }
 
+static void ChangeTag(Finances* f,Transaction* t)
+{
+	Transaction* t2 = t->Copy();
+	f->UnlinkTransaction(t);
+	delete t->date;
+	delete t;
+	t2->tag = f->ReadInAccount(f->tags,"tag",1,0);
+	f->LinkTransaction(t2,0);
+	t2->Print();
+}
+
+static void ChangeLocation(Finances* f,Transaction* t)
+{
+	Transaction* t2 = t->Copy();
+	f->UnlinkTransaction(t);
+	delete t->date;
+	delete t;
+	t2->location = f->ReadInAccount(f->locations,"location",1,0);
+	f->LinkTransaction(t2,0);
+	t2->Print();
+}
+
+static void ChangeEarmark(Finances* f,Transaction* t)
+{
+	Transaction* t2 = t->Copy();
+	f->UnlinkTransaction(t);
+	delete t->date;
+	delete t;
+	t2->earmark = f->ReadInAccount(f->earmarks,"earmark",1,0);
+	f->LinkTransaction(t2,0);
+	t2->Print();
+}
+
+static void ChangeToFrom(Finances* f,Transaction* t)
+{
+	Transaction* t2 = t->Copy();
+	f->UnlinkTransaction(t);
+	delete t->date;
+	delete t;
+	t2->tofrom = f->ReadInAccount(f->tofroms,"to/from",1,0);
+	f->LinkTransaction(t2,0);
+	t2->Print();
+}
+
+static void ChangeAmount(Finances* f,Transaction* t)
+{
+	Transaction* t2 = t->Copy();
+	f->UnlinkTransaction(t);
+	delete t->date;
+	delete t;
+	t2->amount = ReadInTotal();
+	f->LinkTransaction(t2,0);
+	t2->Print();
+}
+
 int RunCommand(Finances* f,Transaction* t,char cmd)
 {
 	if(cmdList[cmd]=="")
@@ -120,21 +175,16 @@ int RunCommand(Finances* f,Transaction* t,char cmd)
 
 	switch(cmd)
 	{
-		case 'a': Delete(f,t); return 1;
+		case 'a': Delete(f,t); return 0;
 		case 'b': ChangeDate(t); return 1;
-		case 'c': //Change Tag
-			return 1;
-		case 'd': //Change Location
-			return 1;
-		case 'e': //Change Earmark
-			return 1;
-		case 'f': //Change To/From
-			return 1;
+		case 'c': ChangeTag(f,t); return 0;
+		case 'd': ChangeLocation(f,t); return 0;
+		case 'e': ChangeEarmark(f,t); return 0;
+		case 'f': ChangeToFrom(f,t); return 0;
 		case 'g': t->info = ReadInInformation(); return 1;
 		case 'h': Reconcile(t,1); return 1;
 		case 'i': Reconcile(t,0); return 1;
-		case 'j': //Change Amount
-				  return 1;
+		case 'j': ChangeAmount(f,t); return 0;
 		case 'y': return 0;
 		case 'z': return 0;
 	}

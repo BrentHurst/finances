@@ -65,7 +65,7 @@ Transfer* GetTransferFromUser(TransferSet& ts)
 	{
 		printf("Please choose a transfer: ");
 		i = ReadInt();
-	}while(i>=v.size());
+	}while(i>=v.size() || !v[i]);
 
 	return v[i];
 }
@@ -113,6 +113,61 @@ static void Delete(Finances* f,Transfer* t)
 		printf("This transfer hasn't been deleted.\n");
 }
 
+static void ChangeFrom(Finances* f,Transfer* t)
+{
+	int type = (t->from->type==earmark) ? 1 : 2;
+	Transfer* t2 = t->Copy();
+	f->UnlinkTransfer(t);
+	delete t->date;
+	delete t;
+	while(1)
+	{
+		if(type==1)
+			t2->from = f->ReadInAccount(f->earmarks,"from",1,0);
+		else
+			t2->from = f->ReadInAccount(f->locations,"from",1,0);
+
+		if(t2->from != t2->to)
+			break;
+		printf("From can't be the same as To.\n");
+	}
+	f->LinkTransfer(t2,0);
+	t2->Print();
+}
+
+static void ChangeTo(Finances* f,Transfer* t)
+{
+	int type = (t->from->type==earmark) ? 1 : 2;
+	Transfer* t2 = t->Copy();
+	f->UnlinkTransfer(t);
+	delete t->date;
+	delete t;
+	while(1)
+	{
+		if(type==1)
+			t2->to = f->ReadInAccount(f->earmarks,"to",1,0);
+		else
+			t2->to = f->ReadInAccount(f->locations,"to",1,0);
+
+		if(t2->from != t2->to)
+			break;
+		printf("From can't be the same as To.\n");
+	}
+	f->LinkTransfer(t2,0);
+	t2->Print();
+}
+
+static void ChangeAmount(Finances* f,Transfer* t)
+{
+	Transfer* t2 = t->Copy();
+	f->UnlinkTransfer(t);
+	delete t->date;
+	delete t;
+	t2->amount = ReadInTotal();
+	f->LinkTransfer(t2,0);
+	t2->Print();
+}
+
 int RunCommand(Finances* f,Transfer* t,char cmd)
 {
 	if(cmdList[cmd]=="")
@@ -120,17 +175,14 @@ int RunCommand(Finances* f,Transfer* t,char cmd)
 
 	switch(cmd)
 	{
-		case 'a': Delete(f,t); return 1; return 1;
+		case 'a': Delete(f,t); return 0;
 		case 'b': ChangeDate(t); return 1;
-		case 'c': //Change From
-			return 1;
-		case 'd': //Change To
-			return 1;
+		case 'c': ChangeFrom(f,t); return 0;
+		case 'd': ChangeTo(f,t); return 0;
 		case 'e': t->info = ReadInInformation(); return 1;
 		case 'f': Reconcile(t,1); return 1;
 		case 'g': Reconcile(t,0); return 1;
-		case 'h': //Change Amount
-			return 1;
+		case 'h': ChangeAmount(f,t); return 0;
 		case 'y': return 0;
 		case 'z': return 0;
 	}

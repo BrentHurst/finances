@@ -58,3 +58,10 @@ void Transaction::Print()
 }
 
 void Transaction::Reconcile() { reconciled = 1; }
+
+Transaction* Transaction::Copy()
+{
+	Date* d = new Date;
+	d->setWithTotalDay(date->getTotalDay());
+	return new Transaction(d,tag,location,earmark,tofrom,info,reconciled,amount);
+}

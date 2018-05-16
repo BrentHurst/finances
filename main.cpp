@@ -17,12 +17,6 @@ using namespace std;
 
 const string filename = "finfo.txt";
 
-const char printAll = 'p';
-const char reconcile = 'r';
-const char save = 's';
-const char quitSave = 'y';
-const char quitNoSave = 'z';
-
 static map<char,string> cmdList;
 
 static void FillCmdList()
@@ -75,22 +69,11 @@ int RunCommand(Finances& f,char cmd)
 		case 'h': f.PrintTags(); return 1;
 		case 'i': f.PrintTofroms(); return 1;
 		case 'j': f.SelectAccount(); return 1;
-		//case 'k': Select Transaction
-		//break;
-		//case 'l': Select Transfer
-		//break;
-		//case 'm': break;
-		//case 'n': break;
-		//case 'o': break;
+		case 'k': f.SelectTransaction(f.transactions); return 1;
+		case 'l': f.SelectTransfer(f.transfers); return 1;
 		case 'p': f.PrintAllAccounts(); return 1;
-		//case 'q': break;
 		case 'r': f.Reconcile(); return 1;
 		case 's': f.Save(filename); return 1;
-		//case 't': break;
-		//case 'u': break;
-		//case 'v': break;
-		//case 'w': break;
-		//case 'x': break;
 		case 'y': f.Save(filename); return 0;
 		case 'z':
 				  while(c!='y' && c!='n')

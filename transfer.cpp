@@ -50,3 +50,10 @@ void Transfer::Print()
 }
 
 void Transfer::Reconcile() { reconciled = 1; }
+
+Transfer* Transfer::Copy()
+{
+	Date* d = new Date;
+	d->setWithTotalDay(date->getTotalDay());
+	return new Transfer(d,from,to,info,reconciled,amount);
+}
