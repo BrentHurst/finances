@@ -26,14 +26,14 @@ static void FillCmdList()
 	cmdList['f']="Reconcile";
 	cmdList['g']="Unreconcile";
 	cmdList['h']="Change Amount";
-	cmdList['i']="";
+	cmdList['i']="Merge all transfers with the same from and to";
 	cmdList['j']="";
 	cmdList['k']="";
 	cmdList['l']="";
 	cmdList['m']="";
 	cmdList['n']="";
 	cmdList['o']="";
-	cmdList['p']="";
+	cmdList['p']="List Transfer Info";
 	cmdList['q']="";
 	cmdList['r']="";
 	cmdList['s']="";
@@ -183,6 +183,8 @@ int RunCommand(Finances* f,Transfer* t,char cmd)
 		case 'f': Reconcile(t,1); return 1;
 		case 'g': Reconcile(t,0); return 1;
 		case 'h': ChangeAmount(f,t); return 0;
+		case 'i': f->Merge(t); return 0;
+		case 'p': t->Print(); return 1;
 		case 'y': return 0;
 		case 'z': return 0;
 	}
@@ -202,7 +204,6 @@ void Finances::SelectTransfer(TransferSet& ts)
 	t->Print();
 	while(RunCommand(this,t,GetCommand(cmdList)));
 	{
-		printf("\n");
-		t->Print();
+		printf("hi\n");
 	}
 }

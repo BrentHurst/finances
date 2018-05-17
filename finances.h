@@ -220,6 +220,9 @@ class Finances
 		//selecttra.cpp
 		void SelectTransaction(TransactionSet& ts);
 		void SelectTransfer(TransferSet& ts);
+
+		//merge.cpp
+		void Merge(Transfer* t);
 };
 
 

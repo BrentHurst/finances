@@ -99,7 +99,7 @@ void Finances::AddRoundUp(Account* a)
 
 	b = ReadInAccount((a->type==location) ? locations : earmarks,a->t,1,0);
 
-	printf("What percent of each round-up from %s should be transferred to %s?",a->name.c_str(),b->name.c_str());
+	printf("What percent of each round-up from %s should be transferred to %s?\n",a->name.c_str(),b->name.c_str());
 	printf("Enter a percent without the %% symbol: ");
 	percent = ReadDouble() / 100.0;
 
