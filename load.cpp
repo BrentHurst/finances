@@ -63,15 +63,15 @@ void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 		d->setWithTotalDay(stoi_(file[i][0]));
 		s = file[i][5];
 		t = new Transaction(
-								d,
-								allaccounts[file[i][1]],
-								allaccounts[file[i][2]],
-								allaccounts[file[i][3]],
-								allaccounts[file[i][4]],
-								s,
-								stoi_(file[i][6]),
-								stod_(file[i][7])
-						   );
+				d,
+				allaccounts[file[i][1]],
+				allaccounts[file[i][2]],
+				allaccounts[file[i][3]],
+				allaccounts[file[i][4]],
+				s,
+				stoi_(file[i][6]),
+				stod_(file[i][7])
+				);
 		LinkTransaction(t,1);
 	}
 }
@@ -89,13 +89,13 @@ void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 		d->setWithTotalDay(stoi_(file[i][0]));
 		s = file[i][3];
 		t = new Transfer(
-							d,
-							allaccounts[file[i][1]],
-							allaccounts[file[i][2]],
-							s,
-							stoi_(file[i][4]),
-							stod_(file[i][5])
-						);
+				d,
+				allaccounts[file[i][1]],
+				allaccounts[file[i][2]],
+				s,
+				stoi_(file[i][4]),
+				stod_(file[i][5])
+				);
 		LinkTransfer(t,1);
 	}
 }
@@ -108,6 +108,39 @@ void Finances::LoadRoundUps(const vector<vector<string> >& file,int a,int b)
 	for(i=a; i<b; i++)
 		for(j=1; j<file[i].size(); j+=2)
 			allaccounts[file[i][0]]->roundups.insert(make_pair(stod_(file[i][j]),allaccounts[file[i][j+1]]));
+}
+
+void Finances::LoadCheck()
+{
+	map<string,Account*>::iterator mit;
+	map<string,Account*>::iterator mit2;
+	double amt;
+	string other;
+
+	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
+	{
+		if(mit->second->subaccounts.empty())
+			continue;
+
+		amt = 0;
+		for(mit2 = mit->second->subaccounts.begin(); mit2 != mit->second->subaccounts.end(); mit2++)
+			amt = Round2Decimals(amt + mit2->second->amount);
+
+		if(abs_(amt) > abs_(mit->second->amount))
+		{
+			printf("Probably a problem:\n");
+			printf("\t%s's subaccounts have a higher abs_(amount) than it does.\n",mit->first.c_str());
+		}
+
+		else if(abs_(amt) < abs_(mit->second->amount))
+		{
+			printf("Probably a problem:\n");
+			printf("\t%s's subaccounts have a lower abs_(amount) than it does.\n",mit->first.c_str());
+			printf("\tYou should fix the problem by transfering %.2f to \"%s - Other\"\n",
+					(amt / abs_(amt))*(abs_(mit->second->amount) - abs_(amt)),
+					mit->first.c_str());
+		}
+	}
 }
 
 void Finances::Load(const string& filename)
@@ -164,4 +197,5 @@ void Finances::Load(const string& filename)
 	LoadTransactions(file,transac+1,transfe);
 	LoadTransfers(file,transfe+1,ru);
 	LoadRoundUps(file,ru+1,file.size());
+	LoadCheck();
 }

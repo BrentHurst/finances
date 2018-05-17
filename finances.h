@@ -150,6 +150,7 @@ class Finances
 		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
 		void LoadRoundUps(const vector<vector<string> >& file,int a,int b);
+		void LoadCheck();
 
 		//link.cpp
 		void LinkRecurTransaction(Transaction* t,Account* a,int multiplier);

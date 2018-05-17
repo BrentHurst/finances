@@ -5,11 +5,10 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Macros
+Transaction Macros
+Transfer Macros
 
 Move accounts around as subaccounts
-
-Force subaccounts
 
 New year
 
