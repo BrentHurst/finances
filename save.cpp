@@ -17,7 +17,7 @@
 #include <cstdlib>
 using namespace std;
 
-void Finances::SaveAccounts(FILE* f)
+void Finances::SaveAccounts(FILE* f,int newyear)
 {
 	vector<string> v;
 	vector<vector<string> > subaccounts;
@@ -31,7 +31,12 @@ void Finances::SaveAccounts(FILE* f)
 	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
 	{
 		v.push_back(mit->second->name);
-		v.push_back(dtos_(mit->second->amount));
+
+		if(!newyear || mit->second->type==location || mit->second->type==earmark)
+			v.push_back(dtos_(mit->second->amount));
+		else
+			v.push_back(dtos_(0));
+
 		v.push_back(mit->second->t);
 		PutLine;
 		v.clear();
@@ -49,7 +54,7 @@ void Finances::SaveAccounts(FILE* f)
 
 	PutLines;
 }
-void Finances::SaveTransactions(FILE* f)
+void Finances::SaveTransactions(FILE* f,int newyear)
 {
 	vector<string> v;
 	TransactionSet::iterator sit;
@@ -57,6 +62,9 @@ void Finances::SaveTransactions(FILE* f)
 	v.push_back("TRANSACTIONS");
 	PutLine;
 	v.clear();
+
+	if(newyear)
+		return;
 
 	for(sit = transactions.begin(); sit != transactions.end(); sit++)
 	{
@@ -73,7 +81,7 @@ void Finances::SaveTransactions(FILE* f)
 	}
 }
 
-void Finances::SaveTransfers(FILE* f)
+void Finances::SaveTransfers(FILE* f,int newyear)
 {
 	vector<string> v;
 	TransferSet::iterator sit;
@@ -81,6 +89,9 @@ void Finances::SaveTransfers(FILE* f)
 	v.push_back("TRANSFERS");
 	PutLine;
 	v.clear();
+
+	if(newyear)
+		return;
 
 	for(sit = transfers.begin(); sit != transfers.end(); sit++)
 	{
@@ -95,7 +106,7 @@ void Finances::SaveTransfers(FILE* f)
 	}
 }
 
-void Finances::SaveRoundUps(FILE* f)
+void Finances::SaveRoundUps(FILE* f,int newyear)
 {
 	vector<string> v;
 	map<string,Account*>::iterator mit;
@@ -123,18 +134,36 @@ void Finances::SaveRoundUps(FILE* f)
 
 void Finances::Save()
 {
+	Save(filename,0);
+}
+
+void Finances::Save(const string& fn,int newyear)
+{
 	FILE* f;
 	vector<string> v;
 
-	f = fopen(filename.c_str(),"w");
+	f = fopen(fn.c_str(),"w");
 
 	v.push_back(dtos_(amount));
 	PutLine;
 
-	SaveAccounts(f);
-	SaveTransactions(f);
-	SaveTransfers(f);
-	SaveRoundUps(f);
+	SaveAccounts(f,newyear);
+	SaveTransactions(f,newyear);
+	SaveTransfers(f,newyear);
+	SaveRoundUps(f,newyear);
 
 	fclose(f);
+}
+
+void Finances::NewYear()
+{
+	string y;
+	string fn;
+
+	y = itos_(1 + stoi_(year));
+
+	fn = "finances" + user + y + ".txt";
+	Save(fn,1);
+
+	printf("The file for the year %s for the user %s has been created.\n",y.c_str(),user.c_str());
 }

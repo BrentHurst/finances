@@ -143,15 +143,17 @@ void Finances::LoadCheck()
 	}
 }
 
-string GetFileName()
+string Finances::GetFileName()
 {
 	string s;
-	s = "finances";
+
 	printf("Enter your name: ");
-	s += ReadString();
+	user = ReadString();
+
 	printf("Enter the year: ");
-	s += ReadString();
-	s += ".txt";
+	year = ReadString();
+
+	s = "finances" + user + year + ".txt";
 	return s;
 }
 

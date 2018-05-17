@@ -43,7 +43,7 @@ static void FillCmdList()
 	cmdList['u']="";
 	cmdList['v']="";
 	cmdList['w']="";
-	cmdList['x']="";
+	cmdList['x']="Start New Year from Here";
 	cmdList['y']="Save and Quit";
 	cmdList['z']="Quit WITHOUT Saving";
 }
@@ -74,6 +74,7 @@ int RunCommand(Finances& f,char cmd)
 		case 'p': f.PrintAllAccounts(); return 1;
 		case 'r': f.Reconcile(); return 1;
 		case 's': f.Save(); return 1;
+		case 'x': f.NewYear(); return 1;
 		case 'y': f.Save(); return 0;
 		case 'z':
 				  while(c!='y' && c!='n')

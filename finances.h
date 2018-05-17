@@ -139,10 +139,10 @@ class Finances
 		double amount;
 
 		//save.cpp
-		void SaveAccounts(FILE* f);
-		void SaveTransactions(FILE* f);
-		void SaveTransfers(FILE* f);
-		void SaveRoundUps(FILE* f);
+		void SaveAccounts(FILE* f,int newyear);
+		void SaveTransactions(FILE* f,int newyear);
+		void SaveTransfers(FILE* f,int newyear);
+		void SaveRoundUps(FILE* f,int newyear);
 
 		//load.cpp
 		void LoadAccounts(const vector<vector<string> >& file,int a,int b);
@@ -151,6 +151,7 @@ class Finances
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
 		void LoadRoundUps(const vector<vector<string> >& file,int a,int b);
 		void LoadCheck();
+		string GetFileName();
 
 		//link.cpp
 		void LinkRecurTransaction(Transaction* t,Account* a,int multiplier);
@@ -177,6 +178,8 @@ class Finances
 		TransferSet unreconciledtransfers;
 
 		string filename;
+		string user;
+		string year;
 
 
 		//load.cpp
@@ -184,6 +187,8 @@ class Finances
 
 		//save.cpp
 		void Save();
+		void Save(const string& f,int newyear);
+		void NewYear();
 
 		//link.cpp
 		void LinkTransaction(Transaction* t,int loading);
