@@ -5,8 +5,6 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Merge Transfers
-
 Macros
 
 Move accounts around as subaccounts
@@ -18,6 +16,10 @@ New year
 Foreign cash
 	€154.30
 		Maybe new accounts with Macros
+
+Clean up source files and makefile
+
+
 
 Make Fake Data
 

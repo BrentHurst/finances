@@ -205,6 +205,8 @@ class Finances
 		//print.cpp
 		void PrintTransactions();
 		void PrintTransfers();
+		void PrintUnreconciledTransactions();
+		void PrintUnreconciledTransfers();
 		void PrintEarmarks();
 		void PrintLocations();
 		void PrintTags();

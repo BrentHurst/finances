@@ -21,6 +21,15 @@ void Finances::PrintTransfers()
 	PrintTransfersGlobal(transfers);
 }
 
+void Finances::PrintUnreconciledTransactions()
+{
+	PrintTransactionsGlobal(unreconciledtransactions);
+}
+void Finances::PrintUnreconciledTransfers()
+{
+	PrintTransfersGlobal(unreconciledtransfers);
+}
+
 void Finances::PrintAccountRecur(Account* a,string indent)
 {
 	map<string,Account*>::iterator mit;
