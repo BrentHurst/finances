@@ -15,8 +15,6 @@
 #include <cstdio>
 using namespace std;
 
-const string filename = "finfo.txt";
-
 static map<char,string> cmdList;
 
 static void FillCmdList()
@@ -75,8 +73,8 @@ int RunCommand(Finances& f,char cmd)
 		case 'n': f.SelectTransfer(f.transfers); return 1;
 		case 'p': f.PrintAllAccounts(); return 1;
 		case 'r': f.Reconcile(); return 1;
-		case 's': f.Save(filename); return 1;
-		case 'y': f.Save(filename); return 0;
+		case 's': f.Save(); return 1;
+		case 'y': f.Save(); return 0;
 		case 'z':
 				  while(c!='y' && c!='n')
 				  {
@@ -95,7 +93,7 @@ int main(int argc, char ** argv)
 
 	FillCmdList();
 
-	f.Load(filename);
+	f.Load();
 
 	while(RunCommand(f,GetCommand(cmdList)));
 

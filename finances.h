@@ -176,12 +176,14 @@ class Finances
 		TransferSet transfers;
 		TransferSet unreconciledtransfers;
 
+		string filename;
+
 
 		//load.cpp
-		void Load(const string& filename);
+		void Load();
 
 		//save.cpp
-		void Save(const string& filename);
+		void Save();
 
 		//link.cpp
 		void LinkTransaction(Transaction* t,int loading);
@@ -201,7 +203,7 @@ class Finances
 		void Reconcile();
 
 		//setup.cpp
-		void Setup(const string& filename);
+		void Setup();
 
 		//print.cpp
 		void PrintTransactions();

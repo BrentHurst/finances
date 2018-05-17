@@ -20,7 +20,6 @@ Clean up source files and makefile
 
 
 
-Make Fake Data
 
 
 
@@ -28,4 +27,6 @@ MAYBE LATER
 -----------
 Delete Account
 
-Users and Passwords
+Passwords
+
+Make Fake Data

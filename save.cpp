@@ -121,7 +121,7 @@ void Finances::SaveRoundUps(FILE* f)
 	}
 }
 
-void Finances::Save(const string& filename)
+void Finances::Save()
 {
 	FILE* f;
 	vector<string> v;

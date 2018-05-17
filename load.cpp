@@ -143,7 +143,19 @@ void Finances::LoadCheck()
 	}
 }
 
-void Finances::Load(const string& filename)
+string GetFileName()
+{
+	string s;
+	s = "finances";
+	printf("Enter your name: ");
+	s += ReadString();
+	printf("Enter the year: ");
+	s += ReadString();
+	s += ".txt";
+	return s;
+}
+
+void Finances::Load()
 {
 	FILE* f;
 	vector<vector<string> > file;
@@ -155,6 +167,7 @@ void Finances::Load(const string& filename)
 	int ru = -1;
 	char c='r';
 
+	filename = GetFileName();
 
 	f = fopen(filename.c_str(),"r");
 	if(!f)
@@ -168,7 +181,7 @@ void Finances::Load(const string& filename)
 			exit(0);
 		else
 		{
-			Setup(filename);
+			Setup();
 			return;
 		}
 	}

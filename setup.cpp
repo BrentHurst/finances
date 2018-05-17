@@ -89,7 +89,7 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	}
 }
 
-void Finances::Setup(const string& filename)
+void Finances::Setup()
 {
 	char c;
 
@@ -104,7 +104,7 @@ void Finances::Setup(const string& filename)
 	}while(c!='1' && c!='2');
 
 	if(c=='1')
-		Save(filename);
+		Save();
 	else
 		exit(0);
 }
