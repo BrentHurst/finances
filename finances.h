@@ -226,6 +226,7 @@ class Finances
 		Account* GetAccountFromUser(map<string,Account*>& m);
 		void SelectAccount();
 		void AddRoundUp(Account* a);
+		void GiveAnotherSuperaccount(Account* a);
 
 		//selecttra.cpp
 		void SelectTransaction(TransactionSet& ts);

@@ -24,7 +24,7 @@ static void FillCmdList()
 	cmdList['e']="Reconcile";
 	cmdList['f']="Add Automatic Round-Up Transfer";
 	cmdList['g']="Delete Automatic Round-Up Transfer";
-	cmdList['h']="";
+	cmdList['h']="Give a (Different) Superaccount";
 	cmdList['i']="";
 	cmdList['j']="";
 	cmdList['k']="Select Transaction";
@@ -137,6 +137,53 @@ static void DeleteRoundUp(Account* a)
 	a->PrintRoundUps();
 }
 
+void Finances::GiveAnotherSuperaccount(Account* a)
+{
+	Account* acc;
+	char c;
+
+	for(acc = a->superaccount; acc != NULL; acc = acc->superaccount)
+		acc->amount = Round2Decimals(acc->amount - a->amount);
+	if(a->superaccount)
+		a->superaccount->subaccounts.erase(a->superaccount->subaccounts.find(a->name));
+
+	do
+	{
+		printf("Does %s have a superaccount? [y/n]: ",a->name.c_str());
+		c = ReadChar();
+	}while(c!='y' && c!='Y' && c!='n' && c!='N');
+
+	if(c=='n' || c=='N')
+	{
+		a->superaccount = NULL;
+		return;
+	}
+
+	printf("What is the superaccount's name? ");
+
+	switch(a->type)
+	{
+		case location:
+						a->superaccount = ReadInAccount(locations,a->t,1,0);
+						break;
+		case earmark:
+						a->superaccount = ReadInAccount(earmarks,a->t,1,0);
+						break;
+		case tag:
+						a->superaccount = ReadInAccount(tags,a->t,1,0);
+						break;
+		case tofrom:
+						a->superaccount = ReadInAccount(tofroms,a->t,1,0);
+						break;
+	}
+
+	a->superaccount->subaccounts.insert(make_pair(a->name,a));
+	for(acc = a->superaccount; acc != NULL; acc = acc->superaccount)
+		acc->amount = Round2Decimals(acc->amount + a->amount);
+}
+
+
+
 int RunCommand(Finances* f,Account* a,char cmd)
 {
 	if(cmdList[cmd]=="")
@@ -151,6 +198,7 @@ int RunCommand(Finances* f,Account* a,char cmd)
 		case 'e': a->Reconcile(); return 1;
 		case 'f': f->AddRoundUp(a); return 1;
 		case 'g': DeleteRoundUp(a); return 1;
+		case 'h': f->GiveAnotherSuperaccount(a); return 1;
 		case 'k': f->SelectTransaction(a->transactions); return 1;
 		case 'l': f->SelectTransfer(a->transfers); return 1;
 		case 'm': f->SelectTransaction(a->unreconciledtransactions); return 1;

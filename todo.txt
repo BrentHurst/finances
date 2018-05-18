@@ -5,19 +5,15 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Transaction Macros
-Transfer Macros
-
-Move accounts around as subaccounts
-
-New year
+Macros
+	Transaction
+	Transfer
 
 Foreign cash
 	€154.30
 		Maybe new accounts with Macros
 
 Clean up source files and makefile
-
 
 
 
