@@ -5,9 +5,6 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Add a Macro
-Edit Macro
-
 Foreign cash
 	€154.30
 		Maybe new accounts with Macros
@@ -20,6 +17,8 @@ Clean up source files and makefile
 
 MAYBE LATER
 -----------
+Edit Macro
+
 Delete Account
 
 Passwords
