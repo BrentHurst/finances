@@ -50,52 +50,70 @@ void Finances::LoadSubaccounts(const vector<vector<string> >& file,int a,int b)
 	}
 }
 
+Transaction* Finances::LoadTransaction(const vector<vector<string> >& file, int i)
+{
+	Date* d;
+	Transaction* t;
+	string s;
+
+	d = new Date;
+	d->setWithTotalDay(stoi_(file[i][0]));
+	s = file[i][5];
+	t = new Transaction(
+			d,
+			allaccounts[file[i][1]],
+			allaccounts[file[i][2]],
+			allaccounts[file[i][3]],
+			allaccounts[file[i][4]],
+			s,
+			stoi_(file[i][6]),
+			stod_(file[i][7])
+			);
+	return t;
+}
+
 void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 {
 	int i;
 	Transaction* t;
-	Date* d;
-	string s;
 
 	for(i=a; i<b; i++)
 	{
-		d = new Date;
-		d->setWithTotalDay(stoi_(file[i][0]));
-		s = file[i][5];
-		t = new Transaction(
-				d,
-				allaccounts[file[i][1]],
-				allaccounts[file[i][2]],
-				allaccounts[file[i][3]],
-				allaccounts[file[i][4]],
-				s,
-				stoi_(file[i][6]),
-				stod_(file[i][7])
-				);
+		t = LoadTransaction(file,i);
 		LinkTransaction(t,1);
 	}
+}
+
+Transfer* Finances::LoadTransfer(const vector<vector<string> >& file,int i)
+{
+	Date* d;
+	Transfer* t;
+	string s;
+
+	d = new Date;
+	d->setWithTotalDay(stoi_(file[i][0]));
+	s = file[i][3];
+	t = new Transfer(
+			d,
+			allaccounts[file[i][1]],
+			allaccounts[file[i][2]],
+			s,
+			stoi_(file[i][4]),
+			stod_(file[i][5])
+			);
+
+	return t;
 }
 
 void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 {
 	int i;
 	Transfer* t;
-	Date* d;
 	string s;
 
 	for(i=a; i<b; i++)
 	{
-		d = new Date;
-		d->setWithTotalDay(stoi_(file[i][0]));
-		s = file[i][3];
-		t = new Transfer(
-				d,
-				allaccounts[file[i][1]],
-				allaccounts[file[i][2]],
-				s,
-				stoi_(file[i][4]),
-				stod_(file[i][5])
-				);
+		t = LoadTransfer(file,i);
 		LinkTransfer(t,1);
 	}
 }
@@ -108,6 +126,46 @@ void Finances::LoadRoundUps(const vector<vector<string> >& file,int a,int b)
 	for(i=a; i<b; i++)
 		for(j=1; j<file[i].size(); j+=2)
 			allaccounts[file[i][0]]->roundups.insert(make_pair(stod_(file[i][j]),allaccounts[file[i][j+1]]));
+}
+
+void Finances::LoadMacros(const vector<vector<string> >& file,int a,int b)
+{
+	int i;
+	string n;
+	Transaction* t1;
+	Transfer* t2;
+
+	for(i=a; i<b; )
+	{
+		if(file[i][0]=="MACRO")
+		{
+			n = file[i][1];
+			macronames.insert(n);
+			i++;
+		}
+
+		if(file[i][0]=="MTRANSACTIONS")
+		{
+			i++;
+			while(file[i][0] != "MTRANSFERS")
+			{
+				t1 = LoadTransaction(file,i);
+				macrotransactions[n].insert(t1);
+				i++;
+			}
+		}
+
+		if(file[i][0]=="MTRANSFERS")
+		{
+			i++;
+			while(i<b && file[i][0] != "MACRO")
+			{
+				t2 = LoadTransfer(file,i);
+				macrotransfers[n].insert(t2);
+				i++;
+			}
+		}
+	}
 }
 
 void Finances::LoadCheck()
@@ -167,6 +225,7 @@ void Finances::Load()
 	int transac = -1;
 	int transfe = -1;
 	int ru = -1;
+	int m = -1;
 	char c='r';
 
 	filename = GetFileName();
@@ -205,12 +264,15 @@ void Finances::Load()
 			transfe = i;
 		else if(file[i][0]=="ROUND-UPS")
 			ru = i;
+		else if(file[i][0]=="MACROS")
+			m = i;
 	}
 
 	LoadAccounts(file,acc+1,subacc);
 	LoadSubaccounts(file,subacc+1,transac);
 	LoadTransactions(file,transac+1,transfe);
 	LoadTransfers(file,transfe+1,ru);
-	LoadRoundUps(file,ru+1,file.size());
+	LoadRoundUps(file,ru+1,m);
+	LoadMacros(file,m+1,file.size());
 	LoadCheck();
 }

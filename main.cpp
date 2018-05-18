@@ -34,7 +34,7 @@ static void FillCmdList()
 	cmdList['l']="Select Account (earmark/location/tag/tofrom)";
 	cmdList['m']="Select Transaction";
 	cmdList['n']="Select Transfer";
-	cmdList['o']="";
+	cmdList['o']="Macros";
 	cmdList['p']="List All Accounts";
 	cmdList['q']="";
 	cmdList['r']="Reconcile";
@@ -57,8 +57,8 @@ int RunCommand(Finances& f,char cmd)
 
 	switch(cmd)
 	{
-		case 'a': f.ReadNewTransaction(); return 1;
-		case 'b': f.ReadNewTransfer(); return 1;
+		case 'a': f.ReadNewTransaction(1); return 1;
+		case 'b': f.ReadNewTransfer(1); return 1;
 		case 'c': f.ReadNewAccount(); return 1;
 		case 'd': f.PrintTransactions(); return 1;
 		case 'e': f.PrintTransfers(); return 1;
@@ -71,6 +71,7 @@ int RunCommand(Finances& f,char cmd)
 		case 'l': f.SelectAccount(); return 1;
 		case 'm': f.SelectTransaction(f.transactions); return 1;
 		case 'n': f.SelectTransfer(f.transfers); return 1;
+		case 'o': f.Macros(); return 1;
 		case 'p': f.PrintAllAccounts(); return 1;
 		case 'r': f.Reconcile(); return 1;
 		case 's': f.Save(); return 1;

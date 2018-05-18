@@ -25,6 +25,9 @@ Finances::Finances()
 	unreconciledtransactions.clear();
 	transfers.clear();
 	unreconciledtransfers.clear();
+	macronames.clear();
+	macrotransactions.clear();
+	macrotransfers.clear();
 	amount=0;
 }
 
@@ -123,7 +126,7 @@ double ReadInTotal()
 	return d;
 }
 
-void Finances::ReadNewTransaction()
+Transaction* Finances::ReadNewTransaction(int link)
 {
 	Date* date;
 	Account* tg;
@@ -137,10 +140,10 @@ void Finances::ReadNewTransaction()
 	date = new Date;
 	date->ReadInDate();
 
-	if(!(tg = ReadInAccount(tags,"tag",1,0))) {delete date; return;}
-	if(!(l = ReadInAccount(locations,"location",1,0))) {delete date; return;}
-	if(!(e = ReadInAccount(earmarks,"earmark",1,0))) {delete date; return;}
-	if(!(tf = ReadInAccount(tofroms,"to/from",1,0))) {delete date; return;}
+	if(!(tg = ReadInAccount(tags,"tag",1,0))) {delete date; return NULL;}
+	if(!(l = ReadInAccount(locations,"location",1,0))) {delete date; return NULL;}
+	if(!(e = ReadInAccount(earmarks,"earmark",1,0))) {delete date; return NULL;}
+	if(!(tf = ReadInAccount(tofroms,"to/from",1,0))) {delete date; return NULL;}
 
 	info = ReadInInformation();
 	t = ReadInTotal();
@@ -152,16 +155,19 @@ void Finances::ReadNewTransaction()
 		delete date;
 		delete transaction;
 		printf("That transaction has been discarded.\n");
-		return;
+		return NULL;
 	}
-	else
+	else if(link)
 	{
 		LinkTransaction(transaction,0);
 		printf("Your transaction has been saved.\n");
+		return transaction;
 	}
+	else
+		return transaction;
 }
 
-void Finances::ReadNewTransfer()
+Transfer* Finances::ReadNewTransfer(int link)
 {
 	Date* date;
 	Account* from;
@@ -182,13 +188,13 @@ void Finances::ReadNewTransfer()
 
 	if(type=='1')
 	{
-		if(!(from = ReadInAccount(earmarks,"from",1,0))) {delete date; return;}
-		if(!(to = ReadInAccount(earmarks,"to",1,0))) {delete date; return;}
+		if(!(from = ReadInAccount(earmarks,"from",1,0))) {delete date; return NULL;}
+		if(!(to = ReadInAccount(earmarks,"to",1,0))) {delete date; return NULL;}
 	}
 	else if(type=='2')
 	{
-		if(!(from = ReadInAccount(locations,"from",1,0))) {delete date; return;}
-		if(!(to = ReadInAccount(locations,"to",1,0))) {delete date; return;}
+		if(!(from = ReadInAccount(locations,"from",1,0))) {delete date; return NULL;}
+		if(!(to = ReadInAccount(locations,"to",1,0))) {delete date; return NULL;}
 	}
 
 	info = ReadInInformation();
@@ -201,13 +207,16 @@ void Finances::ReadNewTransfer()
 		delete date;
 		delete t;
 		printf("That transfer has been discarded.\n");
-		return;
+		return NULL;
 	}
-	else
+	else if(link)
 	{
 		LinkTransfer(t,0);
 		printf("Your transfer has been saved.\n");
+		return t;
 	}
+	else
+		return t;
 }
 
 void Finances::ReadNewAccount()

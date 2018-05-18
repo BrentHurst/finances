@@ -5,9 +5,8 @@ Transactions aren't in chronological order
 
 GOALS
 -----
-Macros
-	Transaction
-	Transfer
+Add a Macro
+Edit Macro
 
 Foreign cash
 	€154.30

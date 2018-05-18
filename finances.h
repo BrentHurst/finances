@@ -143,13 +143,17 @@ class Finances
 		void SaveTransactions(FILE* f,int newyear);
 		void SaveTransfers(FILE* f,int newyear);
 		void SaveRoundUps(FILE* f,int newyear);
+		void SaveMacros(FILE* f,int newyear);
 
 		//load.cpp
 		void LoadAccounts(const vector<vector<string> >& file,int a,int b);
 		void LoadSubaccounts(const vector<vector<string> >& file,int a,int b);
+		Transaction* LoadTransaction(const vector<vector<string> >& file,int i);
 		void LoadTransactions(const vector<vector<string> >& file,int a,int b);
+		Transfer* LoadTransfer(const vector<vector<string> >& file,int i);
 		void LoadTransfers(const vector<vector<string> >& file,int a,int b);
 		void LoadRoundUps(const vector<vector<string> >& file,int a,int b);
+		void LoadMacros(const vector<vector<string> >& file,int a,int b);
 		void LoadCheck();
 		string GetFileName();
 
@@ -171,6 +175,10 @@ class Finances
 		map<string,Account*> earmarks;
 		map<string,Account*> tags;
 		map<string,Account*> tofroms;
+
+		set<string> macronames;
+		map<string,TransactionSet> macrotransactions;
+		map<string,TransferSet> macrotransfers;
 
 		TransactionSet transactions;
 		TransactionSet unreconciledtransactions;
@@ -197,8 +205,8 @@ class Finances
 		void UnlinkTransfer(Transfer* t);
 
 		//finances.cpp
-		void ReadNewTransaction();
-		void ReadNewTransfer();
+		Transaction* ReadNewTransaction(int link);
+		Transfer* ReadNewTransfer(int link);
 		void ReadNewAccount();
 		Finances();
 		void RenameAccount(Account* a);
@@ -234,6 +242,13 @@ class Finances
 
 		//merge.cpp
 		void Merge(Transfer* t);
+
+		//macros.cpp
+		void Macros();
+		void PrintMacros();
+		void RunAMacro();
+		void AddAMacro();
+		void DeleteAMacro();
 };
 
 

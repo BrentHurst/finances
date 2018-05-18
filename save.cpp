@@ -54,6 +54,23 @@ void Finances::SaveAccounts(FILE* f,int newyear)
 
 	PutLines;
 }
+
+void SaveTransaction(FILE* f,Transaction* t)
+{
+	vector<string> v;
+
+	v.push_back(itos_(t->date->getTotalDay()));
+	v.push_back(t->tag->name);
+	v.push_back(t->location->name);
+	v.push_back(t->earmark->name);
+	v.push_back(t->tofrom->name);
+	v.push_back(t->info);
+	v.push_back(itos_(t->reconciled));
+	v.push_back(dtos_(t->amount));
+	PutLine;
+	v.clear();
+}
+
 void Finances::SaveTransactions(FILE* f,int newyear)
 {
 	vector<string> v;
@@ -67,18 +84,21 @@ void Finances::SaveTransactions(FILE* f,int newyear)
 		return;
 
 	for(sit = transactions.begin(); sit != transactions.end(); sit++)
-	{
-		v.push_back(itos_((*sit)->date->getTotalDay()));
-		v.push_back((*sit)->tag->name);
-		v.push_back((*sit)->location->name);
-		v.push_back((*sit)->earmark->name);
-		v.push_back((*sit)->tofrom->name);
-		v.push_back((*sit)->info);
-		v.push_back(itos_((*sit)->reconciled));
-		v.push_back(dtos_((*sit)->amount));
-		PutLine;
-		v.clear();
-	}
+		SaveTransaction(f,*sit);
+}
+
+void SaveTransfer(FILE* f,Transfer* t)
+{
+	vector<string> v;
+
+	v.push_back(itos_(t->date->getTotalDay()));
+	v.push_back(t->from->name);
+	v.push_back(t->to->name);
+	v.push_back(t->info);
+	v.push_back(itos_(t->reconciled));
+	v.push_back(dtos_(t->amount));
+	PutLine;
+	v.clear();
 }
 
 void Finances::SaveTransfers(FILE* f,int newyear)
@@ -94,16 +114,7 @@ void Finances::SaveTransfers(FILE* f,int newyear)
 		return;
 
 	for(sit = transfers.begin(); sit != transfers.end(); sit++)
-	{
-		v.push_back(itos_((*sit)->date->getTotalDay()));
-		v.push_back((*sit)->from->name);
-		v.push_back((*sit)->to->name);
-		v.push_back((*sit)->info);
-		v.push_back(itos_((*sit)->reconciled));
-		v.push_back(dtos_((*sit)->amount));
-		PutLine;
-		v.clear();
-	}
+		SaveTransfer(f,*sit);
 }
 
 void Finances::SaveRoundUps(FILE* f,int newyear)
@@ -132,6 +143,38 @@ void Finances::SaveRoundUps(FILE* f,int newyear)
 	}
 }
 
+void Finances::SaveMacros(FILE* f,int newyear)
+{
+	vector<string> v;
+	set<string>::iterator sit;
+	TransactionSet::iterator tsit1;
+	TransferSet::iterator tsit2;
+
+	v.push_back("MACROS");
+	PutLine;
+	v.clear();
+
+	for(sit = macronames.begin(); sit != macronames.end(); sit++)
+	{
+		v.push_back("MACRO");
+		v.push_back(*sit);
+		PutLine;
+		v.clear();
+
+		v.push_back("MTRANSACTIONS");
+		PutLine;
+		v.clear();
+		for(tsit1 = macrotransactions.find(*sit)->second.begin(); tsit1 != macrotransactions.find(*sit)->second.end(); tsit1++)
+			SaveTransaction(f,*tsit1);
+
+		v.push_back("MTRANSFERS");
+		PutLine;
+		v.clear();
+		for(tsit2 = macrotransfers.find(*sit)->second.begin(); tsit2 != macrotransfers.find(*sit)->second.end(); tsit2++)
+			SaveTransfer(f,*tsit2);
+	}
+}
+
 void Finances::Save()
 {
 	Save(filename,0);
@@ -151,6 +194,7 @@ void Finances::Save(const string& fn,int newyear)
 	SaveTransactions(f,newyear);
 	SaveTransfers(f,newyear);
 	SaveRoundUps(f,newyear);
+	SaveMacros(f,newyear);
 
 	fclose(f);
 }
