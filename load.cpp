@@ -253,6 +253,8 @@ void Finances::Load()
 	currency = file[0][0];
 	amount = Round2Decimals(stod_(file[1][0]));
 
+	printf("total amount at load = %f\n",amount);
+
 	for(i=0; i<file.size(); i++)
 	{
 		if(file[i][0]=="ACCOUNTS")

@@ -28,7 +28,6 @@ Finances::Finances()
 	macronames.clear();
 	macrotransactions.clear();
 	macrotransfers.clear();
-	currency="";
 	amount=0;
 }
 

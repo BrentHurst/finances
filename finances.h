@@ -13,6 +13,8 @@
  *
  ************************************************/
 
+#ifndef FINANCES_H
+#define FINANCES_H
 
 #include <map>
 #include <set>
@@ -282,3 +284,5 @@ int AskForContinue();
 int AskToAdd(const string& type,const string& str);
 int AskIfCorrectTransaction(Transaction* t);
 int AskIfCorrectTransfer(Transfer* t);
+
+#endif
