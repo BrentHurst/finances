@@ -19,6 +19,7 @@ THESEOBJECTS =  account.o \
 				tracomp.o \
 				transaction.o \
 				transfer.o
+
 OBJECTS =   ConstrDestr.o \
 			getDateNothing.o \
 			getMemberVar.o \
@@ -42,7 +43,7 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LFLAGS) -o $(EXECUTABLE) $(OBJECTS)
 
-%.o: %.$(LANGUAGE)
+%.o: %.$(LANGUAGE) $(HEADER)
 	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
 
 .PHONY: clean
