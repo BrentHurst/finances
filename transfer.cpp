@@ -40,8 +40,9 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 
 void Transfer::Print()
 {
-	printf("%s: $%9.2f %15s -> %-15s \t%c\n\t%s\n",
+	printf("%s: %s%9.2f %15s -> %-15s \t%c\n\t%s\n",
 			date->getDate_ddMyyyy_nothing().c_str(),
+			currency.c_str(),
 			abs_(amount),
 			from->name.c_str(),
 			to->name.c_str(),

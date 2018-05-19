@@ -36,8 +36,8 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			if(!mit->second->superaccount)
 				earmarkAmount = Round2Decimals(earmarkAmount + mit->second->amount);
 
-		printf("locations amount: $%9.2f\n",amount);
-		printf("earmarks  amount: $%9.2f\n",earmarkAmount);
+		printf("locations amount: %s%9.2f\n",currency.c_str(),amount);
+		printf("earmarks  amount: %s%9.2f\n",currency.c_str(),earmarkAmount);
 
 		if(!m.empty() && type=="location")
 		{
@@ -69,12 +69,12 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			continue;
 		}
 
-		printf("Enter the starting amount in this %s: $",type.c_str());
+		printf("Enter the starting amount in this %s: %s",type.c_str(),currency.c_str());
 		d = ReadDouble();
 
 		do
 		{
-			printf("Is \"%s\" with $%9.2f correct? [y/n]: ",str.c_str(),d);
+			printf("Is \"%s\" with %s%9.2f correct? [y/n]: ",str.c_str(),currency.c_str(),d);
 			c = ReadChar();
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
@@ -89,9 +89,32 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	}
 }
 
+string SetupGetCurrency()
+{
+	string s;
+	char c;
+
+	do
+	{
+		printf("Enter the symbol of your default currency: ");
+		s = ReadString();
+
+		do
+		{
+			printf("Is %s correct? [y/n]: ",s.c_str());
+			c = ReadChar();
+		}while(c!='y' && c!='Y' && c!='n' && c!='N');
+
+	}while(c=='n' || c=='N');
+
+	return s;
+}
+
 void Finances::Setup()
 {
 	char c;
+
+	currency = SetupGetCurrency();
 
 	SetupAddAccounts("location",locations);
 	SetupAddAccounts("earmark",earmarks);

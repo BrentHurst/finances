@@ -28,6 +28,7 @@ Finances::Finances()
 	macronames.clear();
 	macrotransactions.clear();
 	macrotransfers.clear();
+	currency="";
 	amount=0;
 }
 
@@ -82,7 +83,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 					a = new Account(str,type);
 					if(setup)
 					{
-						printf("Enter the starting amount in this %s: $",type.c_str());
+						printf("Enter the starting amount in this %s: %s",type.c_str(),currency.c_str());
 						d = ReadDouble();
 						a->amount = Round2Decimals(d);
 					}

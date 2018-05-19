@@ -36,6 +36,8 @@ const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
 
+string currency;
+
 class Transaction;
 class Transfer;
 

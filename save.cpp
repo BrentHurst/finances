@@ -187,8 +187,13 @@ void Finances::Save(const string& fn,int newyear)
 
 	f = fopen(fn.c_str(),"w");
 
+	v.push_back(currency);
+	PutLine;
+	v.clear();
+
 	v.push_back(dtos_(amount));
 	PutLine;
+	v.clear();
 
 	SaveAccounts(f,newyear);
 	SaveTransactions(f,newyear);

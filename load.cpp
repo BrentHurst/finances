@@ -250,7 +250,8 @@ void Finances::Load()
 	GetLines;
 	fclose(f);
 
-	amount = Round2Decimals(stod_(file[0][0]));
+	currency = file[0][0];
+	amount = Round2Decimals(stod_(file[1][0]));
 
 	for(i=0; i<file.size(); i++)
 	{
