@@ -38,8 +38,6 @@ const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
 
-string currency;
-
 class Transaction;
 class Transfer;
 
@@ -60,6 +58,7 @@ class Account
 		string name;
 		AccountType type;
 		string t;
+		string currency;
 
 		multimap<double,Account*> roundups;
 		map<string,Account*> subaccounts;
@@ -71,8 +70,8 @@ class Account
 		TransferSet unreconciledtransfers;
 
 		//account.cpp
-		Account(const string& n,AccountType ty);
-		Account(const string& n,const string& ty);
+		Account(const string& n,AccountType ty,const string& curr);
+		Account(const string& n,const string& ty,const string& curr);
 		void Print(string indent);
 		void PrintRoundUps();
 
@@ -92,6 +91,7 @@ class Transaction
 		string info;
 		int reconciled;
 		double amount;
+		string currency;
 
 		//transaction.cpp
 		//int operator<(const Transaction& t);
@@ -103,7 +103,7 @@ class Transaction
 
 		Transaction(Date* d, Account* tg, Account* l,
 					Account* e,Account* tf,string& i,
-					int r,double t);
+					int r,double t,const string& curr);
 		void Print();
 		void Reconcile();
 		Transaction* Copy();
@@ -118,6 +118,7 @@ class Transfer
 		string info;
 		int reconciled;
 		double amount;
+		string currency;
 
 		//transfer.cpp
 		//int operator<(const Transfer t);
@@ -128,7 +129,7 @@ class Transfer
 		//int operator!=(const Transfer t);
 
 		Transfer(Date* d,Account* f,Account* t_,
-			     string& info,int r,double t);
+			     string& info,int r,double t,const string& curr);
 		void Print();
 		void Reconcile();
 		Transfer* Copy();
@@ -188,6 +189,8 @@ class Finances
 		TransactionSet unreconciledtransactions;
 		TransferSet transfers;
 		TransferSet unreconciledtransfers;
+
+		string currency;
 
 		string filename;
 		string user;

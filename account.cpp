@@ -15,7 +15,7 @@ using namespace std;
 
 
 
-Account::Account(const string& n,AccountType ty)
+Account::Account(const string& n,AccountType ty,const string& curr)
 {
 	amount = 0;
 	name = n;
@@ -38,9 +38,11 @@ Account::Account(const string& n,AccountType ty)
 	unreconciledtransactions.clear();
 	transfers.clear();
 	unreconciledtransfers.clear();
+
+	currency = curr;
 }
 
-Account::Account(const string& n,const string& ty)
+Account::Account(const string& n,const string& ty,const string& curr)
 {
 	amount = 0;
 	name = n;
@@ -61,6 +63,8 @@ Account::Account(const string& n,const string& ty)
 	unreconciledtransactions.clear();
 	transfers.clear();
 	unreconciledtransfers.clear();
+
+	currency = curr;
 }
 
 void Account::Print(string indent)

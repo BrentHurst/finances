@@ -28,7 +28,7 @@ using namespace std;
 
 
 Transfer::Transfer(Date* d,Account* f,Account* t_,
-		           string& i,int r,double t)
+		           string& i,int r,double t,const string& curr)
 {
 	date = d;
 	from = f;
@@ -36,6 +36,7 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 	info = i;
 	reconciled = r;
 	amount = Round2Decimals(t);
+	currency = curr;
 }
 
 void Transfer::Print()
@@ -56,5 +57,5 @@ Transfer* Transfer::Copy()
 {
 	Date* d = new Date;
 	d->setWithTotalDay(date->getTotalDay());
-	return new Transfer(d,from,to,info,reconciled,amount);
+	return new Transfer(d,from,to,info,reconciled,amount,currency);
 }

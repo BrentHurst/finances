@@ -24,7 +24,7 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 
 	for(i=a; i<b; i++)
 	{
-		acc = new Account(file[i][0],file[i][2]);
+		acc = new Account(file[i][0],file[i][2],currency);
 		acc->amount = Round2Decimals(stod_(file[i][1]));
 		allaccounts.insert(make_pair(acc->name,acc));
 		switch(acc->type)
@@ -67,7 +67,8 @@ Transaction* Finances::LoadTransaction(const vector<vector<string> >& file, int 
 			allaccounts[file[i][4]],
 			s,
 			stoi_(file[i][6]),
-			stod_(file[i][7])
+			stod_(file[i][7]),
+			currency
 			);
 	return t;
 }
@@ -99,7 +100,8 @@ Transfer* Finances::LoadTransfer(const vector<vector<string> >& file,int i)
 			allaccounts[file[i][2]],
 			s,
 			stoi_(file[i][4]),
-			stod_(file[i][5])
+			stod_(file[i][5]),
+			currency
 			);
 
 	return t;
@@ -252,8 +254,6 @@ void Finances::Load()
 
 	currency = file[0][0];
 	amount = Round2Decimals(stod_(file[1][0]));
-
-	printf("total amount at load = %f\n",amount);
 
 	for(i=0; i<file.size(); i++)
 	{

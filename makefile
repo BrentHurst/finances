@@ -1,25 +1,50 @@
 EXECUTABLE = finances.exe
-SOURCE = $(wildcard *.cpp)
-HEADER = $(wildcard *.h)
-# OBJECTS = $(wildcard *.o)
-OBJECTS = $(wildcard $(HOME)/include/sources/Date/*.o $(HOME)/include/sources/iogbh/*.o $(HOME)/include/sources/RomanNumerals/*.o ./*.o)
+HEADER = finances.h
+THESEOBJECTS =  account.o \
+				ask.o \
+				finances.o \
+				global.o \
+				link.o \
+				load.o \
+				macros.o \
+				main.o \
+				merge.o \
+				print.o \
+				reconcile.o \
+				save.o \
+				selectaccount.o \
+				selecttransaction.o \
+				selecttransfer.o \
+				setup.o \
+				tracomp.o \
+				transaction.o \
+				transfer.o
+OBJECTS =   ConstrDestr.o \
+			getDateNothing.o \
+			getMemberVar.o \
+			iogbhDelimitedLineFile.o \
+			operators.o \
+			printDate.o \
+			read.o \
+			setProtected.o \
+			setPublic.o \
+			$(THESEOBJECTS)
+
 
 CC = g++
 LANGUAGE = cpp
-INCLUDES = #-lDate -liogbh
-INCLUDEDIR = #$(HOME)/include
-LIBS = #$(INCLUDEDIR)/libDate.a $(INCLUDEDIR)/libiogbh.a
-CFLAGS = -g -Wall #$(INCLUDES:%=-I%)
-LFLAGS = -g $(INCLUDES)
+CFLAGS = -g -Wall 
+LFLAGS = -g 
+
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(SOURCE) $(HEADER) *.o
-	$(CC) $(LFLAGS) $(LIBS) -o $(EXECUTABLE) $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LFLAGS) -o $(EXECUTABLE) $(OBJECTS)
 
 %.o: %.$(LANGUAGE)
 	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
 
 .PHONY: clean
 clean:
-	rm *.o
+	rm $(THESEOBJECTS)

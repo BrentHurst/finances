@@ -31,7 +31,7 @@ using namespace std;
 
 Transaction::Transaction(Date* d, Account* tg, Account* l,
                          Account* a,Account* tf,string& i,
-						 int r,double t)
+						 int r,double t,const string& curr)
 {
 	date = d;
 	tag = tg;
@@ -41,6 +41,7 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 	info = i;
 	reconciled = r;
 	amount = Round2Decimals(t);
+	currency = curr;
 }
 
 void Transaction::Print()
@@ -64,5 +65,5 @@ Transaction* Transaction::Copy()
 {
 	Date* d = new Date;
 	d->setWithTotalDay(date->getTotalDay());
-	return new Transaction(d,tag,location,earmark,tofrom,info,reconciled,amount);
+	return new Transaction(d,tag,location,earmark,tofrom,info,reconciled,amount,currency);
 }

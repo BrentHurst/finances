@@ -56,7 +56,7 @@ void Finances::Merge(Transfer* t)
 		}
 	}
 
-	t2 = new Transfer(d,from,to,info,reconciled,amount);
+	t2 = new Transfer(d,from,to,info,reconciled,amount,currency);
 	LinkTransfer(t2,0);
 
 	printf("Transfers Successfully Merged\n");

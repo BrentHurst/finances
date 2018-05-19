@@ -54,7 +54,8 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 									mit->second,
 									s,
 									0,
-									Round2Decimals(mit->first * FindRoundUpAmount(t->amount))
+									Round2Decimals(mit->first * FindRoundUpAmount(t->amount)),
+									currency
 									);
 			LinkTransfer(transfer,0);
 		}
@@ -71,7 +72,8 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 									mit->second,
 									s,
 									0,
-									Round2Decimals(mit->first * FindRoundUpAmount(t->amount))
+									Round2Decimals(mit->first * FindRoundUpAmount(t->amount)),
+									currency
 									);
 			LinkTransfer(transfer,0);
 		}

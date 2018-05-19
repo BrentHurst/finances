@@ -79,7 +79,7 @@ Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int s
 				printf("\n");
 				if(AskToAdd(type,str))
 				{
-					a = new Account(str,type);
+					a = new Account(str,type,currency);
 					if(setup)
 					{
 						printf("Enter the starting amount in this %s: %s",type.c_str(),currency.c_str());
@@ -148,7 +148,7 @@ Transaction* Finances::ReadNewTransaction(int link)
 	info = ReadInInformation();
 	t = ReadInTotal();
 
-	transaction = new Transaction(date,tg,l,e,tf,info,0,t);
+	transaction = new Transaction(date,tg,l,e,tf,info,0,t,currency);
 
 	if(!AskIfCorrectTransaction(transaction))
 	{
@@ -200,7 +200,7 @@ Transfer* Finances::ReadNewTransfer(int link)
 	info = ReadInInformation();
 	amount = Round2Decimals(ReadInTotal());
 
-	t = new Transfer(date,from,to,info,0,amount);
+	t = new Transfer(date,from,to,info,0,amount,currency);
 
 	if(!AskIfCorrectTransfer(t))
 	{
