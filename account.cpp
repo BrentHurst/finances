@@ -40,6 +40,10 @@ Account::Account(const string& n,AccountType ty,const string& curr)
 	unreconciledtransfers.clear();
 
 	currency = curr;
+
+	foreign = 0;
+	foreignamount = 0;
+	foreigncurrency = "~-~-~";
 }
 
 Account::Account(const string& n,const string& ty,const string& curr)
@@ -65,11 +69,18 @@ Account::Account(const string& n,const string& ty,const string& curr)
 	unreconciledtransfers.clear();
 
 	currency = curr;
+
+	foreign = 0;
+	foreignamount = 0;
+	foreigncurrency = "~-~-~";
 }
 
 void Account::Print(string indent)
 {
-	printf("%s%c%s%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : '+',currency.c_str(),abs_(amount),name.c_str());
+	printf("%s%c%s%9.2f %s",indent.c_str(),(amount<0) ? '-' : '+',currency.c_str(),abs_(amount),name.c_str());
+	if(foreign)
+		printf(" \t(%s%9.2f)",foreigncurrency.c_str(),foreignamount);
+	printf("\n");
 }
 
 void Account::PrintRoundUps()

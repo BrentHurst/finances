@@ -37,6 +37,9 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 	reconciled = r;
 	amount = Round2Decimals(t);
 	currency = curr;
+
+	//foreign = 0;
+	//foreignamount = 0;
 }
 
 void Transfer::Print()

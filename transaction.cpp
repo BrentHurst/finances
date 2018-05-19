@@ -42,6 +42,10 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 	reconciled = r;
 	amount = Round2Decimals(t);
 	currency = curr;
+
+	foreign = 0;
+	foreignamount = 0;
+	foreigncurrency = "~-~-~";
 }
 
 void Transaction::Print()

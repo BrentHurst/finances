@@ -34,6 +34,13 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 			case tag:      tags.insert(make_pair(acc->name,acc));      break;
 			case tofrom:   tofroms.insert(make_pair(acc->name,acc));   break;
 		}
+		if(stoi_(file[i][3]))
+		{
+			acc->foreign = 1;
+			acc->foreignamount = Round2Decimals(stod_(file[i][4]));
+			acc->foreigncurrency = file[i][5];
+		}
+		printf("%s\n",acc->currency.c_str());
 	}
 }
 

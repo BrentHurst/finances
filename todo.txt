@@ -6,8 +6,9 @@ Transactions aren't in chronological order
 GOALS
 -----
 Foreign cash
-	€154.30
-		Maybe new accounts with Macros
+	transfer
+	transaction
+	setup
 
 Clean up source files and makefile
 

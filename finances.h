@@ -59,6 +59,9 @@ class Account
 		AccountType type;
 		string t;
 		string currency;
+		int foreign;
+		double foreignamount;
+		string foreigncurrency;
 
 		multimap<double,Account*> roundups;
 		map<string,Account*> subaccounts;
@@ -92,6 +95,9 @@ class Transaction
 		int reconciled;
 		double amount;
 		string currency;
+		int foreign;
+		double foreignamount;
+		string foreigncurrency;
 
 		//transaction.cpp
 		//int operator<(const Transaction& t);

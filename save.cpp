@@ -30,14 +30,21 @@ void Finances::SaveAccounts(FILE* f,int newyear)
 
 	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
 	{
-		v.push_back(mit->second->name);
+		v.push_back(mit->second->name); //[i][0]
 
+		//[i][1]
 		if(!newyear || mit->second->type==location || mit->second->type==earmark)
 			v.push_back(dtos_(mit->second->amount));
 		else
 			v.push_back(dtos_(0));
 
-		v.push_back(mit->second->t);
+		v.push_back(mit->second->t); //[i][2]
+		v.push_back(itos_(mit->second->foreign)); //[i][3]
+		if(mit->second->foreign)
+		{
+			v.push_back(dtos_(mit->second->foreignamount)); //[i][4]
+			v.push_back(mit->second->foreigncurrency); //[i][5]
+		}
 		PutLine;
 		v.clear();
 
