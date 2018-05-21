@@ -21,6 +21,10 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 {
 	Account* acc;
 	int i;
+	pair<double,double> zeros;
+
+	zeros.first = 0;
+	zeros.second = 0;
 
 	for(i=a; i<b; i++)
 	{
@@ -39,8 +43,15 @@ void Finances::LoadAccounts(const vector<vector<string> >& file,int a,int b)
 			acc->foreign = 1;
 			acc->foreignamount = Round2Decimals(stod_(file[i][4]));
 			acc->foreigncurrency = file[i][5];
+
+			if(acc->type==location)
+			{
+				if(conversions.find(acc->foreigncurrency) == conversions.end())
+					conversions.insert(make_pair(acc->foreigncurrency,zeros));
+				conversions[acc->foreigncurrency].first = Round2Decimals(conversions[acc->foreigncurrency].first + acc->amount);
+				conversions[acc->foreigncurrency].second = Round2Decimals(conversions[acc->foreigncurrency].second + acc->foreignamount);
+			}
 		}
-		printf("%s\n",acc->currency.c_str());
 	}
 }
 
@@ -77,6 +88,12 @@ Transaction* Finances::LoadTransaction(const vector<vector<string> >& file, int 
 			stod_(file[i][7]),
 			currency
 			);
+	if(stoi_(file[i][8]))
+	{
+		t->foreign = 1;
+		t->foreignamount = stod_(file[i][9]);
+		t->foreigncurrency = file[i][10];
+	}
 	return t;
 }
 

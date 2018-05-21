@@ -6,11 +6,15 @@ Transactions aren't in chronological order
 GOALS
 -----
 Foreign cash
+	setup conversions
+	edit transaction
 	transfer
-	transaction
+	linkrecurtransfer
+	edit transfer
 	setup
+	change selections from chars to ints
 
-Clean up source files and makefile
+Clean up source files
 
 
 

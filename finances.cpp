@@ -25,6 +25,7 @@ Finances::Finances()
 	unreconciledtransactions.clear();
 	transfers.clear();
 	unreconciledtransfers.clear();
+	conversions.clear();
 	macronames.clear();
 	macrotransactions.clear();
 	macrotransfers.clear();
@@ -126,7 +127,7 @@ double ReadInTotal()
 	return d;
 }
 
-Transaction* Finances::ReadNewTransaction(int link)
+Transaction* Finances::ReadNewTransaction(int link,int fgn)
 {
 	Date* date;
 	Account* tg;
@@ -136,6 +137,8 @@ Transaction* Finances::ReadNewTransaction(int link)
 	string info;
 	double t;
 	Transaction* transaction;
+	string curr;
+	char c;
 
 	date = new Date;
 	date->ReadInDate();
@@ -145,10 +148,41 @@ Transaction* Finances::ReadNewTransaction(int link)
 	if(!(e = ReadInAccount(earmarks,"earmark",1,0))) {delete date; return NULL;}
 	if(!(tf = ReadInAccount(tofroms,"to/from",1,0))) {delete date; return NULL;}
 
+	if(l->foreign != fgn || e->foreign != fgn)
+	{
+		printf("You chose for this to use %s currency.\n",(fgn) ? "foreign" : "your default");
+		delete date;
+		return NULL;
+	}
+
 	info = ReadInInformation();
 	t = ReadInTotal();
 
 	transaction = new Transaction(date,tg,l,e,tf,info,0,t,currency);
+
+	if(fgn)
+	{
+		do
+		{
+			printf("What currency are you using? (Enter a symbol): ");
+			curr = ReadString();
+			do
+			{
+				printf("Is %s correct? [y/n]: ",curr.c_str());
+				c = ReadChar();
+			}while(c!='y' && c!='Y' && c!='n' && c!='N');
+		}while(c=='n' || c=='N');
+
+		transaction->foreign = 1;
+		transaction->foreignamount = t;
+		transaction->foreigncurrency = curr;
+
+		transaction->amount =
+				Round2Decimals
+				(
+					transaction->foreignamount * conversions[curr].first / conversions[curr].second
+				);
+	}
 
 	if(!AskIfCorrectTransaction(transaction))
 	{
@@ -160,6 +194,11 @@ Transaction* Finances::ReadNewTransaction(int link)
 	else if(link)
 	{
 		LinkTransaction(transaction,0);
+		if(fgn)
+		{
+			conversions[curr].first = Round2Decimals(conversions[curr].first + transaction->amount);
+			conversions[curr].second = Round2Decimals(conversions[curr].second + transaction->foreignamount);
+		}
 		printf("Your transaction has been saved.\n");
 		return transaction;
 	}
@@ -167,7 +206,7 @@ Transaction* Finances::ReadNewTransaction(int link)
 		return transaction;
 }
 
-Transfer* Finances::ReadNewTransfer(int link)
+Transfer* Finances::ReadNewTransfer(int link,int fgn)
 {
 	Date* date;
 	Account* from;
@@ -195,6 +234,13 @@ Transfer* Finances::ReadNewTransfer(int link)
 	{
 		if(!(from = ReadInAccount(locations,"from",1,0))) {delete date; return NULL;}
 		if(!(to = ReadInAccount(locations,"to",1,0))) {delete date; return NULL;}
+	}
+
+	if(from->foreign != fgn && to->foreign != fgn)
+	{
+		printf("Both accounts are %s currency.\n",(fgn) ? "your local" : "foreign");
+		delete date;
+		return NULL;
 	}
 
 	info = ReadInInformation();

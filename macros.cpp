@@ -181,7 +181,7 @@ void Finances::AddAMacro()
 		if(c=='n' || c=='N')
 			break;
 
-		transaction = ReadNewTransaction(0);
+		transaction = ReadNewTransaction(0,0);
 		ts1.insert(transaction);
 	}
 
@@ -196,7 +196,7 @@ void Finances::AddAMacro()
 		if(c=='n' || c=='N')
 			break;
 
-		transfer = ReadNewTransfer(0);
+		transfer = ReadNewTransfer(0,0);
 		ts2.insert(transfer);
 	}
 

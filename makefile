@@ -1,8 +1,7 @@
-EXECUTABLE = finances.exe
-HEADER = finances.h
 THESEOBJECTS =  account.o \
 				ask.o \
 				finances.o \
+				foreign.o \
 				global.o \
 				link.o \
 				load.o \
@@ -20,18 +19,19 @@ THESEOBJECTS =  account.o \
 				transaction.o \
 				transfer.o
 
-OBJECTS =   ConstrDestr.o \
-			getDateNothing.o \
-			getMemberVar.o \
-			iogbhDelimitedLineFile.o \
-			operators.o \
-			printDate.o \
-			read.o \
-			setProtected.o \
-			setPublic.o \
-			$(THESEOBJECTS)
+EXTERNALLIBOBJECTS =    ConstrDestr.o \
+						getDateNothing.o \
+						getMemberVar.o \
+						iogbhDelimitedLineFile.o \
+						operators.o \
+						printDate.o \
+						read.o \
+						setProtected.o \
+						setPublic.o
 
-
+EXECUTABLE = finances.exe
+HEADER = finances.h
+OBJECTS = $(THESEOBJECTS) $(EXTERNALLIBOBJECTS)
 CC = g++
 LANGUAGE = cpp
 CFLAGS = -g -Wall 

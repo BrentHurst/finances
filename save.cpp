@@ -74,6 +74,12 @@ void SaveTransaction(FILE* f,Transaction* t)
 	v.push_back(t->info);
 	v.push_back(itos_(t->reconciled));
 	v.push_back(dtos_(t->amount));
+	v.push_back(itos_(t->foreign));
+	if(t->foreign)
+	{
+		v.push_back(dtos_(t->foreignamount));
+		v.push_back(t->foreigncurrency);
+	}
 	PutLine;
 	v.clear();
 }

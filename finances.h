@@ -126,6 +126,10 @@ class Transfer
 		double amount;
 		string currency;
 
+		int foreign;
+		int foreignamount;
+		int foreigncurrency;
+
 		//transfer.cpp
 		//int operator<(const Transfer t);
 		//int operator>(const Transfer t);
@@ -187,6 +191,8 @@ class Finances
 		map<string,Account*> tags;
 		map<string,Account*> tofroms;
 
+		map<string,pair<double,double> > conversions;
+
 		set<string> macronames;
 		map<string,TransactionSet> macrotransactions;
 		map<string,TransferSet> macrotransfers;
@@ -218,8 +224,8 @@ class Finances
 		void UnlinkTransfer(Transfer* t);
 
 		//finances.cpp
-		Transaction* ReadNewTransaction(int link);
-		Transfer* ReadNewTransfer(int link);
+		Transaction* ReadNewTransaction(int link,int fgn);
+		Transfer* ReadNewTransfer(int link,int fgn);
 		void ReadNewAccount();
 		Finances();
 		void RenameAccount(Account* a);
@@ -262,6 +268,13 @@ class Finances
 		void RunAMacro();
 		void AddAMacro();
 		void DeleteAMacro();
+
+		//foreign.cpp
+		void ReadNewForeignTransaction();
+		void ReadTransferToForeign();
+		void ReadTransferFromForeign();
+		void PrintForeignTransactions();
+		void PrintForeignTransfers();
 };
 
 
