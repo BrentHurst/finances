@@ -22,6 +22,8 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 	Account* a;
 	double earmarkAmount;
 	map<string,Account*>::iterator mit;
+	string curr;
+	int fgn = 0;
 
 
 	while(1)
@@ -69,12 +71,33 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			continue;
 		}
 
-		printf("Enter the starting amount in this %s: %s",type.c_str(),currency.c_str());
+		do
+		{
+			printf("Is this a foreign currency account?");
+			c = ReadChar();
+		}while(c!='y' && c!='Y' && c!='n' && c!='N');
+
+		if(c=='y' || c=='Y')
+		{
+			fgn = 1;
+			printf("Enter the foreign currency symbol for this account: ");
+			curr = ReadString();
+		}
+
+
+		printf("Enter the starting amount in this %s: %s",
+				type.c_str(),
+				(fgn) ? curr.c_str() : currency.c_str()
+			  );
+
 		d = ReadDouble();
 
 		do
 		{
-			printf("Is \"%s\" with %s%9.2f correct? [y/n]: ",str.c_str(),currency.c_str(),d);
+			printf("Is \"%s\" with %s%9.2f correct? [y/n]: ",
+					str.c_str(),
+					(fgn) ? curr.c_str() : currency.c_str(),
+					d);
 			c = ReadChar();
 		}while(c!='y' && c!='Y' && c!='n' && c!='N');
 
@@ -84,6 +107,14 @@ void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
 			a->amount = Round2Decimals(d);
 			m[str] = a;
 			allaccounts[str] = a;
+			if(fgn)
+			{
+				a->foreign = 1;
+				a->foreigncurrency = curr;
+				a->foreignamount = Round2Decimals(a->amount);
+				printf("Enter the amount of %s that this cost you: ",currency.c_str());
+				a->amount = Round2Decimals(ReadDouble());
+			}
 			FindSuperAccount(str,a,m,type,1);
 		}
 	}
