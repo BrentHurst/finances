@@ -13,7 +13,7 @@ THESEOBJECTS =  account.o \
 				printtra.o \
 				readaccount.o \
 				readtra.o \
-				readType.o \
+				readtype.o \
 				reconcile.o \
 				reconcilefinances.o \
 				save.o \
