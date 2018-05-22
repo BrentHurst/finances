@@ -14,14 +14,14 @@
 #include <cstdlib>
 using namespace std;
 
-void Finances::SetupAddAccounts(const string& type,map<string,Account*>& m)
+void Finances::SetupAddAccounts(const string& type,AccountMap& m)
 {
 	char c;
 	string str;
 	double d;
 	Account* a;
 	double earmarkAmount;
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 	string curr;
 	int fgn = 0;
 

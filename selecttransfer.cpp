@@ -13,37 +13,23 @@
 #include <cstdio>
 using namespace std;
 
-static map<char,string> cmdList;
+static map<int,string> cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList['a']="Delete";
-	cmdList['b']="Change Date";
-	cmdList['c']="Change From";
-	cmdList['d']="Change To";
-	cmdList['e']="Change Info";
-	cmdList['f']="Reconcile";
-	cmdList['g']="Unreconcile";
-	cmdList['h']="Change Amount";
-	cmdList['i']="Merge all transfers with the same from and to";
-	cmdList['j']="";
-	cmdList['k']="";
-	cmdList['l']="";
-	cmdList['m']="";
-	cmdList['n']="";
-	cmdList['o']="";
-	cmdList['p']="List Transfer Info";
-	cmdList['q']="";
-	cmdList['r']="";
-	cmdList['s']="";
-	cmdList['t']="";
-	cmdList['u']="";
-	cmdList['v']="";
-	cmdList['w']="";
-	cmdList['x']="";
-	cmdList['y']="Return to Main Menu";
-	cmdList['z']="Return to Main Menu";
+	cmdList[1]="Delete";
+	cmdList[2]="Change Date";
+	cmdList[3]="Change From";
+	cmdList[4]="Change To";
+	cmdList[5]="Change Info";
+	cmdList[6]="Reconcile";
+	cmdList[7]="Unreconcile";
+	cmdList[8]="Change Amount";
+	cmdList[9]="Merge all transfers with the same from and to";
+	cmdList[10]="List Transfer Info";
+	cmdList[11]="Return to Main Menu";
+	cmdList[0]="Return to Main Menu";
 }
 
 Transfer* GetTransferFromUser(TransferSet& ts)
@@ -168,25 +154,25 @@ static void ChangeAmount(Finances* f,Transfer* t)
 	t2->Print();
 }
 
-int RunCommand(Finances* f,Transfer* t,char cmd)
+int RunCommand(Finances* f,Transfer* t,int cmd)
 {
 	if(cmdList[cmd]=="")
 		return 1;
 
 	switch(cmd)
 	{
-		case 'a': Delete(f,t); return 0;
-		case 'b': ChangeDate(t); return 1;
-		case 'c': ChangeFrom(f,t); return 0;
-		case 'd': ChangeTo(f,t); return 0;
-		case 'e': t->info = ReadInInformation(); return 1;
-		case 'f': Reconcile(t,1); return 1;
-		case 'g': Reconcile(t,0); return 1;
-		case 'h': ChangeAmount(f,t); return 0;
-		case 'i': f->Merge(t); return 0;
-		case 'p': t->Print(); return 1;
-		case 'y': return 0;
-		case 'z': return 0;
+		case 1: Delete(f,t); return 0;
+		case 2: ChangeDate(t); return 1;
+		case 3: ChangeFrom(f,t); return 0;
+		case 4: ChangeTo(f,t); return 0;
+		case 5: t->info = ReadInInformation(); return 1;
+		case 6: Reconcile(t,1); return 1;
+		case 7: Reconcile(t,0); return 1;
+		case 8: ChangeAmount(f,t); return 0;
+		case 9: f->Merge(t); return 0;
+		case 10: t->Print(); return 1;
+		case 11: return 0;
+		case 0: return 0;
 	}
 
 	return 1;

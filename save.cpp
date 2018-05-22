@@ -21,11 +21,11 @@ void Finances::SaveAccounts(FILE* f,int newyear)
 {
 	vector<string> v;
 	vector<vector<string> > subaccounts;
-	map<string,Account*>::iterator mit;
-	map<string,Account*>::iterator mit2;
+	AccountMap::iterator mit;
+	AccountMap::iterator mit2;
 
 	v.push_back("ACCOUNTS");
-	PutLine;
+	PutLine();
 	v.clear();
 
 	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
@@ -45,7 +45,7 @@ void Finances::SaveAccounts(FILE* f,int newyear)
 			v.push_back(dtos_(mit->second->foreignamount)); //[i][4]
 			v.push_back(mit->second->foreigncurrency); //[i][5]
 		}
-		PutLine;
+		PutLine();
 		v.clear();
 
 		if(mit->second->superaccount)
@@ -56,10 +56,10 @@ void Finances::SaveAccounts(FILE* f,int newyear)
 		}
 	}
 	v.push_back("SUBACCOUNTS");
-	PutLine;
+	PutLine();
 	v.clear();
 
-	PutLines;
+	PutLines();
 }
 
 void SaveTransaction(FILE* f,Transaction* t)
@@ -80,7 +80,7 @@ void SaveTransaction(FILE* f,Transaction* t)
 		v.push_back(dtos_(t->foreignamount));
 		v.push_back(t->foreigncurrency);
 	}
-	PutLine;
+	PutLine();
 	v.clear();
 }
 
@@ -90,7 +90,7 @@ void Finances::SaveTransactions(FILE* f,int newyear)
 	TransactionSet::iterator sit;
 
 	v.push_back("TRANSACTIONS");
-	PutLine;
+	PutLine();
 	v.clear();
 
 	if(newyear)
@@ -110,7 +110,7 @@ void SaveTransfer(FILE* f,Transfer* t)
 	v.push_back(t->info);
 	v.push_back(itos_(t->reconciled));
 	v.push_back(dtos_(t->amount));
-	PutLine;
+	PutLine();
 	v.clear();
 }
 
@@ -120,7 +120,7 @@ void Finances::SaveTransfers(FILE* f,int newyear)
 	TransferSet::iterator sit;
 
 	v.push_back("TRANSFERS");
-	PutLine;
+	PutLine();
 	v.clear();
 
 	if(newyear)
@@ -133,11 +133,11 @@ void Finances::SaveTransfers(FILE* f,int newyear)
 void Finances::SaveRoundUps(FILE* f,int newyear)
 {
 	vector<string> v;
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 	multimap<double,Account*>::iterator rit;
 
 	v.push_back("ROUND-UPS");
-	PutLine;
+	PutLine();
 	v.clear();
 
 	for(mit = allaccounts.begin(); mit != allaccounts.end(); mit++)
@@ -151,7 +151,7 @@ void Finances::SaveRoundUps(FILE* f,int newyear)
 			v.push_back(dtos_(rit->first));
 			v.push_back(rit->second->name);
 		}
-		PutLine;
+		PutLine();
 		v.clear();
 	}
 }
@@ -164,24 +164,24 @@ void Finances::SaveMacros(FILE* f,int newyear)
 	TransferSet::iterator tsit2;
 
 	v.push_back("MACROS");
-	PutLine;
+	PutLine();
 	v.clear();
 
 	for(sit = macronames.begin(); sit != macronames.end(); sit++)
 	{
 		v.push_back("MACRO");
 		v.push_back(*sit);
-		PutLine;
+		PutLine();
 		v.clear();
 
 		v.push_back("MTRANSACTIONS");
-		PutLine;
+		PutLine();
 		v.clear();
 		for(tsit1 = macrotransactions.find(*sit)->second.begin(); tsit1 != macrotransactions.find(*sit)->second.end(); tsit1++)
 			SaveTransaction(f,*tsit1);
 
 		v.push_back("MTRANSFERS");
-		PutLine;
+		PutLine();
 		v.clear();
 		for(tsit2 = macrotransfers.find(*sit)->second.begin(); tsit2 != macrotransfers.find(*sit)->second.end(); tsit2++)
 			SaveTransfer(f,*tsit2);
@@ -201,11 +201,11 @@ void Finances::Save(const string& fn,int newyear)
 	f = fopen(fn.c_str(),"w");
 
 	v.push_back(currency);
-	PutLine;
+	PutLine();
 	v.clear();
 
 	v.push_back(dtos_(amount));
-	PutLine;
+	PutLine();
 	v.clear();
 
 	SaveAccounts(f,newyear);

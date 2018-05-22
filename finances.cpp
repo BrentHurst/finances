@@ -32,7 +32,7 @@ Finances::Finances()
 	amount=0;
 }
 
-void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type,int setup)
+void Finances::FindSuperAccount(const string& str,Account* a,AccountMap& m,string type,int setup)
 {
 	char c='r';
 
@@ -50,11 +50,11 @@ void Finances::FindSuperAccount(const string& str,Account* a,map<string,Account*
 		a->superaccount->subaccounts.insert(make_pair(a->name,a));
 }
 
-Account* Finances::ReadInAccount(map<string,Account*>& m,string type,int z,int setup)
+Account* Finances::ReadInAccount(AccountMap& m,string type,int z,int setup)
 {
 	string str;
 	Account* a;
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 	double d;
 
 	while(1)

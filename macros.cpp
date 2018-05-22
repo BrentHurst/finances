@@ -13,37 +13,17 @@
 using namespace std;
 
 
-static map<char,string> cmdList;
+static map<int,string> cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList['a']="List Macros";
-	cmdList['b']="Run a Macro";
-	cmdList['c']="Add a Macro";
-	cmdList['d']="Delete a Macro";
-	cmdList['e']="";
-	cmdList['f']="";
-	cmdList['g']="";
-	cmdList['h']="";
-	cmdList['i']="";
-	cmdList['j']="";
-	cmdList['k']="";
-	cmdList['l']="";
-	cmdList['m']="";
-	cmdList['n']="";
-	cmdList['o']="";
-	cmdList['p']="";
-	cmdList['q']="";
-	cmdList['r']="";
-	cmdList['s']="";
-	cmdList['t']="";
-	cmdList['u']="";
-	cmdList['v']="";
-	cmdList['w']="";
-	cmdList['x']="";
-	cmdList['y']="Return to Main Menu";
-	cmdList['z']="Return to Main Menu";
+	cmdList[1]="List Macros";
+	cmdList[2]="Run a Macro";
+	cmdList[3]="Add a Macro";
+	cmdList[4]="Delete a Macro";
+	cmdList[9]="Return to Main Menu";
+	cmdList[0]="Return to Main Menu";
 }
 
 void Finances::PrintMacros()
@@ -271,19 +251,20 @@ void Finances::DeleteAMacro()
 	macrotransfers.erase(macrotransfers.find(s));
 }
 
-int RunCommand(Finances* f,char cmd)
+int RunCommand(Finances* f,int cmd)
 {
-	if(cmdList[cmd]=="")
+	//should never happen because of check in GetCommand()
+	if(cmdList.find(cmd)==cmdList.end())
 		return 1;
 
 	switch(cmd)
 	{
-		case 'a': f->PrintMacros(); return 1;
-		case 'b': f->RunAMacro(); return 1;
-		case 'c': f->AddAMacro(); return 1;
-		case 'd': f->DeleteAMacro(); return 1;
-		case 'y': return 0;
-		case 'z': return 0;
+		case 1: f->PrintMacros(); return 1;
+		case 2: f->RunAMacro(); return 1;
+		case 3: f->AddAMacro(); return 1;
+		case 4: f->DeleteAMacro(); return 1;
+		case 9: return 0;
+		case 0: return 0;
 	}
 
 	return 1;

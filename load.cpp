@@ -196,8 +196,8 @@ void Finances::LoadMacros(const vector<vector<string> >& file,int a,int b)
 
 void Finances::LoadCheck()
 {
-	map<string,Account*>::iterator mit;
-	map<string,Account*>::iterator mit2;
+	AccountMap::iterator mit;
+	AccountMap::iterator mit2;
 	double amt;
 	string other;
 
@@ -273,7 +273,7 @@ void Finances::Load()
 		}
 	}
 
-	GetLines;
+	GetLines();
 	fclose(f);
 
 	currency = file[0][0];

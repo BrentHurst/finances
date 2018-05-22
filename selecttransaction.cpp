@@ -13,37 +13,23 @@
 #include <cstdio>
 using namespace std;
 
-static map<char,string> cmdList;
+static map<int,string> cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList['a']="Delete";
-	cmdList['b']="Change Date";
-	cmdList['c']="Change Tag";
-	cmdList['d']="Change Location";
-	cmdList['e']="Change Earmark";
-	cmdList['f']="Change To/From";
-	cmdList['g']="Change Info";
-	cmdList['h']="Reconcile";
-	cmdList['i']="Unreconcile";
-	cmdList['j']="Change Amount";
-	cmdList['k']="";
-	cmdList['l']="";
-	cmdList['m']="";
-	cmdList['n']="";
-	cmdList['o']="";
-	cmdList['p']="";
-	cmdList['q']="";
-	cmdList['r']="";
-	cmdList['s']="";
-	cmdList['t']="";
-	cmdList['u']="";
-	cmdList['v']="";
-	cmdList['w']="";
-	cmdList['x']="";
-	cmdList['y']="Return to Main Menu";
-	cmdList['z']="Return to Main Menu";
+	cmdList[1]="Delete";
+	cmdList[2]="Change Date";
+	cmdList[3]="Change Tag";
+	cmdList[4]="Change Location";
+	cmdList[5]="Change Earmark";
+	cmdList[6]="Change To/From";
+	cmdList[7]="Change Info";
+	cmdList[8]="Reconcile";
+	cmdList[9]="Unreconcile";
+	cmdList[10]="Change Amount";
+	cmdList[11]="Return to Main Menu";
+	cmdList[0]="Return to Main Menu";
 }
 
 Transaction* GetTransactionFromUser(TransactionSet& ts)
@@ -168,25 +154,26 @@ static void ChangeAmount(Finances* f,Transaction* t)
 	t2->Print();
 }
 
-int RunCommand(Finances* f,Transaction* t,char cmd)
+int RunCommand(Finances* f,Transaction* t,int cmd)
 {
-	if(cmdList[cmd]=="")
+	//shouldn't happend because of check in GetCommand
+	if(cmdList.find(cmd)==cmdList.end())
 		return 1;
 
 	switch(cmd)
 	{
-		case 'a': Delete(f,t); return 0;
-		case 'b': ChangeDate(t); return 1;
-		case 'c': ChangeTag(f,t); return 0;
-		case 'd': ChangeLocation(f,t); return 0;
-		case 'e': ChangeEarmark(f,t); return 0;
-		case 'f': ChangeToFrom(f,t); return 0;
-		case 'g': t->info = ReadInInformation(); return 1;
-		case 'h': Reconcile(t,1); return 1;
-		case 'i': Reconcile(t,0); return 1;
-		case 'j': ChangeAmount(f,t); return 0;
-		case 'y': return 0;
-		case 'z': return 0;
+		case  1: Delete(f,t); return 0;
+		case  2: ChangeDate(t); return 1;
+		case  3: ChangeTag(f,t); return 0;
+		case  4: ChangeLocation(f,t); return 0;
+		case  5: ChangeEarmark(f,t); return 0;
+		case  6: ChangeToFrom(f,t); return 0;
+		case  7: t->info = ReadInInformation(); return 1;
+		case  8: Reconcile(t,1); return 1;
+		case  9: Reconcile(t,0); return 1;
+		case 10: ChangeAmount(f,t); return 0;
+		case 11: return 0;
+		case  0: return 0;
 	}
 
 	return 1;

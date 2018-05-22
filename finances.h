@@ -23,23 +23,27 @@
 #include "Date.h"
 using namespace std;
 
-#define PutLine PutDelimitedLine(f,c0,c1,esc,v)
-#define PutLines PutDelimitedFile(f,c0,c1,esc,subaccounts)
-#define GetLine GetDelimitedLine(f,c0,c1,esc,v)
-#define GetLines GetDelimitedFile(f,c0,c1,esc,file)
-#define FlushInputBuffer while((junk=getchar()) != '\n' && junk != EOF)
+#define PutLine() PutDelimitedLine(f,c0,c1,esc,v)
+#define PutLines() PutDelimitedFile(f,c0,c1,esc,subaccounts)
+#define GetLine() GetDelimitedLine(f,c0,c1,esc,v)
+#define GetLines() GetDelimitedFile(f,c0,c1,esc,file)
+#define FlushInputBuffer() while((junk=getchar()) != '\n' && junk != EOF)
 
-//#define TransactionSet multiset<Transaction*,tracomp<Transaction*> >
-//#define TransferSet multiset<Transfer*,tracomp<Transfer*> >
-#define TransactionSet multiset<Transaction*>
-#define TransferSet multiset<Transfer*>
+class Account;
+class Transaction;
+class Transfer;
+
+
+//typedef multiset<Transaction*,tracomp<Transaction*> > TransactionSet
+//typedef multiset<Transfer*,tracomp<Transfer*> > TransferSet
+typedef multiset<Transaction*> TransactionSet;
+typedef multiset<Transfer*> TransferSet;
+
+typedef map<string,Account*> AccountMap;
 
 const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
-
-class Transaction;
-class Transfer;
 
 template <class T>
 class tracomp
@@ -64,7 +68,7 @@ class Account
 		string foreigncurrency;
 
 		multimap<double,Account*> roundups;
-		map<string,Account*> subaccounts;
+		AccountMap subaccounts;
 		Account* superaccount;
 
 		TransactionSet transactions;
@@ -149,7 +153,7 @@ class Transfer
 class Finances
 {
 	protected:
-		map<string,Account*> allaccounts;
+		AccountMap allaccounts;
 
 		double amount;
 
@@ -177,19 +181,19 @@ class Finances
 		void LinkRecurTransfer(Transfer* t,Account* a,int multiplier);
 
 		//finances.cpp
-		void FindSuperAccount(const string& str,Account* a,map<string,Account*>& m,string type,int setup);
+		void FindSuperAccount(const string& str,Account* a,AccountMap& m,string type,int setup);
 
 		//print.cpp
 		void PrintAccountRecur(Account* a,string indent);
 
 		//setup.cpp
-		void SetupAddAccounts(const string& type,map<string,Account*>& m);
+		void SetupAddAccounts(const string& type,AccountMap& m);
 
 	public:
-		map<string,Account*> locations;
-		map<string,Account*> earmarks;
-		map<string,Account*> tags;
-		map<string,Account*> tofroms;
+		AccountMap locations;
+		AccountMap earmarks;
+		AccountMap tags;
+		AccountMap tofroms;
 
 		map<string,pair<double,double> > conversions;
 
@@ -229,7 +233,7 @@ class Finances
 		void ReadNewAccount();
 		Finances();
 		void RenameAccount(Account* a);
-		Account* ReadInAccount(map<string,Account*>& m,string type,int z,int setup);
+		Account* ReadInAccount(AccountMap& m,string type,int z,int setup);
 
 		//reconcile.cpp
 		void Reconcile();
@@ -250,7 +254,7 @@ class Finances
 		void PrintCorrectAccountMap(const string& type);
 
 		//selectaccount.cpp
-		Account* GetAccountFromUser(map<string,Account*>& m);
+		Account* GetAccountFromUser(AccountMap& m);
 		void SelectAccount();
 		void AddRoundUp(Account* a);
 		void GiveAnotherSuperaccount(Account* a);
@@ -291,8 +295,8 @@ string ReadString();
 char ReadChar();
 double ReadDouble();
 int ReadInt();
-char GetCommand(map<char,string>& cmdList);
-void PrintCommands(map<char,string>& cmdList);
+int GetCommand(map<int,string>& cmdList);
+void PrintCommands(map<int,string>& cmdList);
 string ReadInInformation();
 double ReadInTotal();
 double FindRoundUpAmount(double d);

@@ -12,40 +12,30 @@
 #include <cstdio>
 using namespace std;
 
-static map<char,string> cmdList;
+static map<int,string> cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList['a']="List Transactions";
-	cmdList['b']="List Transfers";
-	cmdList['c']="List Unreconciled Transactions";
-	cmdList['d']="List Unreconciled Transfers";
-	cmdList['e']="Reconcile";
-	cmdList['f']="Add Automatic Round-Up Transfer";
-	cmdList['g']="Delete Automatic Round-Up Transfer";
-	cmdList['h']="Give a (Different) Superaccount";
-	cmdList['i']="";
-	cmdList['j']="";
-	cmdList['k']="Select Transaction";
-	cmdList['l']="Select Transfer";
-	cmdList['m']="Select from Unreconciled Transactions";
-	cmdList['n']="Select from Unreconciled Transfers";
-	cmdList['o']="";
-	cmdList['p']="List Account Info";
-	cmdList['q']="";
-	cmdList['r']="Rename";
-	cmdList['s']="";
-	cmdList['t']="";
-	cmdList['u']="";
-	cmdList['v']="";
-	cmdList['w']="";
-	cmdList['x']="";
-	cmdList['y']="Return to Main Menu";
-	cmdList['z']="Return to Main Menu";
+	cmdList[1]="List Transactions";
+	cmdList[2]="List Transfers";
+	cmdList[3]="List Unreconciled Transactions";
+	cmdList[4]="List Unreconciled Transfers";
+	cmdList[5]="Reconcile";
+	cmdList[6]="Add Automatic Round-Up Transfer";
+	cmdList[7]="Delete Automatic Round-Up Transfer";
+	cmdList[8]="Give a (Different) Superaccount";
+	cmdList[9]="Select Transaction";
+	cmdList[10]="Select Transfer";
+	cmdList[11]="Select from Unreconciled Transactions";
+	cmdList[12]="Select from Unreconciled Transfers";
+	cmdList[13]="List Account Info";
+	cmdList[14]="Rename";
+	cmdList[15]="Return to Main Menu";
+	cmdList[0]="Return to Main Menu";
 }
 
-Account* Finances::GetAccountFromUser(map<string,Account*>& m)
+Account* Finances::GetAccountFromUser(AccountMap& m)
 {
 	string s;
 	char c;
@@ -184,29 +174,29 @@ void Finances::GiveAnotherSuperaccount(Account* a)
 
 
 
-int RunCommand(Finances* f,Account* a,char cmd)
+int RunCommand(Finances* f,Account* a,int cmd)
 {
-	if(cmdList[cmd]=="")
+	if(cmdList.find(cmd)==cmdList.end())
 		return 1;
 
 	switch(cmd)
 	{
-		case 'a': PrintTransactionsGlobal(a->transactions); return 1;
-		case 'b': PrintTransfersGlobal(a->transfers); return 1;
-		case 'c': PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
-		case 'd': PrintTransfersGlobal(a->unreconciledtransfers); return 1;
-		case 'e': a->Reconcile(); return 1;
-		case 'f': f->AddRoundUp(a); return 1;
-		case 'g': DeleteRoundUp(a); return 1;
-		case 'h': f->GiveAnotherSuperaccount(a); return 1;
-		case 'k': f->SelectTransaction(a->transactions); return 1;
-		case 'l': f->SelectTransfer(a->transfers); return 1;
-		case 'm': f->SelectTransaction(a->unreconciledtransactions); return 1;
-		case 'n': f->SelectTransfer(a->unreconciledtransfers); return 1;
-		case 'p': a->PrintRoundUps(); return 1;
-		case 'r': f->RenameAccount(a); return 1;
-		case 'y': return 0;
-		case 'z': return 0;
+		case 1: PrintTransactionsGlobal(a->transactions); return 1;
+		case 2: PrintTransfersGlobal(a->transfers); return 1;
+		case 3: PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
+		case 4: PrintTransfersGlobal(a->unreconciledtransfers); return 1;
+		case 5: a->Reconcile(); return 1;
+		case 6: f->AddRoundUp(a); return 1;
+		case 7: DeleteRoundUp(a); return 1;
+		case 8: f->GiveAnotherSuperaccount(a); return 1;
+		case 9: f->SelectTransaction(a->transactions); return 1;
+		case 10: f->SelectTransfer(a->transfers); return 1;
+		case 11: f->SelectTransaction(a->unreconciledtransactions); return 1;
+		case 12: f->SelectTransfer(a->unreconciledtransfers); return 1;
+		case 13: a->PrintRoundUps(); return 1;
+		case 14: f->RenameAccount(a); return 1;
+		case 15: return 0;
+		case 0: return 0;
 	}
 	return 1;
 }

@@ -80,7 +80,7 @@ string ReadString()
 	fgets(s,SIZE,stdin);
 	if(strlen(s)>0 && s[strlen(s)-1]=='\n')
 		s[strlen(s)-1]='\0';
-	//FlushInputBuffer;
+	//FlushInputBuffer();
 	str = s;
 	return str;
 }
@@ -90,7 +90,7 @@ char ReadChar()
 	char c;
 	int junk;
 	scanf("%c",&c);
-	FlushInputBuffer;
+	FlushInputBuffer();
 	return c;
 }
 
@@ -99,7 +99,7 @@ double ReadDouble()
 	double d;
 	int junk;
 	scanf("%lf",&d);
-	FlushInputBuffer;
+	FlushInputBuffer();
 	return d;
 }
 
@@ -108,37 +108,35 @@ int ReadInt()
 	int i;
 	int junk;
 	scanf("%d",&i);
-	FlushInputBuffer;
+	FlushInputBuffer();
 	return i;
 }
 
-void PrintCommands(map<char,string>& cmdList)
+void PrintCommands(map<int,string>& cmdList)
 {
-	map<char,string>::iterator mit;
+	map<int,string>::iterator mit;
 
 	printf("\n");
 	for(mit=cmdList.begin(); mit != cmdList.end(); mit++)
 		if(mit->second != "")
-			printf("%c. %s\n",mit->first,mit->second.c_str());
+			printf("%2d. %s\n",mit->first,mit->second.c_str());
 }
 
-char GetCommand(map<char,string>& cmdList)
+int GetCommand(map<int,string>& cmdList)
 {
-	char c;
+	int i;
 
 	PrintCommands(cmdList);
 
 	do
 	{
 		printf("Please choose a command: ");
-		c = ReadChar();
-		if(c>='A' && c<='Z')
-			c += ('a' - 'A');
-	}while(c<'a' || c>'z');
+		i = ReadInt();
+	}while(cmdList.find(i)==cmdList.end());
 
 	printf("\n");
 
-	return c;
+	return i;
 }
 
 double FindRoundUpAmount(double d)

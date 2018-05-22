@@ -32,7 +32,7 @@ void Finances::PrintUnreconciledTransfers()
 
 void Finances::PrintAccountRecur(Account* a,string indent)
 {
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 
 	a->Print(indent);
 	for(mit=a->subaccounts.begin(); mit != a->subaccounts.end(); mit++)
@@ -40,7 +40,7 @@ void Finances::PrintAccountRecur(Account* a,string indent)
 }
 void Finances::PrintEarmarks()
 {
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 
 	printf("\n\nEARMARKS\n--------\n\n");
 	printf("%9.2f TOTAL\n",amount);
@@ -55,7 +55,7 @@ void Finances::PrintEarmarks()
 }
 void Finances::PrintLocations()
 {
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 
 	printf("\n\nLOCATIONS\n---------\n\n");
 	printf("%9.2f TOTAL\n",amount);
@@ -66,7 +66,7 @@ void Finances::PrintLocations()
 }
 void Finances::PrintTags()
 {
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 
 	printf("\n\nTAGS\n----\n\n");
 
@@ -76,7 +76,7 @@ void Finances::PrintTags()
 }
 void Finances::PrintTofroms()
 {
-	map<string,Account*>::iterator mit;
+	AccountMap::iterator mit;
 
 	printf("\n\nTO/FROMS\n--------\n\n");
 
