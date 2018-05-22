@@ -13,22 +13,27 @@
 #include <cstdio>
 using namespace std;
 
-static map<int,string> cmdList;
+static CommandMap cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList[1]="Delete";
-	cmdList[2]="Change Date";
-	cmdList[3]="Change From";
-	cmdList[4]="Change To";
-	cmdList[5]="Change Info";
-	cmdList[6]="Reconcile";
-	cmdList[7]="Unreconcile";
-	cmdList[8]="Change Amount";
-	cmdList[9]="Merge all transfers with the same from and to";
-	cmdList[10]="List Transfer Info";
-	cmdList[11]="Return to Main Menu";
+
+	cmdList[1]="Change From";
+	cmdList[2]="Change To";
+	cmdList[3]="Change Date";
+	cmdList[4]="Change Info";
+	cmdList[5]="Change Amount";
+
+	cmdList[11]="List Transfer Info";
+
+	cmdList[21]="Reconcile";
+	cmdList[22]="Unreconcile";
+	cmdList[23]="Delete";
+
+	cmdList[31]="Merge all transfers with the same from and to";
+
+	cmdList[9]="Return to Main Menu";
 	cmdList[0]="Return to Main Menu";
 }
 
@@ -161,17 +166,21 @@ int RunCommand(Finances* f,Transfer* t,int cmd)
 
 	switch(cmd)
 	{
-		case 1: Delete(f,t); return 0;
-		case 2: ChangeDate(t); return 1;
-		case 3: ChangeFrom(f,t); return 0;
-		case 4: ChangeTo(f,t); return 0;
-		case 5: t->info = ReadInInformation(); return 1;
-		case 6: Reconcile(t,1); return 1;
-		case 7: Reconcile(t,0); return 1;
-		case 8: ChangeAmount(f,t); return 0;
-		case 9: f->Merge(t); return 0;
-		case 10: t->Print(); return 1;
-		case 11: return 0;
+		case 1: ChangeFrom(f,t); return 0;
+		case 2: ChangeTo(f,t); return 0;
+		case 3: ChangeDate(t); return 1;
+		case 4: t->info = ReadInInformation(); return 1;
+		case 5: ChangeAmount(f,t); return 0;
+
+		case 11: t->Print(); return 1;
+
+		case 21: Reconcile(t,1); return 1;
+		case 22: Reconcile(t,0); return 1;
+		case 23: Delete(f,t); return 0;
+
+		case 31: f->Merge(t); return 0;
+
+		case 9: return 0;
 		case 0: return 0;
 	}
 

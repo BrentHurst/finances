@@ -12,26 +12,31 @@
 #include <cstdio>
 using namespace std;
 
-static map<int,string> cmdList;
+static CommandMap cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList[1]="List Transactions";
-	cmdList[2]="List Transfers";
-	cmdList[3]="List Unreconciled Transactions";
-	cmdList[4]="List Unreconciled Transfers";
-	cmdList[5]="Reconcile";
-	cmdList[6]="Add Automatic Round-Up Transfer";
-	cmdList[7]="Delete Automatic Round-Up Transfer";
-	cmdList[8]="Give a (Different) Superaccount";
-	cmdList[9]="Select Transaction";
-	cmdList[10]="Select Transfer";
-	cmdList[11]="Select from Unreconciled Transactions";
-	cmdList[12]="Select from Unreconciled Transfers";
-	cmdList[13]="List Account Info";
-	cmdList[14]="Rename";
-	cmdList[15]="Return to Main Menu";
+	cmdList[1]="Add Automatic Round-Up Transfer";
+	cmdList[2]="Delete Automatic Round-Up Transfer";
+
+	cmdList[11]="List Transactions";
+	cmdList[12]="List Transfers";
+	cmdList[13]="List Unreconciled Transactions";
+	cmdList[14]="List Unreconciled Transfers";
+	cmdList[15]="List Account Info";
+
+	cmdList[21]="Reconcile";
+
+	cmdList[31]="Give a (Different) Superaccount";
+	cmdList[32]="Rename";
+
+	cmdList[41]="Select Transaction";
+	cmdList[42]="Select Transfer";
+	cmdList[43]="Select from Unreconciled Transactions";
+	cmdList[44]="Select from Unreconciled Transfers";
+
+	cmdList[9]="Return to Main Menu";
 	cmdList[0]="Return to Main Menu";
 }
 
@@ -181,21 +186,26 @@ int RunCommand(Finances* f,Account* a,int cmd)
 
 	switch(cmd)
 	{
-		case 1: PrintTransactionsGlobal(a->transactions); return 1;
-		case 2: PrintTransfersGlobal(a->transfers); return 1;
-		case 3: PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
-		case 4: PrintTransfersGlobal(a->unreconciledtransfers); return 1;
-		case 5: a->Reconcile(); return 1;
-		case 6: f->AddRoundUp(a); return 1;
-		case 7: DeleteRoundUp(a); return 1;
-		case 8: f->GiveAnotherSuperaccount(a); return 1;
-		case 9: f->SelectTransaction(a->transactions); return 1;
-		case 10: f->SelectTransfer(a->transfers); return 1;
-		case 11: f->SelectTransaction(a->unreconciledtransactions); return 1;
-		case 12: f->SelectTransfer(a->unreconciledtransfers); return 1;
-		case 13: a->PrintRoundUps(); return 1;
-		case 14: f->RenameAccount(a); return 1;
-		case 15: return 0;
+		case  1: f->AddRoundUp(a); return 1;
+		case  2: DeleteRoundUp(a); return 1;
+
+		case 11: PrintTransactionsGlobal(a->transactions); return 1;
+		case 12: PrintTransfersGlobal(a->transfers); return 1;
+		case 13: PrintTransactionsGlobal(a->unreconciledtransactions); return 1;
+		case 14: PrintTransfersGlobal(a->unreconciledtransfers); return 1;
+		case 15: a->PrintRoundUps(); return 1;
+
+		case 21: a->Reconcile(); return 1;
+
+		case 31: f->GiveAnotherSuperaccount(a); return 1;
+		case 32: f->RenameAccount(a); return 1;
+
+		case 41: f->SelectTransaction(a->transactions); return 1;
+		case 42: f->SelectTransfer(a->transfers); return 1;
+		case 43: f->SelectTransaction(a->unreconciledtransactions); return 1;
+		case 44: f->SelectTransfer(a->unreconciledtransfers); return 1;
+
+		case 9: return 0;
 		case 0: return 0;
 	}
 	return 1;

@@ -15,7 +15,7 @@
 #include <cstdio>
 using namespace std;
 
-static map<int,string> cmdList;
+static CommandMap cmdList;
 
 static void FillCmdList()
 {

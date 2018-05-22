@@ -33,12 +33,14 @@ class Account;
 class Transaction;
 class Transfer;
 class tracomp;
+class cmdcomp;
 
 
 typedef multiset<Transaction*,tracomp> TransactionSet;
 typedef multiset<Transfer*,tracomp> TransferSet;
 
 typedef map<string,Account*> AccountMap;
+typedef map<int,string,cmdcomp> CommandMap;
 
 const char c0 = '\0';
 const int c1 = '\n';
@@ -51,6 +53,11 @@ class tracomp
 		bool operator() (const Transfer* a,const Transfer* b);
 };
 
+class cmdcomp
+{
+	public:
+		bool operator() (const int a,const int b);
+};
 
 enum AccountType {tag,location,earmark,tofrom};
 
@@ -294,8 +301,8 @@ string ReadString();
 char ReadChar();
 double ReadDouble();
 int ReadInt();
-int GetCommand(map<int,string>& cmdList);
-void PrintCommands(map<int,string>& cmdList);
+int GetCommand(CommandMap& cmdList);
+void PrintCommands(CommandMap& cmdList);
 string ReadInInformation();
 double ReadInTotal();
 double FindRoundUpAmount(double d);

@@ -13,22 +13,27 @@
 #include <cstdio>
 using namespace std;
 
-static map<int,string> cmdList;
+static CommandMap cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList[1]="Delete";
-	cmdList[2]="Change Date";
-	cmdList[3]="Change Tag";
-	cmdList[4]="Change Location";
-	cmdList[5]="Change Earmark";
-	cmdList[6]="Change To/From";
-	cmdList[7]="Change Info";
-	cmdList[8]="Reconcile";
-	cmdList[9]="Unreconcile";
-	cmdList[10]="Change Amount";
-	cmdList[11]="Return to Main Menu";
+
+	cmdList[1]="Change Tag";
+	cmdList[2]="Change Location";
+	cmdList[3]="Change Earmark";
+	cmdList[4]="Change To/From";
+
+	cmdList[11]="Change Date";
+	cmdList[12]="Change Info";
+	cmdList[13]="Change Amount";
+
+	cmdList[21]="Reconcile";
+	cmdList[22]="Unreconcile";
+
+	cmdList[31]="Delete";
+
+	cmdList[9]="Return to Main Menu";
 	cmdList[0]="Return to Main Menu";
 }
 
@@ -162,17 +167,21 @@ int RunCommand(Finances* f,Transaction* t,int cmd)
 
 	switch(cmd)
 	{
-		case  1: Delete(f,t); return 0;
-		case  2: ChangeDate(t); return 1;
-		case  3: ChangeTag(f,t); return 0;
-		case  4: ChangeLocation(f,t); return 0;
-		case  5: ChangeEarmark(f,t); return 0;
-		case  6: ChangeToFrom(f,t); return 0;
-		case  7: t->info = ReadInInformation(); return 1;
-		case  8: Reconcile(t,1); return 1;
-		case  9: Reconcile(t,0); return 1;
-		case 10: ChangeAmount(f,t); return 0;
-		case 11: return 0;
+		case  1: ChangeTag(f,t); return 0;
+		case  2: ChangeLocation(f,t); return 0;
+		case  3: ChangeEarmark(f,t); return 0;
+		case  4: ChangeToFrom(f,t); return 0;
+
+		case 11: ChangeDate(t); return 1;
+		case 12: t->info = ReadInInformation(); return 1;
+		case 13: ChangeAmount(f,t); return 0;
+
+		case 21: Reconcile(t,1); return 1;
+		case 22: Reconcile(t,0); return 1;
+
+		case 31: Delete(f,t); return 0;
+
+		case  9: return 0;
 		case  0: return 0;
 	}
 

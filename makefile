@@ -1,5 +1,6 @@
 THESEOBJECTS =  account.o \
 				ask.o \
+				cmdcomp.o \
 				finances.o \
 				foreign.o \
 				global.o \

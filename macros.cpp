@@ -13,15 +13,15 @@
 using namespace std;
 
 
-static map<int,string> cmdList;
+static CommandMap cmdList;
 
 static void FillCmdList()
 {
 	cmdList.clear();
-	cmdList[1]="List Macros";
-	cmdList[2]="Run a Macro";
-	cmdList[3]="Add a Macro";
-	cmdList[4]="Delete a Macro";
+	cmdList[1]="Add a Macro";
+	cmdList[11]="List Macros";
+	cmdList[21]="Run a Macro";
+	cmdList[31]="Delete a Macro";
 	cmdList[9]="Return to Main Menu";
 	cmdList[0]="Return to Main Menu";
 }
@@ -259,10 +259,10 @@ int RunCommand(Finances* f,int cmd)
 
 	switch(cmd)
 	{
-		case 1: f->PrintMacros(); return 1;
-		case 2: f->RunAMacro(); return 1;
-		case 3: f->AddAMacro(); return 1;
-		case 4: f->DeleteAMacro(); return 1;
+		case  1: f->AddAMacro(); return 1;
+		case 11: f->PrintMacros(); return 1;
+		case 21: f->RunAMacro(); return 1;
+		case 31: f->DeleteAMacro(); return 1;
 		case 9: return 0;
 		case 0: return 0;
 	}

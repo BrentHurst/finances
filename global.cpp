@@ -112,9 +112,9 @@ int ReadInt()
 	return i;
 }
 
-void PrintCommands(map<int,string>& cmdList)
+void PrintCommands(CommandMap& cmdList)
 {
-	map<int,string>::iterator mit;
+	CommandMap::iterator mit;
 
 	printf("\n");
 	for(mit=cmdList.begin(); mit != cmdList.end(); mit++)
@@ -122,7 +122,7 @@ void PrintCommands(map<int,string>& cmdList)
 			printf("%2d. %s\n",mit->first,mit->second.c_str());
 }
 
-int GetCommand(map<int,string>& cmdList)
+int GetCommand(CommandMap& cmdList)
 {
 	int i;
 
