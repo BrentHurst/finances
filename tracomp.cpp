@@ -11,8 +11,12 @@
 #include "finances.h"
 using namespace std;
 
-template<class T>
-bool tracomp<T>::operator() (T const& a,T const& b)
+bool tracomp::operator() (const Transaction* a,const Transaction* b)
+{
+	return (*(a->date) < *(b->date));
+}
+
+bool tracomp::operator() (const Transfer* a,const Transfer* b)
 {
 	return (*(a->date) < *(b->date));
 }

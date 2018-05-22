@@ -32,12 +32,11 @@ using namespace std;
 class Account;
 class Transaction;
 class Transfer;
+class tracomp;
 
 
-//typedef multiset<Transaction*,tracomp<Transaction*> > TransactionSet
-//typedef multiset<Transfer*,tracomp<Transfer*> > TransferSet
-typedef multiset<Transaction*> TransactionSet;
-typedef multiset<Transfer*> TransferSet;
+typedef multiset<Transaction*,tracomp> TransactionSet;
+typedef multiset<Transfer*,tracomp> TransferSet;
 
 typedef map<string,Account*> AccountMap;
 
@@ -45,11 +44,11 @@ const char c0 = '\0';
 const int c1 = '\n';
 const int esc = '`';
 
-template <class T>
 class tracomp
 {
 	public:
-		bool operator() (T const& a,T const& b);
+		bool operator() (const Transaction* a,const Transaction* b);
+		bool operator() (const Transfer* a,const Transfer* b);
 };
 
 
