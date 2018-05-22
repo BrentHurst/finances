@@ -18,12 +18,12 @@ void Finances::ReadNewForeignTransaction()
 
 void Finances::ReadTransferToForeign()
 {
-
+	ReadNewTransfer(1,1);
 }
 
 void Finances::ReadTransferFromForeign()
 {
-
+	ReadNewTransfer(1,2);
 }
 
 void Finances::PrintForeignTransactions()

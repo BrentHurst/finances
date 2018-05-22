@@ -14,21 +14,6 @@
 using namespace std;
 
 
-//int Transaction::operator<(const Transaction& t)
-//{ return (*(this->date) < *(t.date)); }
-//int Transaction::operator>(const Transaction& t)
-//{ return (*(this->date) > *(t.date)); }
-//int Transaction::operator<=(const Transaction& t)
-//{ return (*(this->date) <= *(t.date)); }
-//int Transaction::operator>=(const Transaction& t)
-//{ return (*(this->date) >= *(t.date)); }
-//int Transaction::operator==(const Transaction& t)
-//{ return (*(this->date) == *(t.date)); }
-//int Transaction::operator!=(const Transaction& t)
-//{ return (*(this->date) != *(t.date)); }
-
-
-
 Transaction::Transaction(Date* d, Account* tg, Account* l,
                          Account* a,Account* tf,string& i,
 						 int r,double t,const string& curr)

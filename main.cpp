@@ -32,7 +32,7 @@ static void FillCmdList()
 	cmdList[12]="List Transfers";
 	cmdList[13]="List Unreconciled Transactions";
 	cmdList[14]="List Unreconciled Transfers";
-	cmdList[15]="List Foreign Transaction";
+	cmdList[15]="List Foreign Transactions";
 	cmdList[16]="List Foreign Transfers";
 
 	cmdList[21]="List All Accounts";

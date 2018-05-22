@@ -25,6 +25,8 @@ void Finances::LinkRecurTransfer(Transfer* t,Account* a,int multiplier)
 {
 	if(!a) return;
 	a->amount = Round2Decimals(a->amount + multiplier * t->amount);
+	if(t->foreign)
+		a->foreignamount = Round2Decimals(a->foreignamount + multiplier * t->foreignamount);
 	LinkRecurTransfer(t,a->superaccount,multiplier);
 }
 

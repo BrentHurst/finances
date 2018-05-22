@@ -206,6 +206,8 @@ Transaction* Finances::ReadNewTransaction(int link,int fgn)
 		return transaction;
 }
 
+//fgn = 1 if toforeign
+//fgn = 2 if fromforeign
 Transfer* Finances::ReadNewTransfer(int link,int fgn)
 {
 	Date* date;
@@ -215,6 +217,9 @@ Transfer* Finances::ReadNewTransfer(int link,int fgn)
 	double amount;
 	Transfer* t;
 	char type='r';
+	string curr;
+	double d;
+
 
 	date = new Date;
 	date->ReadInDate();
@@ -236,17 +241,59 @@ Transfer* Finances::ReadNewTransfer(int link,int fgn)
 		if(!(to = ReadInAccount(locations,"to",1,0))) {delete date; return NULL;}
 	}
 
-	if(from->foreign != fgn && to->foreign != fgn)
-	{
-		printf("Both accounts are %s currency.\n",(fgn) ? "your local" : "foreign");
-		delete date;
-		return NULL;
-	}
-
 	info = ReadInInformation();
+	if(fgn==1)
+		printf("Enter in %s\n",currency.c_str());
+	else if(fgn==2)
+		printf("Enter in foreign currency\n");
 	amount = Round2Decimals(ReadInTotal());
 
 	t = new Transfer(date,from,to,info,0,amount,currency);
+
+	if(fgn)
+	{
+		if(fgn==1 && (!to->foreign || from->foreign))
+		{
+			printf("'to' should be foreign and 'from' should not.\n");
+			delete date;
+			return NULL;
+		}
+		else if(fgn==2 && (to->foreign || !from->foreign))
+		{
+			printf("'from' should be foreign and 'to' should not.\n");
+			delete date;
+			return NULL;
+		}
+
+		curr = (fgn==1) ? to->foreigncurrency : from->foreigncurrency;
+
+		t->foreign = fgn;
+		t->foreigncurrency = curr;
+
+		if(fgn==1)
+		{
+			printf("How many %s is this? %s",curr.c_str(),curr.c_str());
+			d = ReadDouble();
+			t->foreignamount = d;
+			if(link)
+			{
+				conversions[curr].first += t->amount;
+				conversions[curr].second += Round2Decimals(d);
+			}
+		}
+		else
+		{
+			printf("How many %s is this? %s",currency.c_str(),currency.c_str());
+			d = ReadDouble();
+			t->foreignamount = t->amount;
+			t->amount = d;
+			if(link)
+			{
+				conversions[curr].first -= Round2Decimals(t->amount);
+				conversions[curr].second -= Round2Decimals(t->foreignamount);
+			}
+		}
+	}
 
 	if(!AskIfCorrectTransfer(t))
 	{

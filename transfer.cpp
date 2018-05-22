@@ -13,20 +13,6 @@
 using namespace std;
 
 
-//int Transfer::operator<(const Transfer& t)
-//{ return (*(this->date) < *(t.date)); }
-//int Transfer::operator>(const Transfer& t)
-//{ return (*(this->date) > *(t.date)); }
-//int Transfer::operator<=(const Transfer& t)
-//{ return (*(this->date) <= *(t.date)); }
-//int Transfer::operator>=(const Transfer& t)
-//{ return (*(this->date) >= *(t.date)); }
-//int Transfer::operator==(const Transfer& t)
-//{ return (*(this->date) == *(t.date)); }
-//int Transfer::operator!=(const Transfer& t)
-//{ return (*(this->date) != *(t.date)); }
-
-
 Transfer::Transfer(Date* d,Account* f,Account* t_,
 		           string& i,int r,double t,const string& curr)
 {
@@ -44,14 +30,28 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 
 void Transfer::Print()
 {
-	printf("%s: %s%9.2f %15s -> %-15s \t%c\n\t%s\n",
-			date->getDate_ddMyyyy_nothing().c_str(),
-			currency.c_str(),
-			abs_(amount),
-			from->name.c_str(),
-			to->name.c_str(),
-			(reconciled) ? 'R' : '-',
-			info.c_str());
+	if(!foreign)
+		printf("%s: %s%9.2f %15s -> %-15s \t%c\n\t%s\n",
+				date->getDate_ddMyyyy_nothing().c_str(),
+				currency.c_str(),
+				abs_(amount),
+				from->name.c_str(),
+				to->name.c_str(),
+				(reconciled) ? 'R' : '-',
+				info.c_str()
+			  );
+	else
+		printf("%s: %s%9.2f (%s%9.2f) %15s -> %-15s \t%c\n\t%s\n",
+				date->getDate_ddMyyyy_nothing().c_str(),
+				currency.c_str(),
+				abs_(amount),
+				foreigncurrency.c_str(),
+				abs_(foreignamount),
+				from->name.c_str(),
+				to->name.c_str(),
+				(reconciled) ? 'R' : '-',
+				info.c_str()
+			  );
 }
 
 void Transfer::Reconcile() { reconciled = 1; }

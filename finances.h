@@ -109,14 +109,6 @@ class Transaction
 		double foreignamount;
 		string foreigncurrency;
 
-		//transaction.cpp
-		//int operator<(const Transaction& t);
-		//int operator>(const Transaction& t);
-		//int operator<=(const Transaction& t);
-		//int operator>=(const Transaction& t);
-		//int operator==(const Transaction& t);
-		//int operator!=(const Transaction& t);
-
 		Transaction(Date* d, Account* tg, Account* l,
 					Account* e,Account* tf,string& i,
 					int r,double t,const string& curr);
@@ -137,16 +129,8 @@ class Transfer
 		string currency;
 
 		int foreign;
-		int foreignamount;
-		int foreigncurrency;
-
-		//transfer.cpp
-		//int operator<(const Transfer t);
-		//int operator>(const Transfer t);
-		//int operator<=(const Transfer t);
-		//int operator>=(const Transfer t);
-		//int operator==(const Transfer t);
-		//int operator!=(const Transfer t);
+		double foreignamount;
+		string foreigncurrency;
 
 		Transfer(Date* d,Account* f,Account* t_,
 			     string& info,int r,double t,const string& curr);
