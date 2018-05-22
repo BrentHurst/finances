@@ -1,16 +1,21 @@
 THESEOBJECTS =  account.o \
 				ask.o \
 				cmdcomp.o \
+				cmd.o \
 				finances.o \
-				foreign.o \
-				global.o \
 				link.o \
 				load.o \
-				macros.o \
+				macro.o \
 				main.o \
 				merge.o \
-				print.o \
+				number.o \
+				printfinances.o \
+				printtra.o \
+				readaccount.o \
+				readtra.o \
+				readType.o \
 				reconcile.o \
+				reconcilefinances.o \
 				save.o \
 				selectaccount.o \
 				selecttransaction.o \
@@ -20,15 +25,15 @@ THESEOBJECTS =  account.o \
 				transaction.o \
 				transfer.o
 
-EXTERNALLIBOBJECTS =    ConstrDestr.o \
-						getDateNothing.o \
-						getMemberVar.o \
-						iogbhDelimitedLineFile.o \
-						operators.o \
-						printDate.o \
-						read.o \
-						setProtected.o \
-						setPublic.o
+EXTERNALLIBOBJECTS =    ExternalLibObjects/ConstrDestr.o \
+						ExternalLibObjects/getDateNothing.o \
+						ExternalLibObjects/getMemberVar.o \
+						ExternalLibObjects/iogbhDelimitedLineFile.o \
+						ExternalLibObjects/operators.o \
+						ExternalLibObjects/printDate.o \
+						ExternalLibObjects/read.o \
+						ExternalLibObjects/setProtected.o \
+						ExternalLibObjects/setPublic.o
 
 EXECUTABLE = finances.exe
 HEADER = finances.h
