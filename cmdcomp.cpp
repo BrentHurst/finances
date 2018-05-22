@@ -8,7 +8,7 @@
  *
  ************************************************/
 
-#include "finances.h"
+#include "cmdcomp.h"
 using namespace std;
 
 bool cmdcomp::operator() (int a,int b)

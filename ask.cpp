@@ -8,7 +8,8 @@
  *
  ************************************************/
 
-#include "finances.h"
+#include "ask.h"
+#include "readtype.h"
 #include <cstdio>
 using namespace std;
 
@@ -63,4 +64,16 @@ int AskIfCorrectTransfer(Transfer* t)
 		c = ReadChar();
 	}
 	return (c=='y' || c=='Y');
+}
+
+int AskReconcileDecision()
+{
+	char c;
+	do
+	{
+		printf("Would you like to go ahead and reconcile all, or reconcile one-by-one?\n");
+		printf("a. Reconcile all\nb. Reconcile one-by-one\n[a/b]: ");
+		c = ReadChar();
+	}while(c!='a' && c!='b' && c!='A' && c!='B');
+	return (c=='a' || c=='A');
 }

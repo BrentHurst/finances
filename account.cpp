@@ -9,7 +9,10 @@
  ************************************************/
 
 
-#include "finances.h"
+#include "account.h"
+#include "ask.h"
+#include "number.h"
+#include "reconcile.h"
 #include <cstdio>
 using namespace std;
 
@@ -91,4 +94,15 @@ void Account::PrintRoundUps()
 
 	for(mit = roundups.begin(); mit != roundups.end(); mit++)
 		printf("%f%% of round-up goes to %s.\n",100 * mit->first,mit->second->name.c_str());
+}
+
+void Account::Reconcile()
+{
+	Reconcile(AskReconcileDecision());
+}
+
+void Account::Reconcile(int i)
+{
+	Reconcile_(unreconciledtransactions,i);
+	Reconcile_(unreconciledtransfers,i);
 }

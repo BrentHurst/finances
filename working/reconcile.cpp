@@ -13,32 +13,9 @@
 #include "finances.h"
 using namespace std;
 
-int GetDecision()
-{
-	char c;
-	do
-	{
-		printf("Would you like to go ahead and reconcile all, or reconcile one-by-one?\n");
-		printf("a. Reconcile all\nb. Reconcile one-by-one\n[a/b]: ");
-		c = ReadChar();
-	}while(c!='a' && c!='b' && c!='A' && c!='B');
-	return (c=='a' || c=='A');
-}
-
 void Finances::Reconcile()
 {
-	int i = GetDecision();
-	Reconcile_(unreconciledtransactions,i);
-	Reconcile_(unreconciledtransfers,i);
-}
-
-void Account::Reconcile()
-{
-	Reconcile(GetDecision());
-}
-
-void Account::Reconcile(int i)
-{
+	int i = AskReconcileDecision();
 	Reconcile_(unreconciledtransactions,i);
 	Reconcile_(unreconciledtransfers,i);
 }
