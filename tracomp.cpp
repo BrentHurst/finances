@@ -8,7 +8,9 @@
  *
  ************************************************/
 
-#include "finances.h"
+#include "tracomp.h"
+#include "transaction.h"
+#include "transfer.h"
 using namespace std;
 
 bool tracomp::operator() (const Transaction* a,const Transaction* b)

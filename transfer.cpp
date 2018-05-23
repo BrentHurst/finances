@@ -8,7 +8,9 @@
  *
  ************************************************/
 
-#include "finances.h"
+#include "transfer.h"
+#include "account.h"
+#include "number.h"
 #include <cstdio>
 using namespace std;
 

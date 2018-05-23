@@ -1,3 +1,5 @@
+using namespace std;
+
 #ifndef IODEFINESANDCONSTS_H
 #define IODEFINESANDCONSTS_H
 

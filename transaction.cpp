@@ -9,7 +9,9 @@
  ************************************************/
 
 
-#include "finances.h"
+#include "transaction.h"
+#include "account.h"
+#include "number.h"
 #include <cstdio>
 using namespace std;
 

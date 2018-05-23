@@ -10,6 +10,8 @@
 
 
 #include "finances.h"
+#include "readtype.h"
+#include "cmd.h"
 #include <vector>
 #include <string>
 #include <cstdio>

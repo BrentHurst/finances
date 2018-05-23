@@ -112,21 +112,6 @@ Account* Finances::ReadInAccount(AccountMap& m,string type,int z,int setup)
 	}
 }
 
-string ReadInInformation()
-{
-	printf("info: ");
-	string str = ReadString();
-	return str;
-}
-
-double ReadInTotal()
-{
-	double d;
-	printf("Amount: (positive for income or transfer, negative for spent): ");
-	d = ReadDouble();
-	return d;
-}
-
 Transaction* Finances::ReadNewTransaction(int link,int fgn)
 {
 	Date* date;
