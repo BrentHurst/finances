@@ -1,5 +1,6 @@
 #include "reconcile.h"
 #include "readtype.h"
+#include <cstdio>
 using namespace std;
 
 void Reconcile_(TransactionSet& s,int i)

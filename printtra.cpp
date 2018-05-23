@@ -1,4 +1,5 @@
 #include "printtra.h"
+#include <cstdio>
 using namespace std;
 
 void PrintTransactionsGlobal(const TransactionSet& transactions)

@@ -1,4 +1,5 @@
 #include "number.h"
+#include <cstdio>
 #include <cmath>
 using namespace std;
 

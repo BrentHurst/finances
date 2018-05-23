@@ -1,6 +1,8 @@
 #include <string.h>
 #include "readtype.h"
 #include "iodefinesandconsts.h"
+#include "number.h"
+#include <cstdio>
 
 string ReadString()
 {

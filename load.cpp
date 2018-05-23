@@ -12,6 +12,8 @@
 
 #include "finances.h"
 #include "iogbh.h"
+#include "number.h"
+#include "readtype.h"
 #include <vector>
 #include <cstdio>
 #include <cstdlib>

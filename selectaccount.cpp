@@ -9,6 +9,10 @@
  ************************************************/
 
 #include "finances.h"
+#include "number.h"
+#include "readtype.h"
+#include "printtra.h"
+#include "cmd.h"
 #include <cstdio>
 using namespace std;
 

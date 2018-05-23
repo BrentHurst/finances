@@ -10,6 +10,8 @@
 
 
 #include "finances.h"
+#include "readtype.h"
+#include "number.h"
 #include <cstdio>
 #include <cstdlib>
 using namespace std;

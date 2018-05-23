@@ -1,5 +1,6 @@
 #include "cmd.h"
 #include "readtype.h"
+#include <cstdio>
 using namespace std;
 
 

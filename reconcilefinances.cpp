@@ -10,6 +10,8 @@
 
 #include <set>
 #include <cstdio>
+#include "ask.h"
+#include "reconcile.h"
 #include "finances.h"
 using namespace std;
 

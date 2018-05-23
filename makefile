@@ -52,6 +52,9 @@ $(EXECUTABLE): $(OBJECTS)
 %.o: %.$(LANGUAGE) %.h $(MAINHEADER)
 	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
 
+%.o: %.$(LANGUAGE) $(MAINHEADER)
+	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
+
 .PHONY: clean
 clean:
 	rm $(THESEOBJECTS)

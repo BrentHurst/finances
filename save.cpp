@@ -12,6 +12,7 @@
 
 #include "finances.h"
 #include "iogbh.h"
+#include "number.h"
 #include <vector>
 #include <cstdio>
 #include <cstdlib>

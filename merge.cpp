@@ -9,6 +9,8 @@
  ************************************************/
 
 #include "finances.h"
+#include "number.h"
+#include "readtype.h"
 #include <cstdio>
 using namespace std;
 
