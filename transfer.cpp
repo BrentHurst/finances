@@ -26,8 +26,8 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 	amount = Round2Decimals(t);
 	currency = curr;
 
-	//foreign = 0;
-	//foreignamount = 0;
+	foreign = 0;
+	foreignamount = 0;
 }
 
 void Transfer::Print()
