@@ -9,6 +9,7 @@
  ************************************************/
 
 #include "finances.h"
+#include "printtra.h"
 #include <cstdio>
 using namespace std;
 
@@ -102,4 +103,45 @@ void Finances::PrintCorrectAccountMap(const string& type)
 		PrintTags();
 	else if(type=="to/from")
 		PrintTofroms();
+}
+
+void Finances::PrintForeignTransactions()
+{
+	TransactionSet::iterator sit;
+	for(sit=transactions.begin(); sit != transactions.end(); sit++)
+		if((*sit)->foreign)
+			(*sit)->Print();
+}
+
+void Finances::PrintForeignTransfers()
+{
+	TransferSet::iterator sit;
+	for(sit=transfers.begin(); sit != transfers.end(); sit++)
+		if((*sit)->foreign)
+			(*sit)->Print();
+}
+
+void Finances::PrintMacros()
+{
+	set<string>::iterator sit;
+	TransactionSet::iterator tsit1;
+	TransferSet::iterator tsit2;
+
+	if(macronames.empty())
+	{
+		printf("There aren't any macros.\n");
+		return;
+	}
+
+	for(sit=macronames.begin(); sit != macronames.end(); sit++)
+	{
+		printf("%s\n",(*sit).c_str());
+
+		for(tsit1 = macrotransactions[*sit].begin(); tsit1 != macrotransactions[*sit].end(); tsit1++)
+			(*tsit1)->Print();
+		for(tsit2 = macrotransfers[*sit].begin(); tsit2 != macrotransfers[*sit].end(); tsit2++)
+			(*tsit2)->Print();
+
+		printf("\n");
+	}
 }

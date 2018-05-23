@@ -36,7 +36,7 @@ EXTERNALLIBOBJECTS =    ExternalLibObjects/ConstrDestr.o \
 						ExternalLibObjects/setPublic.o
 
 EXECUTABLE = finances.exe
-HEADER = finances.h
+MAINHEADER = finances.h
 OBJECTS = $(THESEOBJECTS) $(EXTERNALLIBOBJECTS)
 CC = g++
 LANGUAGE = cpp
@@ -49,7 +49,7 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LFLAGS) -o $(EXECUTABLE) $(OBJECTS)
 
-%.o: %.$(LANGUAGE) $(HEADER)
+%.o: %.$(LANGUAGE) %.h $(MAINHEADER)
 	$(CC) $(CFLAGS) -c $*.$(LANGUAGE)
 
 .PHONY: clean

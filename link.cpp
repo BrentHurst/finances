@@ -9,6 +9,7 @@
  ************************************************/
 
 #include "finances.h"
+#include "number.h"
 using namespace std;
 
 
@@ -165,4 +166,3 @@ void Finances::UnlinkTransfer(Transfer* t)
 		t->to->unreconciledtransfers.erase(t->to->unreconciledtransfers.find(t));
 	}
 }
-

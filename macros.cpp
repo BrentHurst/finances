@@ -26,32 +26,6 @@ static void FillCmdList()
 	cmdList[0]="Return to Main Menu";
 }
 
-void Finances::PrintMacros()
-{
-	set<string>::iterator sit;
-	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
-
-	if(macronames.empty())
-	{
-		printf("There aren't any macros.\n");
-		return;
-	}
-
-	for(sit=macronames.begin(); sit != macronames.end(); sit++)
-	{
-		printf("%s\n",(*sit).c_str());
-
-		for(tsit1 = macrotransactions[*sit].begin(); tsit1 != macrotransactions[*sit].end(); tsit1++)
-			(*tsit1)->Print();
-		for(tsit2 = macrotransfers[*sit].begin(); tsit2 != macrotransfers[*sit].end(); tsit2++)
-			(*tsit2)->Print();
-
-		printf("\n");
-	}
-
-}
-
 void Finances::RunAMacro()
 {
 	Date* d;
