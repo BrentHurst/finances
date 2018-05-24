@@ -8,7 +8,7 @@ string dtos_(double d)
 {
 	char c[100];
 	string s;
-	sprintf(c,"%f",d);
+	sprintf(c,"%.2f",d);
 	s = c;
 	return s;
 }
