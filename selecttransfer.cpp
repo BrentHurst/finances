@@ -200,7 +200,6 @@ void Finances::SelectTransfer(TransferSet& ts)
 	printf("\n");
 	t->Print();
 	while(RunCommand(this,t,GetCommand(cmdList)));
-	{
-		printf("hi\n");
-	}
+
+	printf("hi\n");
 }

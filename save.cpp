@@ -128,7 +128,8 @@ void Finances::SaveTransfers(FILE* f,int newyear)
 		return;
 
 	for(sit = transfers.begin(); sit != transfers.end(); sit++)
-		SaveTransfer(f,*sit);
+		if(*sit)
+			SaveTransfer(f,*sit);
 }
 
 void Finances::SaveRoundUps(FILE* f,int newyear)

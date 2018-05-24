@@ -19,6 +19,8 @@ void Finances::Merge(Transfer* t)
 	char c;
 	Transfer* t2;
 	TransferSet::iterator sit;
+	TransferSet::iterator sit2;
+	int done;
 
 	Date* d;
 	Account* from;
@@ -45,18 +47,31 @@ void Finances::Merge(Transfer* t)
 	reconciled = 1;
 	amount = 0;
 
-	for(sit=transfers.begin(); sit != transfers.end(); )
+	done = 0;
+
+	do
 	{
-		t2 = *sit;
-		sit++;
-		if(t2->reconciled && t2->from==from && t2->to==to)
+		for(sit=transfers.begin(); sit != transfers.end(); )
 		{
-			amount = Round2Decimals(amount + t2->amount);
-			UnlinkTransfer(t2);
-			delete t2->date;
-			delete t2;
+			t2 = *sit;
+			if(t2->reconciled && t2->from==from && t2->to==to)
+			{
+				amount = Round2Decimals(amount + t2->amount);
+				UnlinkTransfer(t2);
+				delete t2->date;
+				delete t2;
+				t2 = NULL;
+				transfers.erase(sit);
+				break;
+			}
+			else
+				sit++;
 		}
-	}
+
+		if(sit==transfers.end())
+			done = 1;
+
+	}while(!done);
 
 	t2 = new Transfer(d,from,to,info,reconciled,amount,currency);
 	LinkTransfer(t2,0);
