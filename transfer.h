@@ -12,7 +12,7 @@ using namespace std;
 class Transfer
 {
 	public:
-		int id;
+		unsigned int id;
 		Account* from;
 		Account* to;
 		Date* date;

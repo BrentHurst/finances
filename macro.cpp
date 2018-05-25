@@ -34,7 +34,7 @@ void Finances::RunAMacro()
 	string s;
 	char c;
 	TransactionSet::iterator tsit1;
-	int i;
+	unsigned int i;
 	Transaction* t1;
 	Transfer* t2;
 

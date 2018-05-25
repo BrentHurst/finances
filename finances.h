@@ -47,7 +47,7 @@ class Finances
 		TransactionSet unreconciledtransactions;
 		TransferVec transfers;
 		TransferVec unreconciledtransfers;
-		int nexttransferid;
+		unsigned int nexttransferid;
 
 		string currency;
 

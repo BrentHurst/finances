@@ -18,10 +18,9 @@ void Finances::Merge(Transfer* t)
 {
 	char c;
 	Transfer* t2;
-	TransferVec::iterator sit;
-	TransferVec::iterator sit2;
-	int done;
+	unsigned int i;
 
+	int id_;
 	Date* d;
 	Account* from;
 	Account* to;
@@ -41,39 +40,27 @@ void Finances::Merge(Transfer* t)
 
 	d = new Date;
 	d->setWithTotalDay(t->date->getTotalDay());
+	id_ = t->id;
 	from = t->from;
 	to = t->to;
 	info = "Merged";
 	reconciled = 1;
 	amount = 0;
 
-	done = 0;
-
-	do
-	{
-		for(sit=transfers.begin(); sit != transfers.end(); )
+	for(i=0; i<transfers.size(); i++)
+		if(transfers[i] && transfers[i]->reconciled && transfers[i]->from==from && transfers[i]->to==to)
 		{
-			t2 = *sit;
-			if(t2->reconciled && t2->from==from && t2->to==to)
-			{
-				amount = Round2Decimals(amount + t2->amount);
-				UnlinkTransfer(t2);
-				delete t2->date;
-				delete t2;
-				t2 = NULL;
-				transfers.erase(sit);
-				break;
-			}
-			else
-				sit++;
+			t2 = transfers[i];
+			amount = Round2Decimals(amount + t2->amount);
+			//fprintf(stderr,"%d :: %d %d : ",i,t2,t2->date);
+			//fprintf(stderr,"%d ",t2->date != NULL);
+			UnlinkTransfer(t2);
+			//fprintf(stderr,"%d\n",t2->date != NULL);
+			delete t2->date;
+			delete t2;
 		}
 
-		if(sit==transfers.end())
-			done = 1;
-
-	}while(!done);
-
-	t2 = new Transfer(d,from,to,info,reconciled,amount,currency);
+	t2 = new Transfer(id_,d,from,to,info,reconciled,amount,currency);
 	LinkTransfer(t2,0);
 
 	printf("Transfers Successfully Merged\n");

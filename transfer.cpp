@@ -11,6 +11,7 @@
 #include "transfer.h"
 #include "account.h"
 #include "number.h"
+#include <cstdlib>
 #include <cstdio>
 using namespace std;
 

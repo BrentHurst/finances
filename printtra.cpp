@@ -20,7 +20,8 @@ void PrintTransfersGlobal(const TransferVec& transfers)
 	//need headings
 
 	for(i=0; i<transfers.size(); i++)
-		transfers[i]->Print();
+		if(transfers[i])
+			transfers[i]->Print();
 
 	printf("\n");
 }
