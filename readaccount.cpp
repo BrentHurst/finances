@@ -32,7 +32,13 @@ Account* Finances::ReadInAccount(AccountMap& m,string type,int z,int setup)
 
 	while(1)
 	{
-		PrintCorrectAccountMap(type);
+		if(type != "to" && type != "from")
+			PrintCorrectAccountMap(type);
+		else if(m.begin()->second->type==earmark)
+			PrintEarmarks();
+		else if(m.begin()->second->type==location)
+			PrintLocations();
+
 		printf("%s: ",type.c_str());
 		str = ReadString();
 

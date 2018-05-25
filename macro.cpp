@@ -92,7 +92,7 @@ void Finances::AddAMacro()
 	TransactionSet ts1;
 	TransferVec ts2;
 	TransactionSet::iterator tsit1;
-	TransferVec::iterator tsit2;
+	unsigned int i;
 
 	if(macronames.empty())
 		printf("There aren't any macros yet.\n");
@@ -163,11 +163,12 @@ void Finances::AddAMacro()
 	{
 		printf("Is this correct?\n");
 
-		printf("%s:",s.c_str());
+		printf("%s\n",s.c_str());
 		for(tsit1 = ts1.begin(); tsit1 != ts1.end(); tsit1++)
 			(*tsit1)->Print();
-		for(tsit2 = ts2.begin(); tsit2 != ts2.end(); tsit2++)
-			(*tsit2)->Print();
+		for(i=0; i<ts2.size(); i++)
+			if(ts2[i])
+				ts2[i]->Print();
 
 		printf("[y/n]: ");
 		c = ReadChar();
@@ -187,11 +188,12 @@ void Finances::AddAMacro()
 			delete (*tsit1)->date;
 			delete *tsit1;
 		}
-		for(tsit2 = ts2.begin(); tsit2 != ts2.end(); tsit2++)
-		{
-			delete (*tsit2)->date;
-			delete *tsit2;
-		}
+		for(i=0; i<ts2.size(); i++)
+			if(ts2[i])
+			{
+				delete (ts2[i])->date;
+				delete ts2[i];
+			}
 		printf("Macro discarded.\n");
 	}
 }
