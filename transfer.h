@@ -36,5 +36,6 @@ typedef vector<Transfer*> TransferVec;
 
 void PutTransferInTransferVec(Transfer* t,TransferVec& tv);
 void RemoveTransferFromTransferVec(Transfer* t,TransferVec& tv);
+void InsertionSort3(TransferVec& tv);
 
 #endif

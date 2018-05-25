@@ -86,3 +86,39 @@ void RemoveTransferFromTransferVec(Transfer* t,TransferVec& tv)
 {
 	tv[t->id] = NULL;
 }
+
+static int Less(Transfer* a,Transfer* b)
+{
+	return (a->date < b->date);
+}
+
+void InsertionSort3(TransferVec& tv)
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int size;
+	unsigned int minindex;
+	Transfer* tmp;
+
+	size = tv.size();
+
+	for(i=0; i<size; i++)
+		if(!tv[i])
+			return;
+
+	minindex = 0;
+	for(i=1; i<size; i++)
+		if(Less(tv[i],tv[minindex]))
+			minindex = i;
+	tmp = tv[0];
+	tv[0] = tv[minindex];
+	tv[minindex] = tmp;
+
+	for(i=1; i<size; i++)
+	{
+		tmp = tv[i];
+		for(j = i; tmp < tv[j-1]; j--)
+			tv[j] = tv[j-1];
+		tv[j] = tmp;
+	}
+}

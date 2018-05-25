@@ -146,6 +146,8 @@ void Finances::LoadTransfers(const vector<vector<string> >& file,int a,int b)
 		t = LoadTransfer(file,i);
 		LinkTransfer(t,1);
 	}
+
+	InsertionSort3(transfers);
 }
 
 void Finances::LoadRoundUps(const vector<vector<string> >& file,int a,int b)
