@@ -18,8 +18,8 @@ void Finances::Merge(Transfer* t)
 {
 	char c;
 	Transfer* t2;
-	TransferSet::iterator sit;
-	TransferSet::iterator sit2;
+	TransferVec::iterator sit;
+	TransferVec::iterator sit2;
 	int done;
 
 	Date* d;

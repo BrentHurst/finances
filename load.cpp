@@ -121,6 +121,7 @@ Transfer* Finances::LoadTransfer(const vector<vector<string> >& file,int i)
 	d->setWithTotalDay(stoi_(file[i][0]));
 	s = file[i][3];
 	t = new Transfer(
+			nexttransferid,
 			d,
 			allaccounts[file[i][1]],
 			allaccounts[file[i][2]],
@@ -129,6 +130,7 @@ Transfer* Finances::LoadTransfer(const vector<vector<string> >& file,int i)
 			stod_(file[i][5]),
 			currency
 			);
+	nexttransferid++;
 
 	return t;
 }
@@ -189,7 +191,7 @@ void Finances::LoadMacros(const vector<vector<string> >& file,int a,int b)
 			while(i<b && file[i][0] != "MACRO")
 			{
 				t2 = LoadTransfer(file,i);
-				macrotransfers[n].insert(t2);
+				PutTransferInTransferVec(t2,macrotransfers[n]);
 				i++;
 			}
 		}

@@ -30,8 +30,8 @@ class Account
 
 		TransactionSet transactions;
 		TransactionSet unreconciledtransactions;
-		TransferSet transfers;
-		TransferSet unreconciledtransfers;
+		TransferVec transfers;
+		TransferVec unreconciledtransfers;
 
 
 		//account.cpp

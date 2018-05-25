@@ -6,6 +6,6 @@
 using namespace std;
 
 void PrintTransactionsGlobal(const TransactionSet& transactions);
-void PrintTransfersGlobal(const TransferSet& transfers);
+void PrintTransfersGlobal(const TransferVec& transfers);
 
 #endif

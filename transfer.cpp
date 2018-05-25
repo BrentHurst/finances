@@ -15,9 +15,10 @@
 using namespace std;
 
 
-Transfer::Transfer(Date* d,Account* f,Account* t_,
+Transfer::Transfer(int id_,Date* d,Account* f,Account* t_,
 		           string& i,int r,double t,const string& curr)
 {
+	id = id_;
 	date = d;
 	from = f;
 	to = t_;
@@ -33,7 +34,8 @@ Transfer::Transfer(Date* d,Account* f,Account* t_,
 void Transfer::Print()
 {
 	if(!foreign)
-		printf("%s: %s%9.2f %15s -> %-15s \t%c\n\t%s\n",
+		printf("%d: %s %s%9.2f %15s -> %-15s \t%c\n\t%s\n",
+				id,
 				date->getDate_ddMyyyy_nothing().c_str(),
 				currency.c_str(),
 				abs_(amount),
@@ -43,7 +45,8 @@ void Transfer::Print()
 				info.c_str()
 			  );
 	else
-		printf("%s: %s%9.2f (%s%9.2f) %15s -> %-15s \t%c\n\t%s\n",
+		printf("%d: %s %s%9.2f (%s%9.2f) %15s -> %-15s \t%c\n\t%s\n",
+				id,
 				date->getDate_ddMyyyy_nothing().c_str(),
 				currency.c_str(),
 				abs_(amount),
@@ -62,5 +65,23 @@ Transfer* Transfer::Copy()
 {
 	Date* d = new Date;
 	d->setWithTotalDay(date->getTotalDay());
-	return new Transfer(d,from,to,info,reconciled,amount,currency);
+	return new Transfer(id,d,from,to,info,reconciled,amount,currency);
+}
+
+void PutTransferInTransferVec(Transfer* t,TransferVec& tv)
+{
+	if(tv.size() <= t->id)
+		tv.resize(t->id + 1,NULL);
+	else if(tv[t->id])
+	{
+		fprintf(stderr,"Error. tv[%d] already has something in it.\n",t->id);
+		exit(0);
+	}
+
+	tv[t->id] = t;
+}
+
+void RemoveTransferFromTransferVec(Transfer* t,TransferVec& tv)
+{
+	tv[t->id] = NULL;
 }

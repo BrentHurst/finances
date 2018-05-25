@@ -41,12 +41,13 @@ class Finances
 
 		set<string> macronames;
 		map<string,TransactionSet> macrotransactions;
-		map<string,TransferSet> macrotransfers;
+		map<string,TransferVec> macrotransfers;
 
 		TransactionSet transactions;
 		TransactionSet unreconciledtransactions;
-		TransferSet transfers;
-		TransferSet unreconciledtransfers;
+		TransferVec transfers;
+		TransferVec unreconciledtransfers;
+		int nexttransferid;
 
 		string currency;
 
@@ -115,7 +116,7 @@ class Finances
 		void SelectTransaction(TransactionSet& ts);
 
 		//selecttransfer.cpp
-		void SelectTransfer(TransferSet& ts);
+		void SelectTransfer(TransferVec& ts);
 
 		//macro.cpp
 		void Macros();

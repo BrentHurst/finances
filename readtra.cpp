@@ -125,7 +125,8 @@ Transfer* Finances::ReadNewTransfer(int link,int fgn)
 		printf("Enter in foreign currency\n");
 	amount = Round2Decimals(ReadInTotal());
 
-	t = new Transfer(date,from,to,info,0,amount,currency);
+	t = new Transfer(nexttransferid,date,from,to,info,0,amount,currency);
+	nexttransferid++;
 
 	if(fgn)
 	{

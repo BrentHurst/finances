@@ -36,34 +36,33 @@ void Reconcile_(TransactionSet& s,int i)
 	printf("\nSave and quit for your changes to these transactions to take full effect.\n\n");
 }
 
-void Reconcile_(TransferSet& s,int i)
+void Reconcile_(TransferVec& tv,int a)
 {
-	TransferSet::iterator sit;
-	TransferSet::iterator sit2;
+	unsigned int i;
 	char c;
 
-	for(sit=s.begin(); sit != s.end();   )
-	{
-		if(!i)
-		{
-			do
-			{
-				(*sit)->Print();
-				printf("Reconcile this transfer? [y/n]: ");
-				c = ReadChar();
-			}while(c!='y' && c!='Y' && c!='n' && c!='N');
-		}
-		printf("\n");
 
-		if(i || c=='y' || c=='Y')
+	for(i=0; i<tv.size(); i++)
+	{
+		if(tv[i])
 		{
-			(*sit)->Reconcile();
-			sit2 = sit;
-			sit++;
-			s.erase(sit2);
+			if(!a)
+			{
+				do
+				{
+					tv[i]->Print();
+					printf("Reconcile this transfer? [y/n]: ");
+					c = ReadChar();
+				}while(c!='y' && c!='Y' && c!='n' && c!='N');
+				printf("\n");
+			}
+
+			if(a || c=='y' || c=='Y')
+			{
+				tv[i]->Reconcile();
+				RemoveTransferFromTransferVec(tv[i],tv);
+			}
 		}
-		else
-			sit++;
 	}
 
 	printf("\nSave and quit for your changes to these transfers to take full effect.\n\n");

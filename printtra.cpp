@@ -13,14 +13,14 @@ void PrintTransactionsGlobal(const TransactionSet& transactions)
 
 	printf("\n");
 }
-void PrintTransfersGlobal(const TransferSet& transfers)
+void PrintTransfersGlobal(const TransferVec& transfers)
 {
-	TransferSet::iterator iter;
+	unsigned int i;
 
 	//need headings
 
-	for(iter=transfers.begin(); iter != transfers.end(); iter++)
-		(*iter)->Print();
+	for(i=0; i<transfers.size(); i++)
+		transfers[i]->Print();
 
 	printf("\n");
 }

@@ -6,6 +6,6 @@
 using namespace std;
 
 void Reconcile_(TransactionSet& s,int i);
-void Reconcile_(TransferSet& s,int i);
+void Reconcile_(TransferVec& s,int i);
 
 #endif

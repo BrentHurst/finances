@@ -118,7 +118,7 @@ void SaveTransfer(FILE* f,Transfer* t)
 void Finances::SaveTransfers(FILE* f,int newyear)
 {
 	vector<string> v;
-	TransferSet::iterator sit;
+	unsigned int i;
 
 	v.push_back("TRANSFERS");
 	PutLine();
@@ -127,9 +127,9 @@ void Finances::SaveTransfers(FILE* f,int newyear)
 	if(newyear)
 		return;
 
-	for(sit = transfers.begin(); sit != transfers.end(); sit++)
-		if(*sit)
-			SaveTransfer(f,*sit);
+	for(i=0; i<transfers.size(); i++)
+		if(transfers[i])
+			SaveTransfer(f,transfers[i]);
 }
 
 void Finances::SaveRoundUps(FILE* f,int newyear)
@@ -163,7 +163,7 @@ void Finances::SaveMacros(FILE* f,int newyear)
 	vector<string> v;
 	set<string>::iterator sit;
 	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
+	unsigned int i;
 
 	v.push_back("MACROS");
 	PutLine();
@@ -185,8 +185,9 @@ void Finances::SaveMacros(FILE* f,int newyear)
 		v.push_back("MTRANSFERS");
 		PutLine();
 		v.clear();
-		for(tsit2 = macrotransfers.find(*sit)->second.begin(); tsit2 != macrotransfers.find(*sit)->second.end(); tsit2++)
-			SaveTransfer(f,*tsit2);
+		for(i=0; i<macrotransfers[*sit].size(); i++)
+			if(macrotransfers[*sit][i])
+				SaveTransfer(f,macrotransfers[*sit][i]);
 	}
 }
 

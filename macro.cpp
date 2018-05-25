@@ -34,7 +34,7 @@ void Finances::RunAMacro()
 	string s;
 	char c;
 	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
+	int i;
 	Transaction* t1;
 	Transfer* t2;
 
@@ -70,11 +70,14 @@ void Finances::RunAMacro()
 		LinkTransaction(t1,0);
 	}
 
-	for(tsit2=macrotransfers[s].begin(); tsit2 != macrotransfers[s].end(); tsit2++)
+	for(i=0; i<macrotransfers[s].size(); i++)
 	{
-		t2 = (*tsit2)->Copy();
-		t2->date->setWithTotalDay(d->getTotalDay());
-		LinkTransfer(t2,0);
+		if(macrotransfers[s][i])
+		{
+			t2 = macrotransfers[s][i]->Copy();
+			t2->date->setWithTotalDay(d->getTotalDay());
+			LinkTransfer(t2,0);
+		}
 	}
 
 	printf("Macro successfully run.\n");
@@ -87,9 +90,9 @@ void Finances::AddAMacro()
 	Transaction* transaction;
 	Transfer* transfer;
 	TransactionSet ts1;
-	TransferSet ts2;
+	TransferVec ts2;
 	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
+	TransferVec::iterator tsit2;
 
 	if(macronames.empty())
 		printf("There aren't any macros yet.\n");
@@ -153,7 +156,7 @@ void Finances::AddAMacro()
 			break;
 
 		transfer = ReadNewTransfer(0,0);
-		ts2.insert(transfer);
+		PutTransferInTransferVec(transfer,ts2);
 	}
 
 	do
@@ -197,7 +200,7 @@ void Finances::DeleteAMacro()
 {
 	string s;
 	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
+	unsigned int i;
 
 	if(macronames.empty())
 	{
@@ -222,8 +225,9 @@ void Finances::DeleteAMacro()
 		delete *tsit1;
 	macrotransactions.erase(macrotransactions.find(s));
 
-	for(tsit2 = macrotransfers[s].begin(); tsit2 != macrotransfers[s].end(); tsit2++)
-		delete *tsit2;
+	for(i=0; i<macrotransfers[s].size(); i++)
+		if(macrotransfers[s][i])
+			delete macrotransfers[s][i];
 	macrotransfers.erase(macrotransfers.find(s));
 }
 

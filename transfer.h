@@ -3,7 +3,7 @@
 
 class Account;
 
-#include <set>
+#include <vector>
 #include "Date.h"
 #include "tracomp.h"
 using namespace std;
@@ -12,6 +12,7 @@ using namespace std;
 class Transfer
 {
 	public:
+		int id;
 		Account* from;
 		Account* to;
 		Date* date;
@@ -24,14 +25,16 @@ class Transfer
 		double foreignamount;
 		string foreigncurrency;
 
-		Transfer(Date* d,Account* f,Account* t_,
+		Transfer(int id_,Date* d,Account* f,Account* t_,
 			     string& info,int r,double t,const string& curr);
 		void Print();
 		void Reconcile();
 		Transfer* Copy();
 };
 
+typedef vector<Transfer*> TransferVec;
 
-typedef multiset<Transfer*,tracomp> TransferSet;
+void PutTransferInTransferVec(Transfer* t,TransferVec& tv);
+void RemoveTransferFromTransferVec(Transfer* t,TransferVec& tv);
 
 #endif

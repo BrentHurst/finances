@@ -39,28 +39,21 @@ static void FillCmdList()
 	cmdList[0]="Return to Main Menu";
 }
 
-Transfer* GetTransferFromUser(TransferSet& ts)
+Transfer* GetTransferFromUser(TransferVec& ts)
 {
 	unsigned int i;
-	vector<Transfer*> v;
-	TransferSet::iterator sit;
 
-	for(sit = ts.begin(); sit != ts.end(); sit++)
-		v.push_back(*(sit));
-
-	for(i=0; i<v.size(); i++)
-	{
-		printf("%d: ",i);
-		v[i]->Print();
-	}
+	for(i=0; i<ts.size(); i++)
+		if(ts[i])
+			ts[i]->Print();
 
 	do
 	{
 		printf("Please choose a transfer: ");
 		i = ReadInt();
-	}while(i>=v.size() || !v[i]);
+	}while(i>=ts.size() || i<0 || !ts[i]);
 
-	return v[i];
+	return ts[i];
 }
 
 static void Reconcile(Transfer* t,int i)
@@ -189,7 +182,7 @@ int RunCommand(Finances* f,Transfer* t,int cmd)
 	return 1;
 }
 
-void Finances::SelectTransfer(TransferSet& ts)
+void Finances::SelectTransfer(TransferVec& ts)
 {
 	Transfer* t;
 

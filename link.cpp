@@ -54,7 +54,9 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 		{
 			d = new Date;
 			d->setWithTotalDay(t->date->getTotalDay());
-			transfer = new Transfer(d,
+			transfer = new Transfer(
+									nexttransferid,
+									d,
 									t->location,
 									mit->second,
 									s,
@@ -62,6 +64,7 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 									Round2Decimals(mit->first * FindRoundUpAmount(t->amount)),
 									currency
 									);
+			nexttransferid++;
 			LinkTransfer(transfer,0);
 		}
 	}
@@ -72,7 +75,9 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 		{
 			d = new Date;
 			d->setWithTotalDay(t->date->getTotalDay());
-			transfer = new Transfer(d,
+			transfer = new Transfer(
+									nexttransferid,
+									d,
 									t->earmark,
 									mit->second,
 									s,
@@ -80,6 +85,7 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 									Round2Decimals(mit->first * FindRoundUpAmount(t->amount)),
 									currency
 									);
+			nexttransferid++;
 			LinkTransfer(transfer,0);
 		}
 	}
@@ -131,9 +137,9 @@ void Finances::UnlinkTransaction(Transaction* t)
 
 void Finances::LinkTransfer(Transfer* t,int loading)
 {
-	transfers.insert(t);
-	t->from->transfers.insert(t);
-	t->to->transfers.insert(t);
+	PutTransferInTransferVec(t,transfers);
+	PutTransferInTransferVec(t,t->from->transfers);
+	PutTransferInTransferVec(t,t->to->transfers);
 
 	if(!loading)
 	{
@@ -143,26 +149,25 @@ void Finances::LinkTransfer(Transfer* t,int loading)
 
 	if(!t->reconciled)
 	{
-		unreconciledtransfers.insert(t);
-		t->from->unreconciledtransfers.insert(t);
-		t->to->unreconciledtransfers.insert(t);
+		PutTransferInTransferVec(t,unreconciledtransfers);
+		PutTransferInTransferVec(t,t->from->unreconciledtransfers);
+		PutTransferInTransferVec(t,t->to->unreconciledtransfers);
 	}
 }
 
 void Finances::UnlinkTransfer(Transfer* t)
 {
-	transfers.erase(transfers.find(t));
-
-	t->from->transfers.erase(t->from->transfers.find(t));
-	t->to->transfers.erase(t->to->transfers.find(t));
+	RemoveTransferFromTransferVec(t,transfers);
+	RemoveTransferFromTransferVec(t,t->from->transfers);
+	RemoveTransferFromTransferVec(t,t->to->transfers);
 
 	LinkRecurTransfer(t,t->from,1);
 	LinkRecurTransfer(t,t->to,-1);
 
 	if(!t->reconciled)
 	{
-		unreconciledtransfers.erase(unreconciledtransfers.find(t));
-		t->from->unreconciledtransfers.erase(t->from->unreconciledtransfers.find(t));
-		t->to->unreconciledtransfers.erase(t->to->unreconciledtransfers.find(t));
+		RemoveTransferFromTransferVec(t,unreconciledtransfers);
+		RemoveTransferFromTransferVec(t,t->from->unreconciledtransfers);
+		RemoveTransferFromTransferVec(t,t->to->unreconciledtransfers);
 	}
 }

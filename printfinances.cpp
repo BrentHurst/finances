@@ -115,17 +115,18 @@ void Finances::PrintForeignTransactions()
 
 void Finances::PrintForeignTransfers()
 {
-	TransferSet::iterator sit;
-	for(sit=transfers.begin(); sit != transfers.end(); sit++)
-		if((*sit)->foreign)
-			(*sit)->Print();
+	unsigned int i;
+
+	for(i=0; i<transfers.size(); i++)
+		if(transfers[i])
+			transfers[i]->Print();
 }
 
 void Finances::PrintMacros()
 {
 	set<string>::iterator sit;
 	TransactionSet::iterator tsit1;
-	TransferSet::iterator tsit2;
+	unsigned int i;
 
 	if(macronames.empty())
 	{
@@ -139,8 +140,8 @@ void Finances::PrintMacros()
 
 		for(tsit1 = macrotransactions[*sit].begin(); tsit1 != macrotransactions[*sit].end(); tsit1++)
 			(*tsit1)->Print();
-		for(tsit2 = macrotransfers[*sit].begin(); tsit2 != macrotransfers[*sit].end(); tsit2++)
-			(*tsit2)->Print();
+		for(i=0; i<macrotransfers[*sit].size(); i++)
+			macrotransfers[*sit][i]->Print();
 
 		printf("\n");
 	}
