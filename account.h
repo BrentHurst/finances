@@ -28,8 +28,8 @@ class Account
 		AccountMap subaccounts;
 		Account* superaccount;
 
-		TransactionSet transactions;
-		TransactionSet unreconciledtransactions;
+		TransactionVec transactions;
+		TransactionVec unreconciledtransactions;
 		TransferVec transfers;
 		TransferVec unreconciledtransfers;
 

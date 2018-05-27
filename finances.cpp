@@ -4,6 +4,7 @@ using namespace std;
 Finances::Finances()
 {
 	nexttransferid = 0;
+	nexttransactionid = 0;
 	locations.clear();
 	earmarks.clear();
 	tags.clear();

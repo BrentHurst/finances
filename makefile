@@ -21,7 +21,6 @@ THESEOBJECTS =  account.o \
 				selecttransaction.o \
 				selecttransfer.o \
 				setup.o \
-				tracomp.o \
 				transaction.o \
 				transfer.o
 

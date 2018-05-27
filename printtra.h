@@ -5,7 +5,7 @@
 #include "transfer.h"
 using namespace std;
 
-void PrintTransactionsGlobal(const TransactionSet& transactions);
+void PrintTransactionsGlobal(const TransactionVec& transactions);
 void PrintTransfersGlobal(const TransferVec& transfers);
 
 #endif

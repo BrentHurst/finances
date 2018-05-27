@@ -107,10 +107,11 @@ void Finances::PrintCorrectAccountMap(const string& type)
 
 void Finances::PrintForeignTransactions()
 {
-	TransactionSet::iterator sit;
-	for(sit=transactions.begin(); sit != transactions.end(); sit++)
-		if((*sit)->foreign)
-			(*sit)->Print();
+	unsigned int i;
+
+	for(i=0; i<transactions.size(); i++)
+		if(transactions[i])
+			transactions[i]->Print();
 }
 
 void Finances::PrintForeignTransfers()
@@ -125,7 +126,6 @@ void Finances::PrintForeignTransfers()
 void Finances::PrintMacros()
 {
 	set<string>::iterator sit;
-	TransactionSet::iterator tsit1;
 	unsigned int i;
 
 	if(macronames.empty())
@@ -138,10 +138,13 @@ void Finances::PrintMacros()
 	{
 		printf("%s\n",(*sit).c_str());
 
-		for(tsit1 = macrotransactions[*sit].begin(); tsit1 != macrotransactions[*sit].end(); tsit1++)
-			(*tsit1)->Print();
+		for(i=0; i<macrotransactions[*sit].size(); i++)
+			if(macrotransactions[*sit][i])
+				macrotransactions[*sit][i]->Print();
+
 		for(i=0; i<macrotransfers[*sit].size(); i++)
-			macrotransfers[*sit][i]->Print();
+			if(macrotransfers[*sit][i])
+				macrotransfers[*sit][i]->Print();
 
 		printf("\n");
 	}

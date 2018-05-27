@@ -51,7 +51,7 @@ Transfer* GetTransferFromUser(TransferVec& ts)
 	{
 		printf("Please choose a transfer: ");
 		i = ReadInt();
-	}while(i>=ts.size() || i<0 || !ts[i]);
+	}while(i>=ts.size() || !ts[i]);
 
 	return ts[i];
 }
@@ -193,6 +193,4 @@ void Finances::SelectTransfer(TransferVec& ts)
 	printf("\n");
 	t->Print();
 	while(RunCommand(this,t,GetCommand(cmdList)));
-
-	printf("hi\n");
 }

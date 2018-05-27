@@ -33,7 +33,6 @@ void Finances::RunAMacro()
 	Date* d;
 	string s;
 	char c;
-	TransactionSet::iterator tsit1;
 	unsigned int i;
 	Transaction* t1;
 	Transfer* t2;
@@ -63,11 +62,14 @@ void Finances::RunAMacro()
 	d = new Date;
 	d->ReadInDate();
 
-	for(tsit1=macrotransactions[s].begin(); tsit1 != macrotransactions[s].end(); tsit1++)
+	for(i=0; i<macrotransactions[s].size(); i++)
 	{
-		t1 = (*tsit1)->Copy();
-		t1->date->setWithTotalDay(d->getTotalDay());
-		LinkTransaction(t1,0);
+		if(macrotransactions[s][i])
+		{
+			t1 = macrotransactions[s][i]->Copy();
+			t1->date->setWithTotalDay(d->getTotalDay());
+			LinkTransaction(t1,0);
+		}
 	}
 
 	for(i=0; i<macrotransfers[s].size(); i++)
@@ -89,9 +91,8 @@ void Finances::AddAMacro()
 	char c;
 	Transaction* transaction;
 	Transfer* transfer;
-	TransactionSet ts1;
+	TransactionVec ts1;
 	TransferVec ts2;
-	TransactionSet::iterator tsit1;
 	unsigned int i;
 
 	if(macronames.empty())
@@ -141,7 +142,7 @@ void Finances::AddAMacro()
 			break;
 
 		transaction = ReadNewTransaction(0,0);
-		ts1.insert(transaction);
+		PutTransactionInTransactionVec(transaction,ts1);
 	}
 
 	while(1)
@@ -164,8 +165,9 @@ void Finances::AddAMacro()
 		printf("Is this correct?\n");
 
 		printf("%s\n",s.c_str());
-		for(tsit1 = ts1.begin(); tsit1 != ts1.end(); tsit1++)
-			(*tsit1)->Print();
+		for(i=0; i<ts1.size(); i++)
+			if(ts1[i])
+				ts1[i]->Print();
 		for(i=0; i<ts2.size(); i++)
 			if(ts2[i])
 				ts2[i]->Print();
@@ -183,11 +185,12 @@ void Finances::AddAMacro()
 	}
 	else
 	{
-		for(tsit1 = ts1.begin(); tsit1 != ts1.end(); tsit1++)
-		{
-			delete (*tsit1)->date;
-			delete *tsit1;
-		}
+		for(i=0; i<ts1.size(); i++)
+			if(ts1[i])
+			{
+				delete (ts1[i])->date;
+				delete ts1[i];
+			}
 		for(i=0; i<ts2.size(); i++)
 			if(ts2[i])
 			{
@@ -201,7 +204,6 @@ void Finances::AddAMacro()
 void Finances::DeleteAMacro()
 {
 	string s;
-	TransactionSet::iterator tsit1;
 	unsigned int i;
 
 	if(macronames.empty())
@@ -223,8 +225,9 @@ void Finances::DeleteAMacro()
 
 	macronames.erase(s);
 
-	for(tsit1 = macrotransactions[s].begin(); tsit1 != macrotransactions[s].end(); tsit1++)
-		delete *tsit1;
+	for(i=0; i<macrotransactions[s].size(); i++)
+		if(macrotransactions[s][i])
+			delete macrotransactions[s][i];
 	macrotransactions.erase(macrotransactions.find(s));
 
 	for(i=0; i<macrotransfers[s].size(); i++)

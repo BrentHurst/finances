@@ -2,14 +2,15 @@
 #include <cstdio>
 using namespace std;
 
-void PrintTransactionsGlobal(const TransactionSet& transactions)
+void PrintTransactionsGlobal(const TransactionVec& transactions)
 {
-	TransactionSet::iterator iter;
+	unsigned int i;
 
 	//need headings
 
-	for(iter=transactions.begin(); iter != transactions.end(); iter++)
-		(*iter)->Print();
+	for(i=0; i<transactions.size(); i++)
+		if(transactions[i])
+			transactions[i]->Print();
 
 	printf("\n");
 }

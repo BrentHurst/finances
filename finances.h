@@ -17,7 +17,6 @@
 #define FINANCES_H
 
 #include "account.h"
-#include "tracomp.h"
 #include "cmdcomp.h"
 #include "transfer.h"
 #include "transaction.h"
@@ -40,13 +39,14 @@ class Finances
 		map<string,pair<double,double> > conversions;
 
 		set<string> macronames;
-		map<string,TransactionSet> macrotransactions;
+		map<string,TransactionVec> macrotransactions;
 		map<string,TransferVec> macrotransfers;
 
-		TransactionSet transactions;
-		TransactionSet unreconciledtransactions;
+		TransactionVec transactions;
+		TransactionVec unreconciledtransactions;
 		TransferVec transfers;
 		TransferVec unreconciledtransfers;
+		unsigned int nexttransactionid;
 		unsigned int nexttransferid;
 
 		string currency;
@@ -113,7 +113,7 @@ class Finances
 		void Merge(Transfer* t);
 
 		//selecttransaction.cpp
-		void SelectTransaction(TransactionSet& ts);
+		void SelectTransaction(TransactionVec& ts);
 
 		//selecttransfer.cpp
 		void SelectTransfer(TransferVec& ts);

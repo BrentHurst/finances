@@ -9,11 +9,9 @@ string ReadString()
 	unsigned int SIZE = 100;
 	char s[SIZE];
 	string str;
-	//int junk;
 	fgets(s,SIZE,stdin);
 	if(strlen(s)>0 && s[strlen(s)-1]=='\n')
 		s[strlen(s)-1]='\0';
-	//FlushInputBuffer();
 	str = s;
 	return str;
 }

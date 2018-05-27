@@ -5,7 +5,6 @@ class Account;
 
 #include <vector>
 #include "Date.h"
-#include "tracomp.h"
 using namespace std;
 
 

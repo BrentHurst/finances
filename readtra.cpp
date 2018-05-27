@@ -35,7 +35,8 @@ Transaction* Finances::ReadNewTransaction(int link,int fgn)
 	info = ReadInInformation();
 	t = ReadInTotal();
 
-	transaction = new Transaction(date,tg,l,e,tf,info,0,t,currency);
+	transaction = new Transaction(nexttransactionid,date,tg,l,e,tf,info,0,t,currency);
+	nexttransactionid++;
 
 	if(fgn)
 	{

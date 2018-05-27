@@ -38,15 +38,15 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 	multimap<double,Account*>::iterator mit;
 	string s = "Automatic Round-Up Transfer";
 
-	transactions.insert(t);
+	PutTransactionInTransactionVec(t,transactions);
 
 	if(!loading)
 		amount = Round2Decimals(amount + t->amount);
 
-	t->location->transactions.insert(t);
-	t->earmark->transactions.insert(t);
-	t->tag->transactions.insert(t);
-	t->tofrom->transactions.insert(t);
+	PutTransactionInTransactionVec(t,t->location->transactions);
+	PutTransactionInTransactionVec(t,t->earmark->transactions);
+	PutTransactionInTransactionVec(t,t->tag->transactions);
+	PutTransactionInTransactionVec(t,t->tofrom->transactions);
 
 	if(!loading && Round2Decimals(FindRoundUpAmount(t->amount)) && !t->location->roundups.empty())
 	{
@@ -101,24 +101,24 @@ void Finances::LinkTransaction(Transaction* t,int loading)
 
 	if(!t->reconciled)
 	{
-		unreconciledtransactions.insert(t);
-		t->location->unreconciledtransactions.insert(t);
-		t->earmark->unreconciledtransactions.insert(t);
-		t->tag->unreconciledtransactions.insert(t);
-		t->tofrom->unreconciledtransactions.insert(t);
+		PutTransactionInTransactionVec(t,unreconciledtransactions);
+		PutTransactionInTransactionVec(t,t->location->unreconciledtransactions);
+		PutTransactionInTransactionVec(t,t->earmark->unreconciledtransactions);
+		PutTransactionInTransactionVec(t,t->tag->unreconciledtransactions);
+		PutTransactionInTransactionVec(t,t->tofrom->unreconciledtransactions);
 	}
 }
 
 void Finances::UnlinkTransaction(Transaction* t)
 {
-	transactions.erase(transactions.find(t));
+	RemoveTransactionFromTransactionVec(t,transactions);
 
 	amount = Round2Decimals(amount - t->amount);
 
-	t->location->transactions.erase(t->location->transactions.find(t));
-	t->earmark->transactions.erase(t->earmark->transactions.find(t));
-	t->tag->transactions.erase(t->tag->transactions.find(t));
-	t->tofrom->transactions.erase(t->tofrom->transactions.find(t));
+	RemoveTransactionFromTransactionVec(t,t->location->transactions);
+	RemoveTransactionFromTransactionVec(t,t->earmark->transactions);
+	RemoveTransactionFromTransactionVec(t,t->tag->transactions);
+	RemoveTransactionFromTransactionVec(t,t->tofrom->transactions);
 
 	LinkRecurTransaction(t,t->location,-1);
 	LinkRecurTransaction(t,t->earmark,-1);
@@ -127,11 +127,11 @@ void Finances::UnlinkTransaction(Transaction* t)
 
 	if(!t->reconciled)
 	{
-		unreconciledtransactions.erase(unreconciledtransactions.find(t));
-		t->location->unreconciledtransactions.erase(t->location->unreconciledtransactions.find(t));
-		t->earmark->unreconciledtransactions.erase(t->earmark->unreconciledtransactions.find(t));
-		t->tag->unreconciledtransactions.erase(t->tag->unreconciledtransactions.find(t));
-		t->tofrom->unreconciledtransactions.erase(t->tofrom->unreconciledtransactions.find(t));
+		RemoveTransactionFromTransactionVec(t,unreconciledtransactions);
+		RemoveTransactionFromTransactionVec(t,t->location->unreconciledtransactions);
+		RemoveTransactionFromTransactionVec(t,t->earmark->unreconciledtransactions);
+		RemoveTransactionFromTransactionVec(t,t->tag->unreconciledtransactions);
+		RemoveTransactionFromTransactionVec(t,t->tofrom->unreconciledtransactions);
 	}
 }
 

@@ -48,14 +48,11 @@ void Finances::Merge(Transfer* t)
 	amount = 0;
 
 	for(i=0; i<transfers.size(); i++)
-		if(transfers[i] && transfers[i]->reconciled && transfers[i]->from==from && transfers[i]->to==to)
+		if(transfers[i] && transfers[i]->reconciled && transfers[i]->from==from && transfers[i]->to==to && (transfers[i]->info=="Automatic Round-Up Transfer" || transfers[i]->info=="Merged"))
 		{
 			t2 = transfers[i];
 			amount = Round2Decimals(amount + t2->amount);
-			//fprintf(stderr,"%d :: %d %d : ",i,t2,t2->date);
-			//fprintf(stderr,"%d ",t2->date != NULL);
 			UnlinkTransfer(t2);
-			//fprintf(stderr,"%d\n",t2->date != NULL);
 			delete t2->date;
 			delete t2;
 		}

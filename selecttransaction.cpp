@@ -39,28 +39,21 @@ static void FillCmdList()
 	cmdList[0]="Return to Main Menu";
 }
 
-Transaction* GetTransactionFromUser(TransactionSet& ts)
+Transaction* GetTransactionFromUser(TransactionVec& ts)
 {
 	unsigned int i;
-	vector<Transaction*> v;
-	TransactionSet::iterator sit;
 
-	for(sit = ts.begin(); sit != ts.end(); sit++)
-		v.push_back(*(sit));
-
-	for(i=0; i<v.size(); i++)
-	{
-		printf("%d: ",i);
-		v[i]->Print();
-	}
+	for(i=0; i<ts.size(); i++)
+		if(ts[i])
+			ts[i]->Print();
 
 	do
 	{
 		printf("Please choose a transaction: ");
 		i = ReadInt();
-	}while(i>=v.size() || !v[i]);
+	}while(i>=ts.size() || !ts[i]);
 
-	return v[i];
+	return ts[i];
 }
 
 static void Reconcile(Transaction* t,int i)
@@ -190,7 +183,7 @@ int RunCommand(Finances* f,Transaction* t,int cmd)
 	return 1;
 }
 
-void Finances::SelectTransaction(TransactionSet& ts)
+void Finances::SelectTransaction(TransactionVec& ts)
 {
 	Transaction* t;
 

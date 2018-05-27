@@ -16,10 +16,11 @@
 using namespace std;
 
 
-Transaction::Transaction(Date* d, Account* tg, Account* l,
+Transaction::Transaction(unsigned int id_,Date* d, Account* tg, Account* l,
                          Account* a,Account* tf,string& i,
 						 int r,double t,const string& curr)
 {
+	id = id_;
 	date = d;
 	tag = tg;
 	location = l;
@@ -38,7 +39,8 @@ Transaction::Transaction(Date* d, Account* tg, Account* l,
 void Transaction::Print()
 {
 	if(!foreign)
-		printf("%s %15s. %15s. %15s. %15s. %c%s%9.2f \t%c\n\t%s\n",
+		printf("%u: %s %15s. %15s. %15s. %15s. %c%s%9.2f \t%c\n\t%s\n",
+				id,
 				date->getDate_ddMyyyy_nothing().c_str(),
 				tag->name.c_str(),
 				location->name.c_str(),
@@ -50,7 +52,8 @@ void Transaction::Print()
 				(reconciled) ? 'R' : '-',
 				info.c_str());
 	else //if foreign
-		printf("%s %15s. %15s. %15s. %15s. %c%s%9.2f (%s%9.2f) \t%c\n\t%s\n",
+		printf("%u: %s %15s. %15s. %15s. %15s. %c%s%9.2f (%s%9.2f) \t%c\n\t%s\n",
+				id,
 				date->getDate_ddMyyyy_nothing().c_str(),
 				tag->name.c_str(),
 				location->name.c_str(),
@@ -71,5 +74,23 @@ Transaction* Transaction::Copy()
 {
 	Date* d = new Date;
 	d->setWithTotalDay(date->getTotalDay());
-	return new Transaction(d,tag,location,earmark,tofrom,info,reconciled,amount,currency);
+	return new Transaction(id,d,tag,location,earmark,tofrom,info,reconciled,amount,currency);
+}
+
+void PutTransactionInTransactionVec(Transaction* t,TransactionVec& tv)
+{
+	if(tv.size() <= t->id)
+		tv.resize(t->id + 1,NULL);
+	else if(tv[t->id])
+	{
+		fprintf(stderr,"Error. tv[%u] already has something in it.\n",t->id);
+		exit(0);
+	}
+
+	tv[t->id] = t;
+}
+
+void RemoveTransactionFromTransactionVec(Transaction* t,TransactionVec& tv)
+{
+	tv[t->id] = NULL;
 }

@@ -80,6 +80,7 @@ Transaction* Finances::LoadTransaction(const vector<vector<string> >& file, int 
 	d->setWithTotalDay(stoi_(file[i][0]));
 	s = file[i][5];
 	t = new Transaction(
+			nexttransactionid,
 			d,
 			allaccounts[file[i][1]],
 			allaccounts[file[i][2]],
@@ -90,6 +91,7 @@ Transaction* Finances::LoadTransaction(const vector<vector<string> >& file, int 
 			stod_(file[i][7]),
 			currency
 			);
+	nexttransactionid++;
 	if(stoi_(file[i][8]))
 	{
 		t->foreign = 1;
@@ -182,7 +184,7 @@ void Finances::LoadMacros(const vector<vector<string> >& file,int a,int b)
 			while(file[i][0] != "MTRANSFERS")
 			{
 				t1 = LoadTransaction(file,i);
-				macrotransactions[n].insert(t1);
+				PutTransactionInTransactionVec(t1,macrotransactions[n]);
 				i++;
 			}
 		}
