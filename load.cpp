@@ -111,6 +111,8 @@ void Finances::LoadTransactions(const vector<vector<string> >& file,int a,int b)
 		t = LoadTransaction(file,i);
 		LinkTransaction(t,1);
 	}
+
+	InsertionSort3(transactions);
 }
 
 Transfer* Finances::LoadTransfer(const vector<vector<string> >& file,int i)

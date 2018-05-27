@@ -38,4 +38,6 @@ typedef vector<Transaction*> TransactionVec;
 void PutTransactionInTransactionVec(Transaction* t,TransactionVec& tv);
 void RemoveTransactionFromTransactionVec(Transaction* t,TransactionVec& tv);
 
+void InsertionSort3(TransactionVec& tv);
+
 #endif
