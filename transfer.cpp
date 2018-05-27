@@ -89,7 +89,7 @@ void RemoveTransferFromTransferVec(Transfer* t,TransferVec& tv)
 
 static int Less(Transfer* a,Transfer* b)
 {
-	return (a->date < b->date);
+	return (*(a->date) < *(b->date));
 }
 
 void InsertionSort3(TransferVec& tv)
