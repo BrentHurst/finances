@@ -35,4 +35,6 @@ class Transaction
 
 typedef multiset<Transaction*,tracomp> TransactionSet;
 
+void InsertionSort3(TransactionVec& tv);
+
 #endif
