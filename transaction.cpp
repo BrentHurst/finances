@@ -126,7 +126,7 @@ void InsertionSort3(TransactionVec& tv)
 	for(i=1; i<size; i++)
 	{
 		tmp = tv[i];
-		for(j = i; tmp < tv[j-1]; j--)
+		for(j = i; Less(tmp,tv[j-1]); j--)
 			tv[j] = tv[j-1];
 		tv[j] = tmp;
 	}
