@@ -100,7 +100,8 @@ void InsertionSort3(TransferVec& tv)
 	unsigned int minindex;
 	Transfer* tmp;
 
-	size = tv.size();
+	if(!(size = tv.size()))
+		return;
 
 	for(i=0; i<size; i++)
 		if(!tv[i])
