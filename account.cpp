@@ -80,7 +80,7 @@ Account::Account(const string& n,const string& ty,const string& curr)
 
 void Account::Print(string indent)
 {
-	printf("%s%c%s%9.2f %s",indent.c_str(),(amount<0) ? '-' : '+',currency.c_str(),abs_(amount),name.c_str());
+	printf("%s%c%s%9.2f %s",indent.c_str(),(amount<0) ? '-' : (amount>0) ? '+' : ' ',currency.c_str(),abs_(amount),name.c_str());
 	if(foreign)
 		printf(" \t(%s%9.2f)",foreigncurrency.c_str(),foreignamount);
 	printf("\n");
