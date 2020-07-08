@@ -90,3 +90,18 @@ double Round2Decimals(double d)
 {
 	return round(d*100.0)/100.0;
 }
+
+
+
+
+bool cmdcomp::operator() (int a,int b)
+{
+	if(b==a) return false;
+	if(b==0) return true;
+	if(a==0) return false;
+	if(b==9) return true;
+	if(a==9) return false;
+	if(b==8) return true;
+	if(a==8) return false;
+	return (a<b);
+}

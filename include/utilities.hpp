@@ -19,4 +19,11 @@ int stoi_(string s);
 double abs_(double f);
 double Round2Decimals(double d);
 
+class cmdcomp
+{
+	public:
+		bool operator() (const int a,const int b);
+};
+/* typedef map<int,string,cmdcomp> CommandMap; */
+
 #endif
