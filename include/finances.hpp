@@ -3,11 +3,41 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include "utilities.hpp"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 using nlohmann::json;
+
+
+class Account
+{
+	public:
+		double Amount;
+		string Name;
+		string Type;
+
+		map<string, Account*> SubAccounts;
+		Account* SuperAccount;
+
+		vector<class Transaction*> Transactions;
+		vector<class Transfer*> Transfers;
+
+
+		Account();
+		// TODO - Reconcile Functions
+		// TODO - Print - example commented out
+
+		// TODO - AsJson()
+		// TODO - FromJson()
+
+		// TODO - Add foreign currency option
+		/* string Currency; */
+		/* int ForeignCurrency; */
+		/* double ForeignAmount; */
+};
+
 
 
 class Finances
@@ -28,6 +58,7 @@ class Finances
 		map<int,string,cmdcomp> CmdList;
 		string filename;
 
+		string PrimaryCurrency;
 
 	public:
 		Finances(const string& fn);

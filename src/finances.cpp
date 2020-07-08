@@ -181,3 +181,26 @@ json Finances::ToJson()
 
 	return j;
 }
+
+
+
+
+
+
+/* void Account::Print()
+{
+	printf("%s%c%s%9.2f %s\n",indent.c_str(),(amount<0) ? '-' : (amount>0) ? '+' : ' ',currency.c_str(),abs_(amount),name.c_str());
+} */
+
+Account::Account()
+{
+	Amount = 0;
+	Name.clear();
+	Type.clear();
+
+	SubAccounts.clear();
+	SuperAccount = NULL;
+
+	Transactions.clear();
+	Transfers.clear();
+}
