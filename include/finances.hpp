@@ -21,8 +21,7 @@ class Account
 		map<string, Account*> SubAccounts;
 		Account* SuperAccount;
 
-		vector<class Transaction*> Transactions;
-		vector<class Transfer*> Transfers;
+		vector<class Tra*> Tras;
 
 
 		Account();
@@ -36,6 +35,31 @@ class Account
 		/* string Currency; */
 		/* int ForeignCurrency; */
 		/* double ForeignAmount; */
+};
+
+class Tra
+{
+	string Type;     // "transaction" or "transfer"
+
+	unsigned int Id;
+	DateClass* Date;
+	string Info;
+	int Reconciled;
+	double Amount;
+
+	// Transaction
+	Account* Tag;
+	Account* Location;
+	Account* Earmark;
+	Account* ToFrom;
+
+	// Transfer
+	Account* From;
+	Account* To;
+
+	// TODO - Reconcile
+	// TODO - Print - example commented out
+	// TODO - Constructors - examples commented out
 };
 
 

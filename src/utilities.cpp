@@ -105,3 +105,40 @@ bool cmdcomp::operator() (int a,int b)
 	if(a==8) return false;
 	return (a<b);
 }
+
+/* static int Less(Transaction* a,Transaction* b)
+{
+	return (*(a->date) < *(b->date));
+}
+
+void InsertionSort3(TraVec& tv)
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int size;
+	unsigned int minindex;
+	Transaction* tmp;
+
+	if(!(size = tv.size()))
+		return;
+
+	for(i=0; i<size; i++)
+		if(!tv[i])
+			return;
+
+	minindex = 0;
+	for(i=1; i<size; i++)
+		if(Less(tv[i],tv[minindex]))
+			minindex = i;
+	tmp = tv[0];
+	tv[0] = tv[minindex];
+	tv[minindex] = tmp;
+
+	for(i=1; i<size; i++)
+	{
+		tmp = tv[i];
+		for(j = i; Less(tmp,tv[j-1]); j--)
+			tv[j] = tv[j-1];
+		tv[j] = tmp;
+	}
+} */

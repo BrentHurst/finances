@@ -201,6 +201,36 @@ Account::Account()
 	SubAccounts.clear();
 	SuperAccount = NULL;
 
-	Transactions.clear();
-	Transfers.clear();
+	Tras.clear();
 }
+
+
+/* Transaction::Transaction(unsigned int id_,Date* d, Account* tg, Account* l,
+		Account* a,Account* tf,string& i,
+		int r,double t,const string& curr)
+{
+	id = id_;
+	date = d;
+	tag = tg;
+	location = l;
+	earmark = a;
+	tofrom = tf;
+	info = i;
+	reconciled = r;
+	amount = Round2Decimals(t);
+} */
+/* void Transaction::Print()
+{
+	printf("%u: %s %15s. %15s. %15s. %15s. %c%s%9.2f \t%c\n\t%s\n",
+			id,
+			date->getDate_ddMyyyy_nothing().c_str(),
+			tag->name.c_str(),
+			location->name.c_str(),
+			earmark->name.c_str(),
+			tofrom->name.c_str(),
+			(amount>=0) ? ' ' : '-',
+			currency.c_str(),
+			abs_(amount),
+			(reconciled) ? 'R' : '-',
+			info.c_str());
+} */
