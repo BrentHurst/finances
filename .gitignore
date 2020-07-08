@@ -1,6 +1,7 @@
 *.o
 finfo.txt
 *.exe
+*.out
 financesbrent2018*
 *.swp
 *.bak
