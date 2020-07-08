@@ -11,7 +11,7 @@ OBJECTS = $(OBJ)/finances.o    \
 		  $(OBJ)/main.o        \
 		  $(OBJ)/utilities.o
 
-CFLAGS = -std=c++11 -Wall -Wextra
+CFLAGS = -std=c++11 -Wall -Wextra -I$(INC)
 
 all: $(EXE)
 
