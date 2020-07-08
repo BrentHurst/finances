@@ -1,13 +1,20 @@
 #include "finances.hpp"
+#include "nlohmann/json.hpp"
+#include <fstream>
+#include <iostream>
 #include <string>
 
 using namespace std;
+using nlohmann::json;
 
-Finances::Finances(const string& filename)
+typedef std::runtime_error SRE;
+
+Finances::Finances(const string& fn)
 {
 	FillCmdList();
 
-	// TODO - load file
+	filename = fn;
+	LoadFromFile();
 }
 
 int Finances::RunCommand(int cmd)
@@ -133,4 +140,44 @@ void Finances::PrintCommands()
 	for(mit=CmdList.begin(); mit != CmdList.end(); mit++)
 		if(mit->second != "")
 			printf("%2d. %s\n",mit->first,mit->second.c_str());
+}
+
+void Finances::LoadFromFile()
+{
+	ifstream ifs;
+	json j;
+
+	ifs.clear();
+	ifs.open(filename, ifstream::in);
+	if(!ifs.is_open())
+		throw SRE("Finances::LoadFromFile(): Couldn't open file " + filename);
+
+	try
+	{
+		ifs >> j;
+	}
+	catch(...)
+	{
+		throw SRE("Finances::LoadFromFile(): Couldn't parse json from file " + filename);
+	}
+
+	ifs.close();
+
+	FromJson(j);
+}
+void Finances::SaveToFile()
+{
+	// TODO
+}
+void Finances::FromJson(const json& j)
+{
+	cout << j.dump(4) << endl;
+}
+json Finances::ToJson()
+{
+	json j;
+
+	// TODO
+
+	return j;
 }
