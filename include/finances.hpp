@@ -13,15 +13,16 @@ class Finances
 	protected:
 		void FillCmdList();
 
-		int ReadInCommand();
 		void PrintCommands();
+		int ReadInCommand();
+		int RunCommand(int cmd);
 
 
 		map<int,string,cmdcomp> CmdList;
 
 
 	public:
-		Finances();
+		Finances(const string& filename);
 		void Run();
 };
 

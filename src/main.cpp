@@ -3,21 +3,33 @@
 
 using namespace std;
 
-int main()
+void usage(char* argv0)
 {
-	Finances f;
+	fprintf(stderr,"usage: %s inputfile\n",argv0);
+}
 
-	f.Run();
+int main(int argc, char** argv)
+{
+	string filename;
 
-	/* try
+	if(argc != 2)
 	{
+		usage(argv[0]);
+		exit(2);
+	}
+
+	filename = argv[1];
+
+	try
+	{
+		Finances f(filename);
 		f.Run();
 	}
 	catch(runtime_error &e)
 	{
 		fprintf(stderr,"Caught a runtime error:\n\n%s\n", e.what());
 		exit(1);
-	} */
+	}
 
 	return 0;
 }
