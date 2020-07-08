@@ -113,8 +113,6 @@ int RunCommand(Finances& f,int cmd)
 
 int main(int argc, char ** argv)
 {
-	Finances f;
-
 	FillCmdList();
 
 	f.Load();

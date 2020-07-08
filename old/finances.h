@@ -1,20 +1,3 @@
-/*************************************************
- *   G BRENT HURST
- *   finances.h
- *   December 27, 2017 (original)
- *   May 10, 2018 (last edit)
- *
- *   #include "Date.h"
- *
- *   Header file for finances program.
- *   Keeps track of physical accounts (locations),
- *   earmarks, tags, tofrom, transactions, and
- *   transfers between accounts.
- *
- ************************************************/
-
-#ifndef FINANCES_H
-#define FINANCES_H
 
 #include "account.h"
 #include "cmdcomp.h"
@@ -146,9 +129,5 @@ class Finances
 		void ReadNewAccount();
 		Account* ReadInAccount(AccountMap& m,string type,int z,int setup);
 		void RenameAccount(Account* a);
-
-		//finances.cpp
-		Finances();
 };
 
-#endif

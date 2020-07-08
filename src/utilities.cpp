@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <cmath>
-#include "utilities.h"
+#include "utilities.hpp"
 
 using namespace std;
 
