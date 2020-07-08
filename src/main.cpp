@@ -11,6 +11,7 @@ void usage(char* argv0)
 int main(int argc, char** argv)
 {
 	string filename;
+	Finances* f;
 
 	if(argc != 2)
 	{
@@ -22,8 +23,8 @@ int main(int argc, char** argv)
 
 	try
 	{
-		Finances f(filename);
-		f.Run();
+		f = new Finances(filename);
+		f->Run();
 	}
 	catch(runtime_error &e)
 	{

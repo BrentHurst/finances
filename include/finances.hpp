@@ -42,7 +42,7 @@ class Tra
 	string Type;     // "transaction" or "transfer"
 
 	unsigned int Id;
-	DateClass* Date;
+	/* DateClass* Date; */
 	string Info;
 	int Reconciled;
 	double Amount;

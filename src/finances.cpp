@@ -167,17 +167,31 @@ void Finances::LoadFromFile()
 }
 void Finances::SaveToFile()
 {
-	// TODO
+	ofstream ofs;
+
+	ofs.clear();
+	ofs.open(filename, ofstream::out);
+	if(!ofs.is_open())
+		throw SRE("Finances::SaveToFile(): Couldn't open file " + filename);
+
+	ofs << ToJson().dump(4) << endl;
 }
 void Finances::FromJson(const json& j)
 {
 	cout << j.dump(4) << endl;
+	// TODO
 }
 json Finances::ToJson()
 {
 	json j;
 
-	// TODO
+	j = json::object();
+
+	j["yep"] = json::array();
+	j["yep"].push_back(1);
+	j["yep"].push_back("three");
+
+	j["nope"] = "hello";
 
 	return j;
 }
