@@ -1,13 +1,3 @@
-/*************************************************
- *   G BRENT HURST
- *   finances.cpp
- *   May 11, 2017 (original)
- *   May 11, 2018 (last edit)
- *
- *   #include "finances.h"
- *
- ************************************************/
-
 #include "ask.h"
 #include "readtype.h"
 #include <cstdio>
