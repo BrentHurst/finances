@@ -1,14 +1,3 @@
-
-#include "account.h"
-#include "cmdcomp.h"
-#include "transfer.h"
-#include "transaction.h"
-#include "iodefinesandconsts.h"
-#include <vector>
-#include <cstdio>
-#include "Date.h"
-using namespace std;
-
 /* #define PutLine() PutDelimitedLine(f,c0,c1,esc,v)
 #define PutLines() PutDelimitedFile(f,c0,c1,esc,subaccounts)
 #define GetLine() GetDelimitedLine(f,c0,c1,esc,v)

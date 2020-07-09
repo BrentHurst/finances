@@ -219,7 +219,7 @@ Account::Account()
 }
 
 
-/* Transaction::Transaction(unsigned int id_,Date* d, Account* tg, Account* l,
+/* Transaction::Transaction(unsigned int id_,GBH_Date* d, Account* tg, Account* l,
 		Account* a,Account* tf,string& i,
 		int r,double t,const string& curr)
 {
