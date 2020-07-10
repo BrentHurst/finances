@@ -12,35 +12,6 @@ const int esc = '`'; */
 class Finances
 {
 	public:
-		AccountMap locations;
-		AccountMap earmarks;
-		AccountMap tags;
-		AccountMap tofroms;
-		AccountMap allaccounts;
-
-		map<string,pair<double,double> > conversions;
-
-		set<string> macronames;
-		map<string,TransactionVec> macrotransactions;
-		map<string,TransferVec> macrotransfers;
-
-		TransactionVec transactions;
-		TransactionVec unreconciledtransactions;
-		TransferVec transfers;
-		TransferVec unreconciledtransfers;
-		unsigned int nexttransactionid;
-		unsigned int nexttransferid;
-
-		string currency;
-
-		string filename;
-		string user;
-		string year;
-
-		double amount;
-
-
-
 		//save.cpp
 		void SaveAccounts(FILE* f,int newyear);
 		void SaveTransactions(FILE* f,int newyear);
@@ -49,7 +20,6 @@ class Finances
 		void SaveMacros(FILE* f,int newyear);
 		void Save();
 		void Save(const string& f,int newyear);
-		void NewYear();
 
 		//load.cpp
 		void LoadAccounts(const vector<vector<string> >& file,int a,int b);

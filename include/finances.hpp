@@ -23,6 +23,8 @@ class Account
 
 		vector<class Tra*> Tras;
 
+		double InitialAmount;
+		GBH_Date InitialDate;
 
 		Account();
 		// TODO - Reconcile Functions
@@ -39,29 +41,38 @@ class Account
 
 class Tra
 {
-	string Type;     // "transaction" or "transfer"
+	public:
+		string Type;     // "transaction" or "transfer"
 
-	unsigned int Id;
-	/* DateClass* Date; */
-	string Info;
-	int Reconciled;
-	double Amount;
+		unsigned int Id;
+		GBH_Date Date;
+		string Info;
+		int Reconciled;
+		double Amount;
 
-	// Transaction
-	Account* Tag;
-	Account* Location;
-	Account* Earmark;
-	Account* ToFrom;
+		// Transaction
+		Account* Tag;
+		Account* Location;
+		Account* Earmark;
+		Account* ToFrom;
 
-	// Transfer
-	Account* From;
-	Account* To;
+		// Transfer
+		Account* From;
+		Account* To;
 
-	// TODO - Reconcile
-	// TODO - Print - example commented out
-	// TODO - Constructors - examples commented out
+		// TODO - Reconcile
+		// TODO - Print - example commented out
+		// TODO - Constructors - examples commented out
 };
 
+class Macro
+{
+	public:
+		string Name;
+		vector<class Tra*> Tras;
+
+		// TODO - Modify
+};
 
 
 class Finances
@@ -78,11 +89,19 @@ class Finances
 		void FromJson(const json& j);
 		json ToJson();
 
-
 		map<int,string,cmdcomp> CmdList;
 		string filename;
 
 		string PrimaryCurrency;
+
+		map<string, Account*> Locations;
+		map<string, Account*> Earmarks;
+		map<string, Account*> Tags;
+		map<string, Account*> ToFroms;
+
+		map<string, Macro*> Macros;
+
+		vector<Tra*> Tras;
 
 	public:
 		Finances(const string& fn);
