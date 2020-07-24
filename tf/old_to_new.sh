@@ -75,7 +75,6 @@ line=$(($line+1))
 lastline=$(Find_Last_Line_Of_Section $line)
 range="${line},${lastline}"
 sed -i "${range}s/\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)${separater}\(.*\)/\t\t{ \"Type\" : \"Transaction\" , \"Id\" : 0 , \"Date\" : \1 , \"Info\" : \"\6\" , \"Reconciled\" : \7 , \"Amount\" : \8 , \"Currency\" : \"$\" , \"DefaultCurrencyAmount\" : \8 , \"Tag\" : \"\2\" , \"Location\" : \"\3\" , \"Earmark\" : \"\4\" , \"ToFrom\" : \"\5\" } ,/" $tmpfile
-sed -i "${lastline}s/ ,$/\n\t] ,/" $tmpfile
 
 
 # Tras - Transfers

@@ -15,8 +15,10 @@ OBJECTS = $(OBJ)/finances.o              \
 DATENAME = gbhdate
 DATEDIR = deps/$(DATENAME)
 
-CFLAGS = -std=c++11 -Wall -Wextra -I$(INC) -I$(DATEDIR)/include
-LFLAGS = -L$(DATEDIR)/lib -l$(DATENAME)
+# CFLAGS = -std=c++11 -Wall -Wextra -I$(INC) -I$(DATEDIR)/include
+# LFLAGS = -L$(DATEDIR)/lib -l$(DATENAME)
+CFLAGS = -std=c++11 -Wall -Wextra -I$(INC) -g
+LFLAGS = -g
 
 all: $(EXE)
 

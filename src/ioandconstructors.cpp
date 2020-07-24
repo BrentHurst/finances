@@ -186,17 +186,21 @@ json Tra::AsJson()
 	j["Amount"] = Amount;
 	j["DefaultCurrencyAmount"] = DefaultCurrencyAmount;
 
-	if(Type == "transaction")
+	if(Type == "Transaction")
 	{
 		j["Tag"] = Tag->Name;
 		j["Location"] = Location->Name;
 		j["Earmark"] = Earmark->Name;
 		j["ToFrom"] = ToFrom->Name;
 	}
-	else
+	else if(Type == "Transfer")
 	{
 		j["From"] = From->Name;
 		j["To"] = To->Name;
+	}
+	else
+	{
+		fprintf(stderr,"%s\t\nError: Tra whose Type isn't Transfer or Transaction. Type = %s\n",ErrorAsterisks.c_str(),Type.c_str());
 	}
 
 	return j;
@@ -255,7 +259,7 @@ void Tra::FromJson(const json& j, map<string, Account*>& AllAccounts)
 	else
 		FromJsonError("DefaultCurrencyAmount");
 
-	if(Type == "transaction")
+	if(Type == "Transaction")
 	{
 		if(j.find("Tag") != j.end())
 			Tag = AllAccounts[j["Tag"]];
@@ -277,7 +281,7 @@ void Tra::FromJson(const json& j, map<string, Account*>& AllAccounts)
 		else
 			FromJsonError("ToFrom");
 	}
-	else
+	else if(Type == "Transfer")
 	{
 		if(j.find("From") != j.end())
 			From = AllAccounts[j["From"]];
@@ -288,6 +292,10 @@ void Tra::FromJson(const json& j, map<string, Account*>& AllAccounts)
 			To = AllAccounts[j["To"]];
 		else
 			FromJsonError("To");
+	}
+	else
+	{
+		fprintf(stderr,"%s\t\nError: Tra whose Type isn't Transfer or Transaction. Type = %s\n",ErrorAsterisks.c_str(),Type.c_str());
 	}
 }
 
@@ -320,8 +328,8 @@ json Finances::AsJson()
 
 
 	j["Tras"] = json::array();
-	for(unsigned int i = 0; i < Tras.size(); ++i)
-		j["Tras"].push_back(Tras[i]->AsJson());
+	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+		j["Tras"].push_back(mit->second->AsJson());
 
 
 	j["Macros"] = json::array();
