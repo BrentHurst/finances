@@ -10,15 +10,15 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-int Finances::RunCommand(int cmd)
-{
+/* int Finances::RunCommand(int cmd) */
+/* { */
 	/* char c='r'; */
 
 	/* if(CmdList[cmd]=="")
 	   return 1; */
 
-	switch(cmd)
-	{
+	/* switch(cmd) */
+	/* { */
 		/* case  1: f.ReadNewTransaction(1,0); return 1; */
 		/* case  2: f.ReadNewTransfer(1,0); return 1; */
 		/* case  3: f.ReadNewForeignTransaction(); return 1; */
@@ -59,13 +59,16 @@ int Finances::RunCommand(int cmd)
 		   }
 		   if(c=='y') return 0;
 		   else return 1; */
-	}
-	return 1;
-}
+	/* } */
+	/* return 1; */
+/* } */
 
 void Finances::Run()
 {
-	while(RunCommand(ReadInCommand()));
+	LoadFromFile();
+
+
+	SaveToFile();
 }
 
 

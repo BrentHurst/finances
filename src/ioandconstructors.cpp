@@ -1,4 +1,5 @@
 #include "finances.hpp"
+#include "utilities.hpp"
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -17,7 +18,6 @@ Finances::Finances(const string& fn)
 	Clear();
 
 	filename = fn;
-	LoadFromFile();
 }
 
 void Finances::Clear()
@@ -85,7 +85,7 @@ Account::Account()
 	Children.clear();
 	Parent = NULL;
 
-	Tras.clear();
+	/* Tras.clear(); */
 }
 
 CurrencyConversion::CurrencyConversion()
@@ -350,6 +350,7 @@ void Finances::FromJson(const json& j)
 	Account* acc;
 	Account* parent;
 	Account* child;
+	Tra* tra;
 	Macro* mac;
 	CurrencyConversion* cc;
 
@@ -432,8 +433,11 @@ void Finances::FromJson(const json& j)
 	{
 		for(jit = j["Tras"].begin(); jit != j["Tras"].end(); ++jit)
 		{
-			Tras.push_back(new Tra);
-			Tras.back()->FromJson(*jit,AllAccounts);
+			tra = new Tra;
+			tra->FromJson(*jit,AllAccounts);
+			if(Tras.find(tra->Id) != Tras.end())
+				tra->Id = GetNextValidTraId(tra->Date, Tras);
+			Tras[tra->Id] = tra;
 		}
 	}
 	else
@@ -519,6 +523,8 @@ void Macro::FromJsonError(const string& s)
 
 void Macro::FromJson(const json& j, map<string, Account*>& AllAccounts)
 {
+	Tra* tra;
+
 	if(!j.is_object())
 	{
 		fprintf(stderr,"%s\n\tMacro JSON isn't an object.\n",ErrorAsterisks.c_str());
@@ -534,8 +540,11 @@ void Macro::FromJson(const json& j, map<string, Account*>& AllAccounts)
 	{
 		for(json::const_iterator jit = j["Tras"].begin(); jit != j["Tras"].end(); ++jit)
 		{
-			Tras.push_back(new Tra);
-			Tras.back()->FromJson(*jit, AllAccounts);
+			tra = new Tra;
+			tra->FromJson(*jit, AllAccounts);
+			if(Tras.find(tra->Id) != Tras.end())
+				tra->Id = GetNextValidTraId(tra->Date, Tras);
+			Tras[tra->Id] = tra;
 		}
 	}
 	else

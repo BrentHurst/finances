@@ -2,6 +2,8 @@
 #define UTILITIES_H
 
 #include <string>
+#include <map>
+#include "finances.hpp"
 using namespace std;
 
 string ReadString();
@@ -25,5 +27,7 @@ class cmdcomp
 		bool operator() (const int a,const int b);
 };
 /* typedef map<int,string,cmdcomp> CommandMap; */
+
+unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras);
 
 #endif

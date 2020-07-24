@@ -23,7 +23,7 @@ class Account
 		map<string, Account*> Children;
 		Account* Parent;
 
-		vector<class Tra*> Tras;
+		/* map<unsigned long long, class Tra*> Tras; */
 
 		// TODO - Reconcile Functions
 		// TODO - Print - example commented out
@@ -75,7 +75,7 @@ class Macro
 {
 	public:
 		string Name;
-		vector<class Tra*> Tras;
+		map<unsigned long long, class Tra*> Tras;
 
 		json AsJson();
 		void FromJson(const json& j, map<string, Account*>& AllAccounts);
@@ -120,9 +120,7 @@ class Finances
 
 		void Clear();
 
-		/* map<int,string,cmdcomp> CmdList; */
 		string filename;
-
 		string DefaultCurrency;
 
 		map<string, Account*> AllAccounts;
@@ -133,7 +131,7 @@ class Finances
 		Account* HeadToFrom;
 
 		map<string, Macro*> Macros;
-		vector<Tra*> Tras;
+		map<unsigned long long, Tra*> Tras;
 		map<string, CurrencyConversion*> CurrencyConversions;
 
 	public:

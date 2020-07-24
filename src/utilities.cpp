@@ -142,3 +142,14 @@ void InsertionSort3(TraVec& tv)
 		tv[j] = tmp;
 	}
 } */
+
+
+
+unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras)
+{
+	unsigned long long Id;
+
+	for(Id = Date * 10000; Tras.find(Id) != Tras.end(); Id++);
+
+	return Id;
+}
