@@ -10,33 +10,30 @@
 using namespace std;
 using nlohmann::json;
 
+const string ErrorAsterisks = "*!*!*!*!*!*";
 
 class Account
 {
 	public:
-		double Amount;
 		string Name;
+		double Amount;
 		string Type;
+		string Currency;
 
-		map<string, Account*> SubAccounts;
-		Account* SuperAccount;
+		map<string, Account*> Children;
+		Account* Parent;
 
 		vector<class Tra*> Tras;
 
-		double InitialAmount;
-		GBH_Date InitialDate;
-
-		Account();
 		// TODO - Reconcile Functions
 		// TODO - Print - example commented out
 
-		// TODO - AsJson()
-		// TODO - FromJson()
+		Account();
 
-		// TODO - Add foreign currency option
-		/* string Currency; */
-		/* int ForeignCurrency; */
-		/* double ForeignAmount; */
+		json AsJson();
+		void FromJson(const json& j);
+
+		void FromJsonError(const string& s);
 };
 
 class Tra
@@ -44,11 +41,13 @@ class Tra
 	public:
 		string Type;     // "transaction" or "transfer"
 
-		unsigned int Id;
-		GBH_Date Date;
+		unsigned long long Id;
+		unsigned long long Date;
 		string Info;
 		int Reconciled;
+		string Currency;
 		double Amount;
+		double DefaultCurrencyAmount;
 
 		// Transaction
 		Account* Tag;
@@ -59,6 +58,11 @@ class Tra
 		// Transfer
 		Account* From;
 		Account* To;
+
+		json AsJson();
+		void FromJson(const json& j, map<string, Account*>& AllAccounts);
+
+		void FromJsonError(const string& s);
 
 		// TODO - Reconcile
 		// TODO - Print - example commented out
@@ -71,6 +75,8 @@ class Macro
 		string Name;
 		vector<class Tra*> Tras;
 
+		json AsJson(); // TODO
+		void FromJson(const json& j, map<string, Account*>& AllAccounts); // TODO
 		// TODO - Modify
 };
 
@@ -87,17 +93,25 @@ class Finances
 		void LoadFromFile();
 		void SaveToFile();
 		void FromJson(const json& j);
-		json ToJson();
+		json AsJson();
+
+		void Clear();
 
 		map<int,string,cmdcomp> CmdList;
 		string filename;
 
-		string PrimaryCurrency;
+		string DefaultCurrency;
 
+		map<string, Account*> Tags;
 		map<string, Account*> Locations;
 		map<string, Account*> Earmarks;
-		map<string, Account*> Tags;
 		map<string, Account*> ToFroms;
+		map<string, Account*> AllAccounts;
+
+		Account* HeadTag;
+		Account* HeadLocation;
+		Account* HeadEarmark;
+		Account* HeadToFrom;
 
 		map<string, Macro*> Macros;
 
