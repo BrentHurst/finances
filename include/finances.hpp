@@ -11,6 +11,7 @@ using namespace std;
 using nlohmann::json;
 
 const string ErrorAsterisks = "*!*!*!*!*!*";
+const string Prompt = "~~~~>";
 
 class Account
 {
@@ -105,11 +106,9 @@ class CurrencyConversion
 class Finances
 {
 	protected:
-		void FillCmdList();
-
-		void PrintCommands();
-		int ReadInCommand();
-		int RunCommand(int cmd);
+		/* void PrintCommands(); */
+		/* int ReadInCommand(); */
+		/* int RunCommand(int cmd); */
 
 		void LoadFromFile();
 		void SaveToFile();
@@ -119,6 +118,11 @@ class Finances
 		void FromJsonError(const string& s);
 
 		void Clear();
+
+		int InteractWithUser();
+		void GetCommand(vector<string>& CommandVec);
+
+		int AskWhetherToSave();
 
 		string filename;
 		string DefaultCurrency;

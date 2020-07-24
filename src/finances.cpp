@@ -1,5 +1,6 @@
 #include "finances.hpp"
 #include "nlohmann/json.hpp"
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -67,13 +68,13 @@ void Finances::Run()
 {
 	LoadFromFile();
 
-
-	SaveToFile();
+	if(InteractWithUser() == 1)
+		SaveToFile();
 }
 
 
-void Finances::FillCmdList()
-{
+/* void Finances::FillCmdList() */
+/* { */
 	/* CmdList.clear(); */
 
 	/* CmdList[1]="New Transaction"; */
@@ -109,7 +110,7 @@ void Finances::FillCmdList()
 	/* CmdList[8]="Save"; */
 	/* CmdList[9]="Save and Quit"; */
 	/* CmdList[0]="Quit WITHOUT Saving"; */
-}
+/* } */
 
 /* int Finances::ReadInCommand()
    {
@@ -138,3 +139,61 @@ void Finances::FillCmdList()
    printf("%2d. %s\n",mit->first,mit->second.c_str());
    } */
 
+
+int Finances::InteractWithUser()
+{
+	vector<string> CommandVec;
+
+	while(true)
+	{
+		GetCommand(CommandVec);
+
+		if(!CommandVec.size())
+		{
+			// Do Nothing
+		}
+		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
+		{
+			return AskWhetherToSave();
+		}
+		else if(CommandVec[0] == "yep")
+		{
+			printf("lol you said \"yep\"\n");
+		}
+		else if(CommandVec[0] == "nope")
+		{
+			printf("why no?\n");
+		}
+
+
+
+
+	}
+}
+
+void Finances::GetCommand(vector<string>& CommandVec)
+{
+	string line;
+	istringstream ss;
+	string s;
+
+	printf("%s ",Prompt.c_str());
+
+	getline(cin, line);
+
+	CommandVec.clear();
+	ss.clear();
+	ss.str(line);
+	while(ss >> s)
+		CommandVec.push_back(s);
+}
+
+int Finances::AskWhetherToSave()
+{
+	char c;
+	do{
+		printf("Do you want to save before you quit? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+	return (c == 'y');
+}
