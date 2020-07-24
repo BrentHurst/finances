@@ -64,6 +64,8 @@ class Tra
 
 		void FromJsonError(const string& s);
 
+		Tra();
+
 		// TODO - Reconcile
 		// TODO - Print - example commented out
 		// TODO - Constructors - examples commented out
@@ -75,9 +77,28 @@ class Macro
 		string Name;
 		vector<class Tra*> Tras;
 
-		json AsJson(); // TODO
-		void FromJson(const json& j, map<string, Account*>& AllAccounts); // TODO
+		json AsJson();
+		void FromJson(const json& j, map<string, Account*>& AllAccounts);
+
+		void FromJsonError(const string& s);
+
+		Macro();
 		// TODO - Modify
+};
+
+class CurrencyConversion
+{
+	public:
+		string ForeignCurrency;
+		double AmountForeign;
+		double AmountDefault;
+
+		CurrencyConversion();
+
+		json AsJson();
+		void FromJson(const json& j);
+
+		void FromJsonError(const string& s);
 };
 
 
@@ -95,17 +116,15 @@ class Finances
 		void FromJson(const json& j);
 		json AsJson();
 
+		void FromJsonError(const string& s);
+
 		void Clear();
 
-		map<int,string,cmdcomp> CmdList;
+		/* map<int,string,cmdcomp> CmdList; */
 		string filename;
 
 		string DefaultCurrency;
 
-		map<string, Account*> Tags;
-		map<string, Account*> Locations;
-		map<string, Account*> Earmarks;
-		map<string, Account*> ToFroms;
 		map<string, Account*> AllAccounts;
 
 		Account* HeadTag;
@@ -114,8 +133,8 @@ class Finances
 		Account* HeadToFrom;
 
 		map<string, Macro*> Macros;
-
 		vector<Tra*> Tras;
+		map<string, CurrencyConversion*> CurrencyConversions;
 
 	public:
 		Finances(const string& fn);

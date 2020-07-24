@@ -9,36 +9,13 @@ using nlohmann::json;
 
 typedef std::runtime_error SRE;
 
-Finances::Finances(const string& fn)
-{
-	/* FillCmdList(); */
-
-	Clear();
-
-	filename = fn;
-	LoadFromFile();
-}
-
-void Finances::Clear()
-{
-	Locations.clear();
-	Earmarks.clear();
-	Tags.clear();
-	ToFroms.clear();
-	AllAccounts.clear();
-
-	HeadLocation = NULL;
-	HeadEarmark = NULL;
-	HeadTag = NULL;
-	HeadToFrom = NULL;
-}
 
 int Finances::RunCommand(int cmd)
 {
 	/* char c='r'; */
 
-	if(CmdList[cmd]=="")
-		return 1;
+	/* if(CmdList[cmd]=="")
+	   return 1; */
 
 	switch(cmd)
 	{
@@ -94,9 +71,9 @@ void Finances::Run()
 
 void Finances::FillCmdList()
 {
-	CmdList.clear();
+	/* CmdList.clear(); */
 
-	CmdList[1]="New Transaction";
+	/* CmdList[1]="New Transaction"; */
 	/* CmdList[2]="New Transfer"; */
 	/* CmdList[3]="New Foreign Transaction"; */
 	/* CmdList[4]="New Transfer to Foreign Currency Account"; */
@@ -131,288 +108,30 @@ void Finances::FillCmdList()
 	/* CmdList[0]="Quit WITHOUT Saving"; */
 }
 
-int Finances::ReadInCommand()
-{
-	int i;
+/* int Finances::ReadInCommand()
+   {
+   int i;
 
-	PrintCommands();
+   PrintCommands();
 
-	do
-	{
-		printf("Please choose a command: ");
-		i = ReadInt();
-	}while(CmdList.find(i) == CmdList.end());
+   do
+   {
+   printf("Please choose a command: ");
+   i = ReadInt();
+   }while(CmdList.find(i) == CmdList.end());
 
-	printf("\n");
+   printf("\n");
 
-	return i;
-}
+   return i;
+   } */
 
-void Finances::PrintCommands()
-{
-	map<int,string,cmdcomp>::iterator mit;
+/* void Finances::PrintCommands()
+   {
+   map<int,string,cmdcomp>::iterator mit;
 
-	printf("\n");
-	for(mit=CmdList.begin(); mit != CmdList.end(); mit++)
-		if(mit->second != "")
-			printf("%2d. %s\n",mit->first,mit->second.c_str());
-}
+   printf("\n");
+   for(mit=CmdList.begin(); mit != CmdList.end(); mit++)
+   if(mit->second != "")
+   printf("%2d. %s\n",mit->first,mit->second.c_str());
+   } */
 
-void Finances::LoadFromFile()
-{
-	ifstream ifs;
-	json j;
-
-	ifs.clear();
-	ifs.open(filename, ifstream::in);
-	if(!ifs.is_open())
-		throw SRE("Finances::LoadFromFile(): Couldn't open file " + filename);
-
-	try
-	{
-		ifs >> j;
-	}
-	catch(...)
-	{
-		throw SRE("Finances::LoadFromFile(): Couldn't parse json from file " + filename);
-	}
-
-	ifs.close();
-
-	FromJson(j);
-}
-void Finances::SaveToFile()
-{
-	ofstream ofs;
-
-	ofs.clear();
-	ofs.open(filename, ofstream::out);
-	if(!ofs.is_open())
-		throw SRE("Finances::SaveToFile(): Couldn't open file " + filename);
-
-	ofs << AsJson().dump(4) << endl;
-}
-
-
-
-
-
-Account::Account()
-{
-	Amount = 0;
-	Name.clear();
-	Type.clear();
-
-	Children.clear();
-	Parent = NULL;
-
-	Tras.clear();
-}
-
-json Account::AsJson()
-{
-	json j;
-
-	j = json::object();
-
-	j["Name"] = Name;
-	j["Amount"] = Amount;
-	j["Type"] = Type;
-	j["Currency"] = Currency;
-
-	return j;
-}
-
-void Account::FromJsonError(const string& s)
-{
-	fprintf(stderr,"%s\n\tError reading Account JSON: No %s key.\n",ErrorAsterisks.c_str(),s.c_str());
-}
-
-void Account::FromJson(const json& j)
-{
-	if(!j.is_object())
-	{
-		fprintf(stderr,"%s\n\tAccount JSON isn't an object.\n",ErrorAsterisks.c_str());
-		return;
-	}
-
-	if(j.find("Name") != j.end())
-		Name = j["Name"];
-	else
-		FromJsonError("Name");
-
-	if(j.find("Amount") != j.end())
-		Amount = j["Amount"];
-	else
-		FromJsonError("Amount");
-
-	if(j.find("Type") != j.end())
-		Type = j["Type"];
-	else
-		FromJsonError("Type");
-
-	if(j.find("Currency") != j.end())
-		Currency = j["Currency"];
-	else
-		FromJsonError("Currency");
-}
-
-
-json Tra::AsJson()
-{
-	json j;
-
-	j = json::object();
-
-	j["Type"] = Type;
-	j["Id"] = Id;
-	j["Date"] = Date;
-	j["Info"] = Info;
-	j["Reconciled"] = Reconciled;
-	j["Currency"] = Currency;
-	j["Amount"] = Amount;
-	j["DefaultCurrencyAmount"] = DefaultCurrencyAmount;
-
-	if(Type == "transaction")
-	{
-		j["Tag"] = Tag->Name;
-		j["Location"] = Location->Name;
-		j["Earmark"] = Earmark->Name;
-		j["ToFrom"] = ToFrom->Name;
-	}
-	else
-	{
-		j["From"] = From->Name;
-		j["To"] = To->Name;
-	}
-
-	return j;
-}
-
-void Tra::FromJsonError(const string& s)
-{
-	fprintf(stderr,"%s\n\tError reading Tra JSON: No %s key.\n",ErrorAsterisks.c_str(),s.c_str());
-}
-
-void Tra::FromJson(const json& j, map<string, Account*>& AllAccounts)
-{
-	if(j.find("Type") != j.end())
-		Type = j["Type"];
-	else
-		FromJsonError("Type");
-
-	if(j.find("Id") != j.end())
-		Id = j["Id"];
-	else
-		FromJsonError("Id");
-
-	if(j.find("Date") != j.end())
-		Date = j["Date"];
-	else
-		FromJsonError("Date");
-
-	if(j.find("Info") != j.end())
-		Info = j["Info"];
-	else
-		FromJsonError("Info");
-
-	if(j.find("Reconciled") != j.end())
-		Reconciled = j["Reconciled"];
-	else
-		FromJsonError("Reconciled");
-
-	if(j.find("Currency") != j.end())
-		Currency = j["Currency"];
-	else
-		FromJsonError("Currency");
-
-	if(j.find("Amount") != j.end())
-		Amount = j["Amount"];
-	else
-		FromJsonError("Amount");
-
-	if(j.find("DefaultCurrencyAmount") != j.end())
-		DefaultCurrencyAmount = j["DefaultCurrencyAmount"];
-	else
-		FromJsonError("DefaultCurrencyAmount");
-
-	if(Type == "transaction")
-	{
-		if(j.find("Tag") != j.end())
-			Tag = AllAccounts[j["Tag"]];
-		else
-			FromJsonError("Tag");
-
-		if(j.find("Location") != j.end())
-			Location = AllAccounts[j["Location"]];
-		else
-			FromJsonError("Location");
-
-		if(j.find("Earmark") != j.end())
-			Earmark = AllAccounts[j["Earmark"]];
-		else
-			FromJsonError("Earmark");
-
-		if(j.find("ToFrom") != j.end())
-			ToFrom = AllAccounts[j["ToFrom"]];
-		else
-			FromJsonError("ToFrom");
-	}
-	else
-	{
-		if(j.find("From") != j.end())
-			From = AllAccounts[j["From"]];
-		else
-			FromJsonError("From");
-
-		if(j.find("To") != j.end())
-			To = AllAccounts[j["To"]];
-		else
-			FromJsonError("To");
-	}
-}
-
-
-
-json Finances::AsJson()
-{
-	json j;
-	json j1;
-
-	j = json::object();
-
-	j["DefaultCurrency"] = DefaultCurrency;
-
-	j["Accounts"] = json::array();
-	for(map<string, Account*>::iterator mit = AllAccounts.begin(); mit != AllAccounts.end(); ++mit)
-		j["Accounts"].push_back(mit->second->AsJson());
-
-	j["ParentAccountInfo"] = json::array();
-	for(map<string, Account*>::iterator mit = AllAccounts.begin(); mit != AllAccounts.end(); ++mit)
-	{
-		if(mit->second->Parent)
-		{
-			j1 = json::object();
-			j1["Child"] = mit->second->Name;
-			j1["Parent"] = mit->second->Parent->Name;
-			j["ParentAccountInfo"].push_back(j1);
-		}
-	}
-
-
-	j["Tras"] = json::array();
-	for(unsigned int i = 0; i < Tras.size(); ++i)
-		j["Tras"].push_back(Tras[i]->AsJson());
-
-	/* j["Macros"] = ; // TODO */
-
-	/* j["CurrencyConversions"] = ; // TODO */
-
-	return j;
-}
-
-void Finances::FromJson(const json& j)
-{
-	// TODO
-	// HERE
-}

@@ -7,8 +7,9 @@ EXE = $(BIN)/finances.out
 CC = g++
 LINKER = g++
 
-OBJECTS = $(OBJ)/finances.o    \
-		  $(OBJ)/main.o        \
+OBJECTS = $(OBJ)/finances.o              \
+		  $(OBJ)/ioandconstructors.o     \
+		  $(OBJ)/main.o                  \
 		  $(OBJ)/utilities.o
 
 DATENAME = gbhdate
