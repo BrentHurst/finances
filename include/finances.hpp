@@ -13,6 +13,8 @@ using nlohmann::json;
 const string ErrorAsterisks = "*!*!*!*!*!*";
 const string Prompt = "~~~~>";
 
+// TODO - Write some checks for after reading
+
 class Account
 {
 	public:
@@ -40,7 +42,7 @@ class Account
 class Tra
 {
 	public:
-		string Type;     // "transaction" or "transfer"
+		string Type;     // "Transaction" or "Transfer"
 
 		unsigned long long Id;
 		unsigned long long Date;
@@ -66,6 +68,7 @@ class Tra
 		void FromJsonError(const string& s);
 
 		Tra();
+		void Print(const string& DefaultCurrency);
 
 		// TODO - Reconcile
 		// TODO - Print - example commented out
@@ -121,6 +124,9 @@ class Finances
 
 		int InteractWithUser();
 		void GetCommand(vector<string>& CommandVec);
+
+		void PrintSomething(const vector<string>& CommandVec);
+		void PrintTras();
 
 		int AskWhetherToSave();
 
