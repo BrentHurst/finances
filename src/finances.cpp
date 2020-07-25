@@ -113,14 +113,14 @@ void Tra::Print(const string& DefaultCurrency)
 {
 	if(Type == "Transaction")
 	{
-		printf("%llu: %c\t%15s.\t%15s.\t%15s.\t%15s.\t%c%s%10.2lf",Id,(Reconciled ? 'R' : '-'),Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str(),((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
+		printf("\t%llu: %c\t%15s.\t%15s.\t%15s.\t%15s.\t%c%s%10.2lf",Id,(Reconciled ? 'R' : '-'),Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str(),((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
 		if(Currency != DefaultCurrency)
 			printf("  =  %c%s%10.2lf",((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),DefaultCurrency.c_str(),abs_(DefaultCurrencyAmount));
 		printf("\n\t%s\n",Info.c_str());
 	}
 	else
 	{
-		printf("%llu: %c\t%15s  ->  %15s\t%c%s%10.2lf",Id,(Reconciled ? 'R' : '-'),From->Name.c_str(),To->Name.c_str(),((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
+		printf("\t%llu: %c\t%15s  ->  %15s\t%c%s%10.2lf",Id,(Reconciled ? 'R' : '-'),From->Name.c_str(),To->Name.c_str(),((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
 		if(Currency != DefaultCurrency)
 			printf("  =  %c%s%10.2lf",((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),DefaultCurrency.c_str(),abs_(DefaultCurrencyAmount));
 		printf("\n\t%s\n",Info.c_str());
@@ -132,7 +132,7 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 {
 	if(CommandVec.size() == 2)
 	{
-		if(CommandVec[1] == "tra" || CommandVec[1] == "t")
+		if(CommandVec[1] == "tras" || CommandVec[1] == "t")
 			PrintTras();
 	}
 }
