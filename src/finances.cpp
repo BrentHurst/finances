@@ -11,23 +11,22 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-// TODO - all of these
-/* case  1: f.ReadNewTransaction(1,0); return 1; */
-/* case  2: f.ReadNewTransfer(1,0); return 1; */
-/* case  3: f.ReadNewForeignTransaction(); return 1; */
-/* case  4: f.ReadTransferToForeign(); return 1; */
-/* case  5: f.ReadTransferFromForeign(); return 1; */
-/* case  6: f.ReadNewAccount(); return 1; */
+/* case  1: f.ReadNewTransaction(1,0); return 1; */  // TODO
+/* case  2: f.ReadNewTransfer(1,0); return 1; */  // TODO
+/* case  3: f.ReadNewForeignTransaction(); return 1; */  // TODO
+/* case  4: f.ReadTransferToForeign(); return 1; */  // TODO
+/* case  5: f.ReadTransferFromForeign(); return 1; */  // TODO
+/* case  6: f.ReadNewAccount(); return 1; */  // TODO
 
-/* case 31: f.SelectAccount(); return 1; */
-/* case 32: f.SelectTransaction(f.transactions); return 1; */
-/* case 33: f.SelectTransfer(f.transfers); return 1; */
+/* case 31: f.SelectAccount(); return 1; */  // TODO
+/* case 32: f.SelectTransaction(f.transactions); return 1; */  // TODO
+/* case 33: f.SelectTransfer(f.transfers); return 1; */  // TODO
 
-/* case 41: f.Macros(); return 1; */
+/* case 41: f.Macros(); return 1; */  // TODO
 
-/* case 51: f.Reconcile(); return 1; */
+/* case 51: f.Reconcile(); return 1; */  // TODO
 
-/* case 61: f.NewYear(); return 1; */
+/* case 61: f.NewYear(); return 1; */  // TODO
 
 
 void Finances::Run()
