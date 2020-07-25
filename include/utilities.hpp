@@ -22,6 +22,7 @@ string ReadInNewAccountName();
 string ReadInParentAccountName();
 string ReadInNewTraAccount(const string& s);
 
+void ColorOutput(const string& s);
 
 int AskTryAgain(string s);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);

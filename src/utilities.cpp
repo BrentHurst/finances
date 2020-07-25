@@ -99,6 +99,36 @@ string ReadInParentAccountName()
 }
 
 
+void ColorOutput(const string& s)
+{
+	if(s == "Red")
+		printf("\033[0;31m");
+	else if(s == "Green")
+		printf("\033[0;32m");
+	else if(s == "Yellow")
+		printf("\033[0;33m");
+	else if(s == "Blue")
+		printf("\033[0;34m");
+	else if(s == "Magenta")
+		printf("\033[0;35m");
+	else if(s == "Cyan")
+		printf("\033[0;36m");
+	else if(s == "Bold Red")
+		printf("\033[1;31m");
+	else if(s == "Bold Green")
+		printf("\033[1;32m");
+	else if(s == "Bold Yellow")
+		printf("\033[1;33m");
+	else if(s == "Bold Blue")
+		printf("\033[1;34m");
+	else if(s == "Bold Magenta")
+		printf("\033[1;35m");
+	else if(s == "Bold Cyan")
+		printf("\033[1;36m");
+	else if(s == "Reset" || s == " " || s == "")
+		printf("\033[0m");
+}
+
 int AskTryAgain(string s)
 {
 	char c;
@@ -211,7 +241,14 @@ unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned
 
 void PrintCurrencyAmount(const string& Currency, double Amount)
 {
+	if(Amount < 0)
+		ColorOutput("Bold Red");
+	else if(Amount > 0)
+		ColorOutput("Bold Cyan");
+	else if(Amount == 0)
+		ColorOutput("Cyan");
 	printf("%c%s%10.2lf",((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
+	ColorOutput("Reset");
 }
 
 void InsertTraIntoMap(Tra* tra,map<unsigned long long,Tra*>& Tras)

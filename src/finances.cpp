@@ -127,7 +127,17 @@ void Account::Print(const string& indent)
 {
 	printf("%s",indent.c_str());
 	PrintCurrencyAmount(Currency,Amount);
+
+	if(Amount < 0)
+		ColorOutput("Bold Red");
+	else if(Amount > 0)
+		ColorOutput("Bold Cyan");
+	else if(Amount == 0)
+		ColorOutput("Cyan");
+
 	printf("  %s\n",Name.c_str());
+
+	ColorOutput("Reset");
 
 	for(map<string,Account*>::iterator mit = Children.begin(); mit != Children.end(); ++mit)
 		mit->second->Print(indent + "\t");
