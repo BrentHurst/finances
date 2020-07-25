@@ -10,7 +10,7 @@ string ReadString()
 {
 	string s;
 	getline(cin,s);
-	cin.ignore();
+	/* cin.ignore(); */
 	return s;
 }
 
@@ -38,6 +38,14 @@ int ReadInt()
 	return i;
 }
 
+unsigned long long ReadULL()
+{
+	unsigned long long a;
+	scanf("%llu",&a);
+	cin.ignore();
+	return a;
+}
+
 string ReadInInformation()
 {
 	printf("info: ");
@@ -50,7 +58,56 @@ double ReadInTotal()
 	return ReadDouble();
 }
 
+string ReadInNewAccountName()
+{
+	printf("New Account Name: ");
+	return ReadString();
+}
 
+string ReadInCurrency()
+{
+	printf("Currency: ");
+	return ReadString();
+}
+
+string ReadInParentAccountName()
+{
+	printf("New Account's Parent Account: ");
+	return ReadString();
+}
+
+
+int AskTryAgain(string s)
+{
+	char c;
+
+	printf("%s\n",s.c_str());
+
+	do
+	{
+		printf("Would you like to try again? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int AskAccurateAccount(const string& name, const string& cur, const string& par)
+{
+	char c;
+
+	printf("\tAccount:  %s\n",name.c_str());
+	printf("\tCurrency: %s\n",cur.c_str());
+	printf("\tParent:   %s\n",par.c_str());
+
+	do
+	{
+		printf("Is the above new account information correct? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
 
 
 
@@ -105,45 +162,6 @@ bool cmdcomp::operator() (int a,int b)
 	if(a==8) return false;
 	return (a<b);
 }
-
-/* static int Less(Transaction* a,Transaction* b)
-{
-	return (*(a->date) < *(b->date));
-}
-
-void InsertionSort3(TraVec& tv)
-{
-	unsigned int i;
-	unsigned int j;
-	unsigned int size;
-	unsigned int minindex;
-	Transaction* tmp;
-
-	if(!(size = tv.size()))
-		return;
-
-	for(i=0; i<size; i++)
-		if(!tv[i])
-			return;
-
-	minindex = 0;
-	for(i=1; i<size; i++)
-		if(Less(tv[i],tv[minindex]))
-			minindex = i;
-	tmp = tv[0];
-	tv[0] = tv[minindex];
-	tv[minindex] = tmp;
-
-	for(i=1; i<size; i++)
-	{
-		tmp = tv[i];
-		for(j = i; Less(tmp,tv[j-1]); j--)
-			tv[j] = tv[j-1];
-		tv[j] = tmp;
-	}
-} */
-
-
 
 unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras)
 {

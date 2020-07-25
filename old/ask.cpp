@@ -1,20 +1,8 @@
-#include "ask.h"
-#include "readtype.h"
 #include <cstdio>
+#include <string>
 using namespace std;
 
 
-int AskForContinue()
-{
-	char c = 'r';
-
-	while(c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-	{
-		printf("Would you like to try again? [y/n]: ");
-		c = ReadChar();
-	}
-	return (c=='y' || c=='Y');
-}
 
 int AskToAdd(const string& type,const string& str)
 {

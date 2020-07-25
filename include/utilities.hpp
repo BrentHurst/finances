@@ -10,9 +10,16 @@ string ReadString();
 char ReadChar();
 double ReadDouble();
 int ReadInt();
+unsigned long long ReadULL();
 
 string ReadInInformation();
 double ReadInTotal();
+string ReadInNewAccountName();
+string ReadInCurrency();
+string ReadInParentAccountName();
+
+int AskTryAgain(string s);
+int AskAccurateAccount(const string& name, const string& cur, const string& par);
 
 string dtos_(double d);
 string itos_(int i);

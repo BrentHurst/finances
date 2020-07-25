@@ -14,6 +14,7 @@ const string ErrorAsterisks = "*!*!*!*!*!*";
 const string Prompt = "~~~~>";
 
 // TODO - Write some checks for after reading
+// TODO - Get Foreign Working
 
 class Account
 {
@@ -25,8 +26,6 @@ class Account
 
 		map<string, Account*> Children;
 		Account* Parent;
-
-		/* map<unsigned long long, class Tra*> Tras; */
 
 		// TODO - Reconcile Functions
 
@@ -131,6 +130,10 @@ class Finances
 		void PrintTras();
 		void PrintUnreconciledTras();
 		void PrintAccounts(const string& which);
+
+		void NewSomething(const vector<string>& CommandVec);
+		void NewAccount();
+		void NewTra();
 
 		int AskWhetherToSave();
 

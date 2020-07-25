@@ -11,16 +11,10 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-/* case  1: f.ReadNewTransaction(1,0); return 1; */  // TODO
-/* case  2: f.ReadNewTransfer(1,0); return 1; */  // TODO
-/* case  3: f.ReadNewForeignTransaction(); return 1; */  // TODO
-/* case  4: f.ReadTransferToForeign(); return 1; */  // TODO
-/* case  5: f.ReadTransferFromForeign(); return 1; */  // TODO
-/* case  6: f.ReadNewAccount(); return 1; */  // TODO
+/* case  1: f.ReadNewTra(1,0); return 1; */  // TODO
 
 /* case 31: f.SelectAccount(); return 1; */  // TODO
-/* case 32: f.SelectTransaction(f.transactions); return 1; */  // TODO
-/* case 33: f.SelectTransfer(f.transfers); return 1; */  // TODO
+/* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
 
 /* case 41: f.Macros(); return 1; */  // TODO
 
@@ -50,6 +44,11 @@ int Finances::InteractWithUser()
 		{
 			// Do Nothing
 		}
+		else if(CommandVec[0] == "help" || CommandVec[0] == "h" || CommandVec[0] == "?")
+		{
+			// TODO
+			printf("I should probably have this print a help menu.\n");
+		}
 		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
 		{
 			return AskWhetherToSave();
@@ -58,10 +57,14 @@ int Finances::InteractWithUser()
 		{
 			PrintSomething(CommandVec);
 		}
-
-
-
-
+		else if(CommandVec[0] == "new" || CommandVec[0] == "n")
+		{
+			NewSomething(CommandVec);
+		}
+		else
+		{
+			printf("Command not recognized.\n");
+		}
 	}
 }
 
@@ -73,7 +76,7 @@ void Finances::GetCommand(vector<string>& CommandVec)
 
 	printf("%s ",Prompt.c_str());
 
-	getline(cin, line);
+	line = ReadString();
 
 	CommandVec.clear();
 	ss.clear();
@@ -186,4 +189,72 @@ void Finances::PrintAccounts(const string& which)
 		HeadToFrom->Print("\t");
 		printf("\n\n\n\n");
 	}
+}
+
+
+void Finances::NewSomething(const vector<string>& CommandVec)
+{
+	if(CommandVec.size() == 2)
+	{
+		if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
+		{
+			NewAccount();
+		}
+		else if(CommandVec[1] == "tra" || CommandVec[1] == "t")
+		{
+			NewTra();
+		}
+	}
+}
+
+void Finances::NewAccount()
+{
+	string name;
+	string cur;
+	string par;
+	Account* acc;
+	Account* paracc;
+
+	name = ReadInNewAccountName();
+	while(AllAccounts.find(name) != AllAccounts.end())
+	{
+		if(!AskTryAgain("An account with the name \"" + name + "\" already exists."))
+		{
+			printf("Discarding new account.\n");
+			return;
+		}
+		name = ReadInNewAccountName();
+	}
+
+	cur = ReadInCurrency();
+
+	par = ReadInParentAccountName();
+	while(AllAccounts.find(par) == AllAccounts.end())
+	{
+		if(!AskTryAgain("There is no account with the name \"" + par + "\"."))
+		{
+			printf("Discarding new account.\n");
+			return;
+		}
+		par = ReadInParentAccountName();
+	}
+
+	if(!AskAccurateAccount(name,cur,par))
+	{
+		printf("Discarding new account.\n");
+		return;
+	}
+
+	paracc = AllAccounts[par];
+	acc = new Account(name,0,paracc->Type,cur);
+	paracc->Children[acc->Name] = acc;
+	acc->Parent = paracc;
+	AllAccounts[acc->Name] = acc;
+
+	printf("Account \"%s\" successfully created.\n",name.c_str());
+}
+
+void Finances::NewTra()
+{
+	// TODO
 }
