@@ -22,8 +22,6 @@ typedef std::runtime_error SRE;
 /* case  5: f.ReadTransferFromForeign(); return 1; */
 /* case  6: f.ReadNewAccount(); return 1; */
 
-/* case 11: f.PrintTransactions(); return 1; */
-/* case 12: f.PrintTransfers(); return 1; */
 /* case 13: f.PrintUnreconciledTransactions(); return 1; */
 /* case 14: f.PrintUnreconciledTransfers(); return 1; */
 
@@ -134,6 +132,8 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 	{
 		if(CommandVec[1] == "tras" || CommandVec[1] == "t")
 			PrintTras();
+		if(CommandVec[1] == "utras" || CommandVec[1] == "ut" || CommandVec[1] == "tu")
+			PrintUnreconciledTras();
 	}
 }
 
@@ -141,4 +141,10 @@ void Finances::PrintTras()
 {
 	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
 		mit->second->Print(DefaultCurrency);
+}
+void Finances::PrintUnreconciledTras()
+{
+	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+		if(!mit->second->Reconciled)
+			mit->second->Print(DefaultCurrency);
 }

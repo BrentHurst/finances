@@ -127,6 +127,7 @@ class Finances
 
 		void PrintSomething(const vector<string>& CommandVec);
 		void PrintTras();
+		void PrintUnreconciledTras();
 
 		int AskWhetherToSave();
 
