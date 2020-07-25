@@ -29,5 +29,6 @@ class cmdcomp
 /* typedef map<int,string,cmdcomp> CommandMap; */
 
 unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras);
+void PrintCurrencyAmount(const string& Currency, double Amount);
 
 #endif

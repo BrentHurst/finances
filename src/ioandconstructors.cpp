@@ -87,6 +87,16 @@ Account::Account()
 
 	/* Tras.clear(); */
 }
+Account::Account(string n, double a, string t, string c)
+{
+	Name = n;
+	Amount = a;
+	Type = t;
+	Currency = c;
+
+	Children.clear();
+	Parent = NULL;
+}
 
 CurrencyConversion::CurrencyConversion()
 {
@@ -488,7 +498,6 @@ void Finances::FromJson(const json& j)
 	}
 	else
 		FromJsonError("CurrencyConversions");
-
 
 
 	for(mit = AllAccounts.begin(); mit != AllAccounts.end() && mit->second->Type != "Tag"; ++mit);

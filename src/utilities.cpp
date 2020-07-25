@@ -153,3 +153,8 @@ unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned
 
 	return Id;
 }
+
+void PrintCurrencyAmount(const string& Currency, double Amount)
+{
+	printf("%c%s%10.2lf",((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
+}

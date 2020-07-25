@@ -29,14 +29,16 @@ class Account
 		/* map<unsigned long long, class Tra*> Tras; */
 
 		// TODO - Reconcile Functions
-		// TODO - Print - example commented out
 
 		Account();
+		Account(string n, double a, string t, string c);
 
 		json AsJson();
 		void FromJson(const json& j);
 
 		void FromJsonError(const string& s);
+
+		void Print(const string& indent);
 };
 
 class Tra
@@ -128,6 +130,7 @@ class Finances
 		void PrintSomething(const vector<string>& CommandVec);
 		void PrintTras();
 		void PrintUnreconciledTras();
+		void PrintAccounts(const string& which);
 
 		int AskWhetherToSave();
 
