@@ -46,22 +46,39 @@ unsigned long long ReadULL()
 	return a;
 }
 
-string ReadInInformation()
+string ReadInInfo()
 {
 	printf("info: ");
 	return ReadString();
 }
 
-double ReadInTotal()
+double ReadInAmount()
 {
 	printf("Amount: (positive for income or transfer, negative for spent): ");
-	return ReadDouble();
+	return Round2Decimals(ReadDouble());
 }
 
 string ReadInNewAccountName()
 {
 	printf("New Account Name: ");
 	return ReadString();
+}
+
+string ReadInType()
+{
+	int i = 0;
+	do
+	{
+		printf("Transaction or Transfer? 1 for Transaction, 2 for Transfer. [1/2]: ");
+		i = ReadInt();
+	}while(i != 1 && i != 2);
+	return (i == 1) ? "Transaction" : "Transfer";
+}
+
+unsigned long long ReadInDate()
+{
+	printf("Date (integer): ");
+	return ReadULL();
 }
 
 string ReadInCurrency()
@@ -175,4 +192,11 @@ unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned
 void PrintCurrencyAmount(const string& Currency, double Amount)
 {
 	printf("%c%s%10.2lf",((Amount < 0) ? '-' : (Amount > 0) ? '+' : ' '),Currency.c_str(),abs_(Amount));
+}
+
+void InsertTraIntoMap(Tra* tra,map<unsigned long long,Tra*>& Tras)
+{
+	if(!tra->Id || Tras.find(tra->Id) != Tras.end())
+		tra->Id = GetNextValidTraId(tra->Date, Tras);
+	Tras[tra->Id] = tra;
 }

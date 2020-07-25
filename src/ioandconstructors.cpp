@@ -453,9 +453,7 @@ void Finances::FromJson(const json& j)
 		{
 			tra = new Tra;
 			tra->FromJson(*jit,AllAccounts);
-			if(!tra->Id || Tras.find(tra->Id) != Tras.end())
-				tra->Id = GetNextValidTraId(tra->Date, Tras);
-			Tras[tra->Id] = tra;
+			InsertTraIntoMap(tra,Tras);
 		}
 	}
 	else
@@ -559,9 +557,7 @@ void Macro::FromJson(const json& j, map<string, Account*>& AllAccounts)
 		{
 			tra = new Tra;
 			tra->FromJson(*jit, AllAccounts);
-			if(!tra->Id || Tras.find(tra->Id) != Tras.end())
-				tra->Id = GetNextValidTraId(tra->Date, Tras);
-			Tras[tra->Id] = tra;
+			InsertTraIntoMap(tra,Tras);
 		}
 	}
 	else

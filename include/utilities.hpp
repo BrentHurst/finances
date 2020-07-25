@@ -12,11 +12,15 @@ double ReadDouble();
 int ReadInt();
 unsigned long long ReadULL();
 
-string ReadInInformation();
-double ReadInTotal();
-string ReadInNewAccountName();
+string ReadInType();
+unsigned long long ReadInDate();
+string ReadInInfo();
+double ReadInAmount();
 string ReadInCurrency();
+
+string ReadInNewAccountName();
 string ReadInParentAccountName();
+
 
 int AskTryAgain(string s);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
@@ -37,5 +41,6 @@ class cmdcomp
 
 unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras);
 void PrintCurrencyAmount(const string& Currency, double Amount);
+void InsertTraIntoMap(Tra* tra,map<unsigned long long,Tra*>& Tras);
 
 #endif

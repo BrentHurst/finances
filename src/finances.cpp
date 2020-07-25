@@ -256,5 +256,134 @@ void Finances::NewAccount()
 
 void Finances::NewTra()
 {
+	Tra* tra;
+	string type;
+	unsigned long long date;
+	string cur;
+	double amt;
+	string info;
+	string tag_n;
+	string loc_n;
+	string ear_n;
+	string tf_n;
+	string to_n;
+	string from_n;
+
+	type = ReadInType();
+	date = ReadInDate();
+
+	if(type == "Transaction")
+	{
+		if(!GetNewTransactionAccounts(tag_n,loc_n,ear_n,tf_n))
+		{
+			printf("Transaction has been discarded.\n");
+			return;
+		}
+	}
+	else if(type == "Transfer")
+	{
+		if(!GetNewTransferAccounts(to_n,from_n))
+		{
+			printf("Transfer has been discarded.\n");
+			return;
+		}
+	}
+	else
+	{
+		fprintf(stderr,"Error 4: Type isn't Transaction or Transfer.\n");
+		return;
+	}
+
+	cur = ReadInCurrency();
+	amt = ReadInAmount();
+	info = ReadInInfo();
+
+
+
+
+	tra = new Tra;
+	tra->Type = type;
+	tra->Date = date;
+	tra->Info = info;
+	tra->Currency = cur;
+	tra->Amount = amt;
+	if(cur == DefaultCurrency)
+		tra->DefaultCurrencyAmount = amt;
+	else
+	{
+		// TODO
+	}
+	if(tra->Type == "Transaction")
+	{
+		tra->Tag = AllAccounts[tag_n];
+		tra->Location = AllAccounts[loc_n];
+		tra->Earmark = AllAccounts[ear_n];
+		tra->ToFrom = AllAccounts[tf_n];
+	}
+	else if(tra->Type == "Transfer")
+	{
+		tra->To = AllAccounts[to_n];
+		tra->From = AllAccounts[from_n];
+	}
+	else
+	{
+		fprintf(stderr,"Error 5: Type isn't Transaction or Transfer.\n");
+		delete tra;
+		return;
+	}
+
+
+	RecordTra(tra);
+	printf("%s successfully recorded.\n",tra->Type.c_str());
+}
+
+
+int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n)
+{
 	// TODO
+	// HERE
+
+	return 1;
+}
+int Finances::GetNewTransferAccounts(string& to_n,string& from_n)
+{
+
+	// TODO
+
+
+
+
+	return 1;
+}
+
+void Finances::RecordTra(Tra* tra)
+{
+	if(tra->Type == "Transaction")
+	{
+		PercolateTra(tra,tra->Tag);
+		PercolateTra(tra,tra->Location);
+		PercolateTra(tra,tra->Earmark);
+		PercolateTra(tra,tra->ToFrom);
+	}
+	else
+	{
+		tra->Amount *= -1;
+		PercolateTra(tra,tra->From);
+		tra->Amount *= -1;
+
+		PercolateTra(tra,tra->To);
+	}
+
+	InsertTraIntoMap(tra,Tras);
+}
+
+void Finances::PercolateTra(Tra* tra, Account* a)
+{
+	/* if(foreign) */ // TODO
+	Account* tmp;
+
+	for(tmp = a; tmp; tmp = tmp->Parent)
+	{
+		tmp->Amount += tra->Amount;
+	}
 }

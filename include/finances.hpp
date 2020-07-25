@@ -15,6 +15,7 @@ const string Prompt = "~~~~>";
 
 // TODO - Write some checks for after reading
 // TODO - Get Foreign Working
+// TODO - Be able to modify Macro
 
 class Account
 {
@@ -26,8 +27,6 @@ class Account
 
 		map<string, Account*> Children;
 		Account* Parent;
-
-		// TODO - Reconcile Functions
 
 		Account();
 		Account(string n, double a, string t, string c);
@@ -70,10 +69,6 @@ class Tra
 
 		Tra();
 		void Print(const string& DefaultCurrency);
-
-		// TODO - Reconcile
-		// TODO - Print - example commented out
-		// TODO - Constructors - examples commented out
 };
 
 class Macro
@@ -88,7 +83,6 @@ class Macro
 		void FromJsonError(const string& s);
 
 		Macro();
-		// TODO - Modify
 };
 
 class CurrencyConversion
@@ -134,6 +128,11 @@ class Finances
 		void NewSomething(const vector<string>& CommandVec);
 		void NewAccount();
 		void NewTra();
+
+		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n);
+		int GetNewTransferAccounts(string& to_n,string& from_n);
+		void RecordTra(Tra* tra);
+		void PercolateTra(Tra* tra, Account* a);
 
 		int AskWhetherToSave();
 
