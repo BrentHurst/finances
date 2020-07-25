@@ -10,7 +10,6 @@ string ReadString()
 {
 	string s;
 	getline(cin,s);
-	/* cin.ignore(); */
 	return s;
 }
 
@@ -61,6 +60,12 @@ double ReadInAmount()
 string ReadInNewAccountName()
 {
 	printf("New Account Name: ");
+	return ReadString();
+}
+
+string ReadInNewTraAccount(const string& s)
+{
+	printf("%s: ",s.c_str());
 	return ReadString();
 }
 
@@ -120,6 +125,21 @@ int AskAccurateAccount(const string& name, const string& cur, const string& par)
 	do
 	{
 		printf("Is the above new account information correct? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int AskAccurateTra(Tra* tra, const string& DefaultCurrency)
+{
+	char c;
+
+	tra->Print(DefaultCurrency);
+
+	do
+	{
+		printf("Is the above %s correct? [y/n]: ",tra->Type.c_str());
 		c = ReadChar();
 	}while(c != 'y' && c != 'n');
 

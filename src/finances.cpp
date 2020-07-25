@@ -107,7 +107,7 @@ void Tra::Print(const string& DefaultCurrency)
 			printf("  =  ");
 			PrintCurrencyAmount(DefaultCurrency,DefaultCurrencyAmount);
 		}
-		printf("\n\t%s\n",Info.c_str());
+		printf("\n\t\t%s\n",Info.c_str());
 	}
 	else
 	{
@@ -118,7 +118,7 @@ void Tra::Print(const string& DefaultCurrency)
 			printf("  =  ");
 			PrintCurrencyAmount(DefaultCurrency,DefaultCurrencyAmount);
 		}
-		printf("\n\t%s\n",Info.c_str());
+		printf("\n\t\t%s\n",Info.c_str());
 	}
 }
 
@@ -282,7 +282,7 @@ void Finances::NewTra()
 	}
 	else if(type == "Transfer")
 	{
-		if(!GetNewTransferAccounts(to_n,from_n))
+		if(!GetNewTransferAccounts(from_n,to_n))
 		{
 			printf("Transfer has been discarded.\n");
 			return;
@@ -333,6 +333,13 @@ void Finances::NewTra()
 	}
 
 
+	if(!AskAccurateTra(tra, DefaultCurrency))
+	{
+		printf("%s has been discarded.\n",tra->Type.c_str());
+		delete tra;
+		return;
+	}
+
 	RecordTra(tra);
 	printf("%s successfully recorded.\n",tra->Type.c_str());
 }
@@ -340,18 +347,80 @@ void Finances::NewTra()
 
 int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n)
 {
-	// TODO
-	// HERE
+	if(!GetNewTransactionAccountsInner(tag_n, "Tag"))
+		return 0;
+
+	if(!GetNewTransactionAccountsInner(loc_n, "Location"))
+		return 0;
+
+	if(!GetNewTransactionAccountsInner(ear_n, "Earmark"))
+		return 0;
+
+	if(!GetNewTransactionAccountsInner(tf_n, "ToFrom"))
+		return 0;
 
 	return 1;
 }
-int Finances::GetNewTransferAccounts(string& to_n,string& from_n)
+
+int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type)
 {
+	acc_n = ReadInNewTraAccount(type);
+	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Type != type)
+	{
+		if(!AskTryAgain("There is no \"" + type + "\" account with the name \"" + acc_n + "\"."))
+			return 0;
 
-	// TODO
+		acc_n = ReadInNewTraAccount(type);
+	}
 
+	return 1;
+}
 
+int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
+{
+	if(!GetNewTransferAccountsInner(from_n,"From"))
+		return 0;
 
+	if(!GetNewTransferAccountsInner(to_n,"To"))
+		return 0;
+
+	if(from_n == to_n)
+	{
+		printf("Trying to transfer funds from an account to itself.");
+		return 0;
+	}
+
+	while(AllAccounts[from_n]->Type != AllAccounts[to_n]->Type)
+	{
+		if(!AskTryAgain("These two accounts aren't of the same Type."))
+			return 0;
+
+		if(!GetNewTransferAccountsInner(from_n,"From"))
+			return 0;
+
+		if(!GetNewTransferAccountsInner(to_n,"To"))
+			return 0;
+
+		if(from_n == to_n)
+		{
+			printf("Trying to transfer funds from an account to itself.");
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type)
+{
+	acc_n = ReadInNewTraAccount(type);
+	while(AllAccounts.find(acc_n) == AllAccounts.end())
+	{
+		if(!AskTryAgain("There is no account with the name \"" + acc_n + "\"."))
+			return 0;
+
+		acc_n = ReadInNewTraAccount(type);
+	}
 
 	return 1;
 }

@@ -20,10 +20,12 @@ string ReadInCurrency();
 
 string ReadInNewAccountName();
 string ReadInParentAccountName();
+string ReadInNewTraAccount(const string& s);
 
 
 int AskTryAgain(string s);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
+int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
 
 string dtos_(double d);
 string itos_(int i);

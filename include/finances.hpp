@@ -130,7 +130,9 @@ class Finances
 		void NewTra();
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n);
-		int GetNewTransferAccounts(string& to_n,string& from_n);
+		int GetNewTransactionAccountsInner(string& acc_n, const string& type);
+		int GetNewTransferAccounts(string& from_n,string& to_n);
+		int GetNewTransferAccountsInner(string& acc_n, const string& type);
 		void RecordTra(Tra* tra);
 		void PercolateTra(Tra* tra, Account* a);
 
