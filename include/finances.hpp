@@ -16,6 +16,7 @@ const string Prompt = "~~~~>";
 // TODO - Write some checks for after reading
 // TODO - Get Foreign Working
 // TODO - Be able to modify Macro
+// TODO - Disallow using Account->Children.size()>0 in Tras
 
 class Account
 {
