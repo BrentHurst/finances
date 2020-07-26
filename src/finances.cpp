@@ -11,8 +11,6 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-/* case  1: f.ReadNewTra(1,0); return 1; */  // TODO
-
 /* case 31: f.SelectAccount(); return 1; */  // TODO
 /* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
 
@@ -179,25 +177,25 @@ void Finances::PrintUnreconciledTras()
 
 void Finances::PrintAccounts(const string& which)
 {
-	if(which == "a" || which == "t")
+	if(which == "a" || which == "t" || which == "All" || which == "Tag" || which == "Tags")
 	{
 		HeadTag->Print("\t");
-		printf("\n\n\n\n");
+		printf("\n\n\n");
 	}
-	if(which == "a" || which == "l")
+	if(which == "a" || which == "l" || which == "All" || which == "Location" || which == "Locations")
 	{
 		HeadLocation->Print("\t");
-		printf("\n\n\n\n");
+		printf("\n\n\n");
 	}
-	if(which == "a" || which == "e")
+	if(which == "a" || which == "e" || which == "All" || which == "Earmark" || which == "Earmarks")
 	{
 		HeadEarmark->Print("\t");
-		printf("\n\n\n\n");
+		printf("\n\n\n");
 	}
-	if(which == "a" || which == "tf")
+	if(which == "a" || which == "tf" || which == "All" || which == "ToFrom" || which == "ToFroms")
 	{
 		HeadToFrom->Print("\t");
-		printf("\n\n\n\n");
+		printf("\n\n\n");
 	}
 }
 
@@ -375,10 +373,12 @@ int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_
 int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type)
 {
 	acc_n = ReadInNewTraAccount(type);
-	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Type != type)
+	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Type != type || AllAccounts[acc_n]->Children.size())
 	{
-		if(!AskTryAgain("There is no \"" + type + "\" account with the name \"" + acc_n + "\"."))
+		if(!AskTryAgain("Either there is no " + type + " account with the name \"" + acc_n + "\", or that account has child accounts."))
 			return 0;
+
+		PrintAccounts(type);
 
 		acc_n = ReadInNewTraAccount(type);
 	}
@@ -424,10 +424,12 @@ int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
 int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type)
 {
 	acc_n = ReadInNewTraAccount(type);
-	while(AllAccounts.find(acc_n) == AllAccounts.end())
+	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Children.size())
 	{
-		if(!AskTryAgain("There is no account with the name \"" + acc_n + "\"."))
+		if(!AskTryAgain("Either there is no account with the name \"" + acc_n + "\", or that account has child accounts."))
 			return 0;
+
+		PrintAccounts("All");
 
 		acc_n = ReadInNewTraAccount(type);
 	}
