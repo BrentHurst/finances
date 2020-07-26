@@ -36,7 +36,7 @@ int Finances::InteractWithUser()
 
 	while(true)
 	{
-		GetCommand(CommandVec);
+		GetCommand(CommandVec,DefaultPrompt);
 
 		if(!CommandVec.size())
 		{
@@ -66,7 +66,7 @@ int Finances::InteractWithUser()
 	}
 }
 
-void Finances::GetCommand(vector<string>& CommandVec)
+void Finances::GetCommand(vector<string>& CommandVec, const string& Prompt)
 {
 	string line;
 	istringstream ss;

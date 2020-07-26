@@ -11,12 +11,13 @@ using namespace std;
 using nlohmann::json;
 
 const string ErrorAsterisks = "*!*!*!*!*!*";
-const string Prompt = "~~~~>";
 
 // TODO - Write some checks for after reading
 // TODO - Get Foreign Working
 // TODO - Be able to modify Macro
-// TODO - Disallow using Account->Children.size()>0 in Tras
+// TODO - Debts
+// TODO - Deleted accounts
+// Can't delete HeadAccounts
 
 class Account
 {
@@ -119,7 +120,7 @@ class Finances
 		void Clear();
 
 		int InteractWithUser();
-		void GetCommand(vector<string>& CommandVec);
+		void GetCommand(vector<string>& CommandVec, const string& Prompt);
 
 		void PrintSomething(const vector<string>& CommandVec);
 		void PrintTras();
@@ -152,6 +153,8 @@ class Finances
 		map<string, Macro*> Macros;
 		map<unsigned long long, Tra*> Tras;
 		map<string, CurrencyConversion*> CurrencyConversions;
+
+		const string DefaultPrompt = "~~~~>";
 
 	public:
 		Finances(const string& fn);
