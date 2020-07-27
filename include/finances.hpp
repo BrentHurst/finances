@@ -15,10 +15,19 @@ const string DefaultPrompt = "~~~~>";
 
 // TODO - Write some checks for after reading, including to require HeadAccounts and Deleted accounts
 // TODO - Get Foreign Working
-// TODO - Be able to modify Macro
 // TODO - Debts
 // TODO - Deleted accounts except HeadAccounts and Deleted accounts
 // TODO - What happens if give a child account to already existing account with no children
+/* case 31: f.SelectAccount(); return 1; */  // TODO
+/* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
+
+// TODO - Select Macro
+// TODO - Add Macro
+// TODO - Edit Macro
+// TODO - Run Macro
+// TODO - print Macro
+
+/* case 61: f.NewYear(); return 1; */  // TODO
 
 class Account
 {
@@ -109,10 +118,6 @@ class CurrencyConversion
 class Finances
 {
 	protected:
-		/* void PrintCommands(); */
-		/* int ReadInCommand(); */
-		/* int RunCommand(int cmd); */
-
 		void LoadFromFile();
 		void SaveToFile();
 		void FromJson(const json& j);

@@ -11,16 +11,6 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-/* case 31: f.SelectAccount(); return 1; */  // TODO
-/* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
-
-/* case 41: f.Macros(); return 1; */  // TODO
-
-/* case 51: f.Reconcile(); return 1; */  // TODO
-
-/* case 61: f.NewYear(); return 1; */  // TODO
-
-
 void Finances::Run()
 {
 	LoadFromFile();
