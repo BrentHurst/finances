@@ -16,16 +16,41 @@ const string DefaultPrompt = "~~~~>";
 // TODO - Write some checks for after reading, including to require HeadAccounts and Deleted accounts
 // TODO - Get Foreign Working
 // TODO - Debts
-// TODO - Deleted accounts except HeadAccounts and Deleted accounts
 // TODO - What happens if give a child account to already existing account with no children
+
 /* case 31: f.SelectAccount(); return 1; */  // TODO
+// TODO - Prompt change
+// TODO - List tras
+// TODO - List Unreconciled tras
+// TODO - Select tra
+// TODO - Reconcile
+// TODO - Rename except Heads and Deletes
+// TODO - Give Different Parent Account except Heads and Deletes
+// TODO - Delete except Heads and Deletes
+// TODO - Return to home
+
+
 /* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
+// TODO - Change Tag
+// TODO - Change Location
+// TODO - Change Earmark
+// TODO - Change ToFrom
+// TODO - Change Date
+// TODO - Change Info
+// TODO - Change Amount
+// TODO - Reconcile
+// TODO - Unreconcile
+// TODO - Delete
+// TODO - Return to home
+
 
 // TODO - Select Macro
+// TODO - Prompt change
 // TODO - Add Macro
 // TODO - Edit Macro
 // TODO - Run Macro
 // TODO - print Macro
+// TODO - Return to home
 
 /* case 61: f.NewYear(); return 1; */  // TODO
 
