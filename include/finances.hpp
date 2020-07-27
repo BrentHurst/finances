@@ -18,7 +18,6 @@ const string DefaultPrompt = "~~~~>";
 // TODO - Be able to modify Macro
 // TODO - Debts
 // TODO - Deleted accounts except HeadAccounts and Deleted accounts
-// TODO - Only print a few Tras
 // TODO - option to print out accounts by default
 // TODO - What happens if give a child account to already existing account with no children
 
@@ -74,6 +73,8 @@ class Tra
 
 		Tra();
 		void Print(const string& DefaultCurrency);
+
+		void Reconcile();
 };
 
 class Macro
@@ -126,8 +127,7 @@ class Finances
 		void GetCommand(vector<string>& CommandVec, const string& Prompt);
 
 		void PrintSomething(const vector<string>& CommandVec);
-		void PrintTras();
-		void PrintUnreconciledTras();
+		void PrintTras(int num, int OnlyUnreconciled);
 		void PrintAccounts(const string& which);
 
 		void NewSomething(const vector<string>& CommandVec);

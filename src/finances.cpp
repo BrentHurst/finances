@@ -93,31 +93,30 @@ int Finances::AskWhetherToSave()
 	return (c == 'y');
 }
 
+void Tra::Reconcile()
+{
+	Reconciled = 1;
+}
 
 void Tra::Print(const string& DefaultCurrency)
 {
+	printf("\t%llu: %c\t",(Id ? : Date),(Reconciled ? 'R' : '-'));
+
 	if(Type == "Transaction")
-	{
-		printf("\t%llu: %c\t%15s.\t%15s.\t%15s.\t%15s.\t",(Id ? : Date),(Reconciled ? 'R' : '-'),Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str());
-		PrintCurrencyAmount(Currency,Amount);
-		if(Currency != DefaultCurrency)
-		{
-			printf("  =  ");
-			PrintCurrencyAmount(DefaultCurrency,DefaultCurrencyAmount);
-		}
-		printf("\n\t\t%s\n",Info.c_str());
-	}
+		printf("%15s.\t%15s.\t%15s.\t%15s.",Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str());
 	else
+		printf("%15s  ->  %15s",From->Name.c_str(),To->Name.c_str());
+
+	printf("\t");
+	PrintCurrencyAmount(Currency,Amount);
+	if(Currency != DefaultCurrency)
 	{
-		printf("\t%llu: %c\t%15s  ->  %15s\t",(Id ? : Date),(Reconciled ? 'R' : '-'),From->Name.c_str(),To->Name.c_str());
-		PrintCurrencyAmount(Currency,Amount);
-		if(Currency != DefaultCurrency)
-		{
-			printf("  =  ");
-			PrintCurrencyAmount(DefaultCurrency,DefaultCurrencyAmount);
-		}
-		printf("\n\t\t%s\n",Info.c_str());
+		printf("  =  ");
+		PrintCurrencyAmount(DefaultCurrency,DefaultCurrencyAmount);
 	}
+	printf("\n");
+	if(Info.size())
+		printf("\t\t%s\n",Info.c_str());
 }
 
 
@@ -144,12 +143,22 @@ void Account::Print(const string& indent)
 
 void Finances::PrintSomething(const vector<string>& CommandVec)
 {
-	if(CommandVec.size() == 2)
+	if(CommandVec.size() >= 2)
 	{
 		if(CommandVec[1] == "tras" || CommandVec[1] == "t")
-			PrintTras();
+		{
+			if(CommandVec.size() == 2)
+				PrintTras(0,0);
+			else
+				PrintTras(stoi_(CommandVec[2]),0);
+		}
 		else if(CommandVec[1] == "utras" || CommandVec[1] == "ut" || CommandVec[1] == "tu")
-			PrintUnreconciledTras();
+		{
+			if(CommandVec.size() == 2)
+				PrintTras(0,1);
+			else
+				PrintTras(stoi_(CommandVec[2]),1);
+		}
 		else if(CommandVec[1] == "accounts" || CommandVec[1] == "a")
 			PrintAccounts("a");
 		else if(CommandVec[1] == "tags" || CommandVec[1] == "ta")
@@ -163,15 +172,18 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 	}
 }
 
-void Finances::PrintTras()
+void Finances::PrintTras(int num, int OnlyUnreconciled)
 {
-	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
-		mit->second->Print(DefaultCurrency);
-}
-void Finances::PrintUnreconciledTras()
-{
-	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
-		if(!mit->second->Reconciled)
+	map<unsigned long long, Tra*>::iterator mit;
+	int i;
+
+	if(num > 0)
+		for(mit = Tras.end() , i = 0; mit != Tras.begin() && i < num; --mit , i++);
+	else
+		mit = Tras.begin();
+
+	for( ; mit != Tras.end(); ++mit)
+		if(!OnlyUnreconciled || !mit->second->Reconciled)
 			mit->second->Print(DefaultCurrency);
 }
 
