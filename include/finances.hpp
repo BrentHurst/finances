@@ -18,7 +18,6 @@ const string DefaultPrompt = "~~~~>";
 // TODO - Be able to modify Macro
 // TODO - Debts
 // TODO - Deleted accounts except HeadAccounts and Deleted accounts
-// TODO - option to print out accounts by default
 // TODO - What happens if give a child account to already existing account with no children
 
 class Account
@@ -132,12 +131,12 @@ class Finances
 
 		void NewSomething(const vector<string>& CommandVec);
 		void NewAccount(const string& acc_n);
-		void NewTra();
+		void NewTra(int PrintAccountsByDefault);
 
-		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n);
-		int GetNewTransactionAccountsInner(string& acc_n, const string& type);
-		int GetNewTransferAccounts(string& from_n,string& to_n);
-		int GetNewTransferAccountsInner(string& acc_n, const string& type);
+		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
+		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
+		int GetNewTransferAccounts(string& from_n,string& to_n,int PrintAccountsByDefault);
+		int GetNewTransferAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
 		void RecordTra(Tra* tra);
 		void PercolateTra(Tra* tra, Account* a);
 

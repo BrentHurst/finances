@@ -214,7 +214,7 @@ void Finances::PrintAccounts(const string& which)
 
 void Finances::NewSomething(const vector<string>& CommandVec)
 {
-	if(CommandVec.size() == 2)
+	if(CommandVec.size() >= 2)
 	{
 		if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
 		{
@@ -222,7 +222,12 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 		}
 		else if(CommandVec[1] == "tra" || CommandVec[1] == "t")
 		{
-			NewTra();
+			if(CommandVec.size() == 2)
+				NewTra(0);
+			else if(CommandVec[2] == "-pa")
+				NewTra(1);
+			else
+				printf("Unrecognized option: %s",CommandVec[2].c_str());
 		}
 	}
 }
@@ -292,7 +297,7 @@ void Finances::NewAccount(const string& acc_n)
 	printf("Account \"%s\" successfully created.\n",name.c_str());
 }
 
-void Finances::NewTra()
+void Finances::NewTra(int PrintAccountsByDefault)
 {
 	Tra* tra;
 	string type;
@@ -312,7 +317,7 @@ void Finances::NewTra()
 
 	if(type == "Transaction")
 	{
-		if(!GetNewTransactionAccounts(tag_n,loc_n,ear_n,tf_n))
+		if(!GetNewTransactionAccounts(tag_n,loc_n,ear_n,tf_n,PrintAccountsByDefault))
 		{
 			printf("Transaction has been discarded.\n");
 			return;
@@ -320,7 +325,7 @@ void Finances::NewTra()
 	}
 	else if(type == "Transfer")
 	{
-		if(!GetNewTransferAccounts(from_n,to_n))
+		if(!GetNewTransferAccounts(from_n,to_n,PrintAccountsByDefault))
 		{
 			printf("Transfer has been discarded.\n");
 			return;
@@ -380,25 +385,27 @@ void Finances::NewTra()
 }
 
 
-int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n)
+int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n,int PrintAccountsByDefault)
 {
-	if(!GetNewTransactionAccountsInner(tag_n, "Tag"))
+	if(!GetNewTransactionAccountsInner(tag_n, "Tag", PrintAccountsByDefault))
 		return 0;
 
-	if(!GetNewTransactionAccountsInner(loc_n, "Location"))
+	if(!GetNewTransactionAccountsInner(loc_n, "Location", PrintAccountsByDefault))
 		return 0;
 
-	if(!GetNewTransactionAccountsInner(ear_n, "Earmark"))
+	if(!GetNewTransactionAccountsInner(ear_n, "Earmark", PrintAccountsByDefault))
 		return 0;
 
-	if(!GetNewTransactionAccountsInner(tf_n, "ToFrom"))
+	if(!GetNewTransactionAccountsInner(tf_n, "ToFrom", PrintAccountsByDefault))
 		return 0;
 
 	return 1;
 }
 
-int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type)
+int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault)
 {
+	if(PrintAccountsByDefault)
+		PrintAccounts(type);
 	acc_n = ReadInNewTraAccount(type);
 
 	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Type != type || AllAccounts[acc_n]->Children.size())
@@ -435,12 +442,12 @@ int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type)
 	return 1;
 }
 
-int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
+int Finances::GetNewTransferAccounts(string& from_n,string& to_n,int PrintAccountsByDefault)
 {
-	if(!GetNewTransferAccountsInner(from_n,"From"))
+	if(!GetNewTransferAccountsInner(from_n,"From", PrintAccountsByDefault))
 		return 0;
 
-	if(!GetNewTransferAccountsInner(to_n,"To"))
+	if(!GetNewTransferAccountsInner(to_n,"To", PrintAccountsByDefault))
 		return 0;
 
 	if(from_n == to_n)
@@ -454,10 +461,10 @@ int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
 		if(!AskTryAgain("These two accounts aren't of the same Type."))
 			return 0;
 
-		if(!GetNewTransferAccountsInner(from_n,"From"))
+		if(!GetNewTransferAccountsInner(from_n,"From",PrintAccountsByDefault))
 			return 0;
 
-		if(!GetNewTransferAccountsInner(to_n,"To"))
+		if(!GetNewTransferAccountsInner(to_n,"To",PrintAccountsByDefault))
 			return 0;
 
 		if(from_n == to_n)
@@ -470,8 +477,10 @@ int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
 	return 1;
 }
 
-int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type)
+int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault)
 {
+	if(PrintAccountsByDefault)
+		PrintAccounts("All");
 	acc_n = ReadInNewTraAccount(type);
 
 	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Children.size())
