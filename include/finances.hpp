@@ -140,6 +140,8 @@ class Finances
 		void RecordTra(Tra* tra);
 		void PercolateTra(Tra* tra, Account* a);
 
+		void Reconcile(Account* acc);
+
 		int AskWhetherToSave();
 
 		string filename;

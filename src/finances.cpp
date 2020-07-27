@@ -47,17 +47,21 @@ int Finances::InteractWithUser()
 			// TODO
 			printf("I should probably have this print a help menu.\n");
 		}
-		else if(CommandVec[0] == "quit" || CommandVec[0] == "q" || CommandVec[0] == "l")
+		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
 		{
 			return AskWhetherToSave();
 		}
-		else if(CommandVec[0] == "print" || CommandVec[0] == "p")
+		else if(CommandVec[0] == "print" || CommandVec[0] == "p" || CommandVec[0] == "l")
 		{
 			PrintSomething(CommandVec);
 		}
 		else if(CommandVec[0] == "new" || CommandVec[0] == "n")
 		{
 			NewSomething(CommandVec);
+		}
+		else if(CommandVec[0] == "reconcile" || CommandVec[0] == "r")
+		{
+			Reconcile(NULL);
 		}
 		else
 		{
@@ -542,4 +546,12 @@ void Finances::PercolateTra(Tra* tra, Account* a)
 	{
 		tmp->Amount = Round2Decimals(tmp->Amount + tra->Amount);
 	}
+}
+
+void Finances::Reconcile(Account* acc)
+{
+	for(map<unsigned long long,Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+		if(!mit->second->Reconciled && (!acc || IsAccountPartOfTra(acc,mit->second)))
+			if(AskReconcileTra(mit->second,DefaultCurrency))
+				mit->second->Reconcile();
 }

@@ -28,6 +28,9 @@ int AskTryAgain(string s);
 int AskAddNonexistentAccount(const string& acc_n);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
 int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
+int AskReconcileTra(Tra* tra,const string& DefaultCurrency);
+
+int IsAccountPartOfTra(class Account* acc, class Tra* tra);
 
 string dtos_(double d);
 string itos_(int i);

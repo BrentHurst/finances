@@ -192,6 +192,38 @@ int AskAccurateTra(Tra* tra, const string& DefaultCurrency)
 	return (c == 'y');
 }
 
+int AskReconcileTra(Tra* tra,const string& DefaultCurrency)
+{
+	char c;
+
+	printf("\n\n");
+	tra->Print(DefaultCurrency);
+
+	do
+	{
+		printf("Would you like to reconcile the above %s? [y/n]: ",tra->Type.c_str());
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int IsAccountPartOfTra(Account* acc, Tra* tra)
+{
+	if(!acc || !tra)
+		return 0;
+
+	if(tra->Tag == acc)
+		return 1;
+	if(tra->Location == acc)
+		return 1;
+	if(tra->Earmark == acc)
+		return 1;
+	if(tra->ToFrom == acc)
+		return 1;
+
+	return 0;
+}
 
 
 string dtos_(double d)
@@ -231,8 +263,6 @@ double Round2Decimals(double d)
 	double rv = round(d*100.0)/100.0;
 	return (rv == -0.0) ? 0 : rv;
 }
-
-
 
 
 bool cmdcomp::operator() (int a,int b)
