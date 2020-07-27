@@ -133,11 +133,27 @@ int AskTryAgain(string s)
 {
 	char c;
 
-	printf("%s\n",s.c_str());
+	if(s.size())
+		printf("%s\n",s.c_str());
 
 	do
 	{
 		printf("Would you like to try again? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int AskAddNonexistentAccount(const string& acc_n)
+{
+	char c;
+
+	printf("There is no account with the name \"%s\".\n",acc_n.c_str());
+
+	do
+	{
+		printf("Would you like to add it? [y/n]: ");
 		c = ReadChar();
 	}while(c != 'y' && c != 'n');
 
@@ -212,7 +228,8 @@ double abs_(double f)
 }
 double Round2Decimals(double d)
 {
-	return round(d*100.0)/100.0;
+	double rv = round(d*100.0)/100.0;
+	return (rv == -0.0) ? 0 : rv;
 }
 
 

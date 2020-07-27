@@ -138,7 +138,7 @@ json Account::AsJson()
 	j = json::object();
 
 	j["Name"] = Name;
-	j["Amount"] = Amount;
+	j["Amount"] = Round2Decimals(Amount);
 	j["Type"] = Type;
 	j["Currency"] = Currency;
 
@@ -165,7 +165,7 @@ void Account::FromJson(const json& j)
 		FromJsonError("Name");
 
 	if(j.find("Amount") != j.end())
-		Amount = j["Amount"];
+		Amount = Round2Decimals(j["Amount"]);
 	else
 		FromJsonError("Amount");
 
@@ -193,8 +193,8 @@ json Tra::AsJson()
 	j["Info"] = Info;
 	j["Reconciled"] = Reconciled;
 	j["Currency"] = Currency;
-	j["Amount"] = Amount;
-	j["DefaultCurrencyAmount"] = DefaultCurrencyAmount;
+	j["Amount"] = Round2Decimals(Amount);
+	j["DefaultCurrencyAmount"] = Round2Decimals(DefaultCurrencyAmount);
 
 	if(Type == "Transaction")
 	{
@@ -260,12 +260,12 @@ void Tra::FromJson(const json& j, map<string, Account*>& AllAccounts)
 		FromJsonError("Currency");
 
 	if(j.find("Amount") != j.end())
-		Amount = j["Amount"];
+		Amount = Round2Decimals(j["Amount"]);
 	else
 		FromJsonError("Amount");
 
 	if(j.find("DefaultCurrencyAmount") != j.end())
-		DefaultCurrencyAmount = j["DefaultCurrencyAmount"];
+		DefaultCurrencyAmount = Round2Decimals(j["DefaultCurrencyAmount"]);
 	else
 		FromJsonError("DefaultCurrencyAmount");
 
@@ -572,8 +572,8 @@ json CurrencyConversion::AsJson()
 	j = json::object();
 
 	j["ForeignCurrency"] = ForeignCurrency;
-	j["AmountForeign"] = AmountForeign;
-	j["AmountDefault"] = AmountDefault;
+	j["AmountForeign"] = Round2Decimals(AmountForeign);
+	j["AmountDefault"] = Round2Decimals(AmountDefault);
 
 	return j;
 }
@@ -597,12 +597,12 @@ void CurrencyConversion::FromJson(const json& j)
 		FromJsonError("ForeignCurrency");
 
 	if(j.find("AmountForeign") != j.end())
-		AmountForeign = j["AmountForeign"];
+		AmountForeign = Round2Decimals(j["AmountForeign"]);
 	else
 		FromJsonError("AmountForeign");
 
 	if(j.find("AmountDefault") != j.end())
-		AmountDefault = j["AmountDefault"];
+		AmountDefault = Round2Decimals(j["AmountDefault"]);
 	else
 		FromJsonError("AmountDefault");
 }

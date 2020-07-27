@@ -47,7 +47,7 @@ int Finances::InteractWithUser()
 			// TODO
 			printf("I should probably have this print a help menu.\n");
 		}
-		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
+		else if(CommandVec[0] == "quit" || CommandVec[0] == "q" || CommandVec[0] == "l")
 		{
 			return AskWhetherToSave();
 		}
@@ -98,7 +98,7 @@ void Tra::Print(const string& DefaultCurrency)
 {
 	if(Type == "Transaction")
 	{
-		printf("\t%llu: %c\t%15s.\t%15s.\t%15s.\t%15s.\t",Id,(Reconciled ? 'R' : '-'),Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str());
+		printf("\t%llu: %c\t%15s.\t%15s.\t%15s.\t%15s.\t",(Id ? : Date),(Reconciled ? 'R' : '-'),Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str());
 		PrintCurrencyAmount(Currency,Amount);
 		if(Currency != DefaultCurrency)
 		{
@@ -109,7 +109,7 @@ void Tra::Print(const string& DefaultCurrency)
 	}
 	else
 	{
-		printf("\t%llu: %c\t%15s  ->  %15s\t",Id,(Reconciled ? 'R' : '-'),From->Name.c_str(),To->Name.c_str());
+		printf("\t%llu: %c\t%15s  ->  %15s\t",(Id ? : Date),(Reconciled ? 'R' : '-'),From->Name.c_str(),To->Name.c_str());
 		PrintCurrencyAmount(Currency,Amount);
 		if(Currency != DefaultCurrency)
 		{
@@ -206,7 +206,7 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 	{
 		if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
 		{
-			NewAccount();
+			NewAccount("");
 		}
 		else if(CommandVec[1] == "tra" || CommandVec[1] == "t")
 		{
@@ -215,7 +215,7 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 	}
 }
 
-void Finances::NewAccount()
+void Finances::NewAccount(const string& acc_n)
 {
 	string name;
 	string cur;
@@ -223,15 +223,20 @@ void Finances::NewAccount()
 	Account* acc;
 	Account* paracc;
 
-	name = ReadInNewAccountName();
-	while(AllAccounts.find(name) != AllAccounts.end())
+	if(acc_n.size())
+		name = acc_n;
+	else
 	{
-		if(!AskTryAgain("An account with the name \"" + name + "\" already exists."))
-		{
-			printf("Discarding new account.\n");
-			return;
-		}
 		name = ReadInNewAccountName();
+		while(AllAccounts.find(name) != AllAccounts.end())
+		{
+			if(!AskTryAgain("An account with the name \"" + name + "\" already exists."))
+			{
+				printf("Discarding new account.\n");
+				return;
+			}
+			name = ReadInNewAccountName();
+		}
 	}
 
 	cur = ReadInCurrency();
@@ -239,11 +244,20 @@ void Finances::NewAccount()
 	par = ReadInParentAccountName();
 	while(AllAccounts.find(par) == AllAccounts.end())
 	{
+		if(AskAddNonexistentAccount(par))
+		{
+			NewAccount(par);
+			continue;
+		}
+
 		if(!AskTryAgain("There is no account with the name \"" + par + "\"."))
 		{
 			printf("Discarding new account.\n");
 			return;
 		}
+
+		PrintAccounts("All");
+
 		par = ReadInParentAccountName();
 	}
 
@@ -254,6 +268,10 @@ void Finances::NewAccount()
 	}
 
 	paracc = AllAccounts[par];
+	if(!paracc->Children.size())
+	{
+		// TODO
+	}
 	acc = new Account(name,0,paracc->Type,cur);
 	paracc->Children[acc->Name] = acc;
 	acc->Parent = paracc;
@@ -305,9 +323,6 @@ void Finances::NewTra()
 	cur = ReadInCurrency();
 	amt = ReadInAmount();
 	info = ReadInInfo();
-
-
-
 
 	tra = new Tra;
 	tra->Type = type;
@@ -373,10 +388,32 @@ int Finances::GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_
 int Finances::GetNewTransactionAccountsInner(string& acc_n, const string& type)
 {
 	acc_n = ReadInNewTraAccount(type);
+
 	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Type != type || AllAccounts[acc_n]->Children.size())
 	{
-		if(!AskTryAgain("Either there is no " + type + " account with the name \"" + acc_n + "\", or that account has child accounts."))
-			return 0;
+		if(AllAccounts.find(acc_n) == AllAccounts.end())
+		{
+			if(AskAddNonexistentAccount(acc_n))
+			{
+				NewAccount(acc_n);
+				continue;
+			}
+			else
+			{
+				if(!AskTryAgain(""))
+					return 0;
+			}
+		}
+		else if(AllAccounts[acc_n]->Type != type)
+		{
+			if(!AskTryAgain("Account \"" + acc_n + "\" is of type \"" + AllAccounts[acc_n]->Type + "\", not \"" + type + "\"."))
+				return 0;
+		}
+		else
+		{
+			if(!AskTryAgain("Account \"" + acc_n + "\" has child accounts."))
+				return 0;
+		}
 
 		PrintAccounts(type);
 
@@ -424,10 +461,27 @@ int Finances::GetNewTransferAccounts(string& from_n,string& to_n)
 int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type)
 {
 	acc_n = ReadInNewTraAccount(type);
+
 	while(AllAccounts.find(acc_n) == AllAccounts.end() || AllAccounts[acc_n]->Children.size())
 	{
-		if(!AskTryAgain("Either there is no account with the name \"" + acc_n + "\", or that account has child accounts."))
-			return 0;
+		if(AllAccounts.find(acc_n) == AllAccounts.end())
+		{
+			if(AskAddNonexistentAccount(acc_n))
+			{
+				NewAccount(acc_n);
+				continue;
+			}
+			else
+			{
+				if(!AskTryAgain(""))
+					return 0;
+			}
+		}
+		else
+		{
+			if(!AskTryAgain("Account \"" + acc_n + "\" has child accounts."))
+				return 0;
+		}
 
 		PrintAccounts("All");
 
@@ -465,6 +519,6 @@ void Finances::PercolateTra(Tra* tra, Account* a)
 
 	for(tmp = a; tmp; tmp = tmp->Parent)
 	{
-		tmp->Amount += tra->Amount;
+		tmp->Amount = Round2Decimals(tmp->Amount + tra->Amount);
 	}
 }

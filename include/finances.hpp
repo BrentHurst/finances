@@ -11,13 +11,16 @@ using namespace std;
 using nlohmann::json;
 
 const string ErrorAsterisks = "*!*!*!*!*!*";
+const string DefaultPrompt = "~~~~>";
 
-// TODO - Write some checks for after reading
+// TODO - Write some checks for after reading, including to require HeadAccounts and Deleted accounts
 // TODO - Get Foreign Working
 // TODO - Be able to modify Macro
 // TODO - Debts
-// TODO - Deleted accounts
-// Can't delete HeadAccounts
+// TODO - Deleted accounts except HeadAccounts and Deleted accounts
+// TODO - Only print a few Tras
+// TODO - option to print out accounts by default
+// TODO - What happens if give a child account to already existing account with no children
 
 class Account
 {
@@ -128,7 +131,7 @@ class Finances
 		void PrintAccounts(const string& which);
 
 		void NewSomething(const vector<string>& CommandVec);
-		void NewAccount();
+		void NewAccount(const string& acc_n);
 		void NewTra();
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n);
@@ -154,7 +157,6 @@ class Finances
 		map<unsigned long long, Tra*> Tras;
 		map<string, CurrencyConversion*> CurrencyConversions;
 
-		const string DefaultPrompt = "~~~~>";
 
 	public:
 		Finances(const string& fn);
