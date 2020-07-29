@@ -170,15 +170,22 @@ void Finances::PrintTras(int num, int OnlyUnreconciled)
 {
 	map<unsigned long long, Tra*>::iterator mit;
 	int i;
+	unsigned long long lastDate;
 
 	if(num > 0)
 		for(mit = Tras.end() , i = 0; mit != Tras.begin() && i < num; --mit , i++);
 	else
 		mit = Tras.begin();
 
+	lastDate = mit->second->Date;
 	for( ; mit != Tras.end(); ++mit)
 		if(!OnlyUnreconciled || !mit->second->Reconciled)
+		{
+			if(mit->second->Date != lastDate)
+				printf("\n");
 			mit->second->Print(DefaultCurrency);
+			lastDate = mit->second->Date;
+		}
 }
 
 void Finances::PrintAccounts(const string& which)
