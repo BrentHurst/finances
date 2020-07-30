@@ -16,7 +16,7 @@ void Finances::Run()
 	LoadFromFile();
 
 	if(InteractWithUser() == 1)
-		SaveToFile();
+		SaveToFile(0);
 }
 
 
@@ -182,7 +182,7 @@ void Finances::PrintTras(int num, int OnlyUnreconciled)
 		if(!OnlyUnreconciled || !mit->second->Reconciled)
 		{
 			if(mit->second->Date != lastDate)
-				printf("\n");
+				printf("\n\n");
 			mit->second->Print(DefaultCurrency);
 			lastDate = mit->second->Date;
 		}

@@ -18,6 +18,9 @@ const string DefaultPrompt = "~~~~>";
 // TODO - Debts
 // TODO - What happens if give a child account to already existing account with no children
 
+// TODO - Flag to toggle listing all accounts in new tra by default
+// TODO - Flag to toggle asking currency
+
 /* case 31: f.SelectAccount(); return 1; */  // TODO
 // TODO - Prompt change
 // TODO - List tras
@@ -144,7 +147,7 @@ class Finances
 {
 	protected:
 		void LoadFromFile();
-		void SaveToFile();
+		void SaveToFile(int StartNewTimePeriodFromHere);
 		void FromJson(const json& j);
 		json AsJson();
 

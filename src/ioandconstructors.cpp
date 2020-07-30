@@ -63,7 +63,7 @@ void Finances::LoadFromFile()
 
 
 
-void Finances::SaveToFile()
+void Finances::SaveToFile(int StartNewTimePeriodFromHere)
 {
 	ofstream ofs;
 
@@ -72,7 +72,14 @@ void Finances::SaveToFile()
 	if(!ofs.is_open())
 		throw SRE("Finances::SaveToFile(): Couldn't open file " + filename);
 
-	ofs << AsJson().dump(4) << endl;
+	if(StartNewTimePeriodFromHere)
+	{
+		// TODO
+	}
+	else
+		ofs << AsJson().dump(4) << endl;
+
+	ofs.close();
 }
 
 Account::Account()
