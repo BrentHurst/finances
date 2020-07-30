@@ -551,4 +551,6 @@ void Finances::Reconcile(Account* acc)
 		if(!mit->second->Reconciled && (!acc || IsAccountPartOfTra(acc,mit->second)))
 			if(AskReconcileTra(mit->second,DefaultCurrency))
 				mit->second->Reconcile();
+
+	printf("\nYour reconciliations have been recorded.\n");
 }
