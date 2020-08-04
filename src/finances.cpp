@@ -17,6 +17,9 @@ void Finances::Run()
 
 	if(InteractWithUser() == 1)
 		SaveToFile(0);
+
+	if(cin.eof())
+		printf("\n");
 }
 
 
@@ -30,7 +33,9 @@ int Finances::InteractWithUser()
 
 		if(!CommandVec.size())
 		{
-			// Do Nothing
+			if(cin.eof())
+				return 0;
+			// else do nothing and continue
 		}
 		else if(CommandVec[0] == "help" || CommandVec[0] == "h" || CommandVec[0] == "?")
 		{
