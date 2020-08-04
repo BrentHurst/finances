@@ -76,12 +76,12 @@ void Finances::InteractWithUserTra(Tra* tra)
 		{
 			return;
 		}
-		else if(CommandVecTra[0] == "reconcile" || "r")
+		else if(CommandVecTra[0] == "reconcile" || CommandVecTra[0] == "r")
 		{
 			tra->Reconcile();
 			printf("Your %s has been reconciled.\n",tra->Type.c_str());
 		}
-		else if(CommandVecTra[0] == "unreconcile" || "ur")
+		else if(CommandVecTra[0] == "unreconcile" || CommandVecTra[0] == "ur")
 		{
 			tra->Unreconcile();
 			printf("Your %s has been unreconciled.\n",tra->Type.c_str());
