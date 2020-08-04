@@ -86,6 +86,12 @@ unsigned long long ReadInDate()
 	return ReadULL();
 }
 
+unsigned long long ReadInTraId()
+{
+	printf("Id: ");
+	return ReadULL();
+}
+
 string ReadInCurrency()
 {
 	printf("Currency: ");
@@ -96,6 +102,22 @@ string ReadInParentAccountName()
 {
 	printf("New Account's Parent Account: ");
 	return ReadString();
+}
+
+string ReadInAccountTypeToChange()
+{
+	// TODO - something with currency
+	string s;
+
+	do
+	{
+		printf("What attribute of this transaction would you like to change?\n");
+		printf("Options: Tag, Location, Earmark, ToFrom, From, To, Date, Info, Amount.\n");
+		printf("Enter q to quit.\n");
+		s = ReadString();
+	}while(s != "Tag" && s != "Location" && s != "Earmark" && s != "ToFrom" && s != "From" && s != "To" && s != "Date" && s != "Info" && s != "Amount" && s != "q");
+
+	return s;
 }
 
 
@@ -145,6 +167,21 @@ int AskTryAgain(string s)
 	return (c == 'y');
 }
 
+int AskConfirmDeleteTra(Tra* tra, const string& DefaultCurrency)
+{
+	char c;
+
+	tra->Print(DefaultCurrency);
+
+	do
+	{
+		printf("Are you sure you want to delete this %s? [y/n]: ",tra->Type.c_str());
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
 int AskAddNonexistentAccount(const string& acc_n)
 {
 	char c;
@@ -185,6 +222,22 @@ int AskAccurateTra(Tra* tra, const string& DefaultCurrency)
 
 	do
 	{
+		printf("Is the above %s correct? [y/n]: ",tra->Type.c_str());
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int AskAccurateChangedTra(Tra* tra, const string& DefaultCurrency)
+{
+	char c;
+
+	tra->Print(DefaultCurrency);
+
+	do
+	{
+		printf("If the above transaction is not correct, it will be undone.\n");
 		printf("Is the above %s correct? [y/n]: ",tra->Type.c_str());
 		c = ReadChar();
 	}while(c != 'y' && c != 'n');
@@ -253,6 +306,14 @@ int stoi_(string s)
 	int i;
 	sscanf(s.c_str(),"%d",&i);
 	return i;
+}
+string ulltos_(unsigned long long a)
+{
+	char c[100];
+	string s;
+	sprintf(c,"%llu",a);
+	s = c;
+	return s;
 }
 double abs_(double f)
 {

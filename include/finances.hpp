@@ -11,12 +11,13 @@ using namespace std;
 using nlohmann::json;
 
 const string ErrorAsterisks = "*!*!*!*!*!*";
-const string DefaultPrompt = "~~~~>";
+const string DefaultPrompt = "~~~~/>";
 
 // TODO - Write some checks for after reading, including to require HeadAccounts and Deleted accounts
 // TODO - Get Foreign Working
 // TODO - Debts
 // TODO - What happens if give a child account to already existing account with no children
+// TODO - Require Heads and Deletes
 
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
@@ -31,21 +32,6 @@ const string DefaultPrompt = "~~~~>";
 // TODO - Give Different Parent Account except Heads and Deletes
 // TODO - Delete except Heads and Deletes
 // TODO - Return to home
-
-
-/* case 32: f.SelectTra(f.transactions); return 1; */  // TODO
-// TODO - Change Tag
-// TODO - Change Location
-// TODO - Change Earmark
-// TODO - Change ToFrom
-// TODO - Change Date
-// TODO - Change Info
-// TODO - Change Amount
-// TODO - Reconcile
-// TODO - Unreconcile
-// TODO - Delete
-// TODO - Return to home
-
 
 // TODO - Select Macro
 // TODO - Prompt change
@@ -111,6 +97,7 @@ class Tra
 		void Print(const string& DefaultCurrency);
 
 		void Reconcile();
+		void Unreconcile();
 };
 
 class Macro
@@ -166,12 +153,26 @@ class Finances
 		void NewAccount(const string& acc_n);
 		void NewTra(int PrintAccountsByDefault);
 
+		void SelectSomething(const vector<string>& CommandVec);
+		void SelectTra();
+		void SelectAccount();
+
+		void InteractWithUserTra(Tra* tra);
+		void DeleteTra(Tra* tra);
+		void ChangeSomething(Tra* tra);
+		void ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange);
+		void ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange);
+		void ChangeTraDate(Tra* tra);
+		void ChangeTraInfo(Tra* tra);
+		void ChangeTraAmount(Tra* tra);
+
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
 		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
 		int GetNewTransferAccounts(string& from_n,string& to_n,int PrintAccountsByDefault);
 		int GetNewTransferAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
 		void RecordTra(Tra* tra);
 		void PercolateTra(Tra* tra, Account* a);
+		void UnPercolateTra(Tra* tra, Account* a);
 
 		void Reconcile(Account* acc);
 

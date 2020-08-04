@@ -14,9 +14,11 @@ unsigned long long ReadULL();
 
 string ReadInType();
 unsigned long long ReadInDate();
+unsigned long long ReadInTraId();
 string ReadInInfo();
 double ReadInAmount();
 string ReadInCurrency();
+string ReadInAccountTypeToChange();
 
 string ReadInNewAccountName();
 string ReadInParentAccountName();
@@ -25,9 +27,11 @@ string ReadInNewTraAccount(const string& s);
 void ColorOutput(const string& s);
 
 int AskTryAgain(string s);
+int AskConfirmDeleteTra(class Tra* tra,const string& DefaultCurrency);
 int AskAddNonexistentAccount(const string& acc_n);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
 int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
+int AskAccurateChangedTra(Tra* tra, const string& DefaultCurrency);
 int AskReconcileTra(Tra* tra,const string& DefaultCurrency);
 
 int IsAccountPartOfTra(class Account* acc, class Tra* tra);
@@ -36,6 +40,7 @@ string dtos_(double d);
 string itos_(int i);
 double stod_(string s);
 int stoi_(string s);
+string ulltos_(unsigned long long a);
 double abs_(double f);
 double Round2Decimals(double d);
 

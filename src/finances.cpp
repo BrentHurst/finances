@@ -58,6 +58,10 @@ int Finances::InteractWithUser()
 		{
 			Reconcile(NULL);
 		}
+		else if(CommandVec[0] == "select" || CommandVec[0] == "s")
+		{
+			SelectSomething(CommandVec);
+		}
 		else
 		{
 			printf("Command not recognized.\n");
@@ -95,6 +99,10 @@ int Finances::AskWhetherToSave()
 void Tra::Reconcile()
 {
 	Reconciled = 1;
+}
+void Tra::Unreconcile()
+{
+	Reconciled = 0;
 }
 
 void Tra::Print(const string& DefaultCurrency)
@@ -291,9 +299,9 @@ void Finances::NewAccount(const string& acc_n)
 	}
 
 	paracc = AllAccounts[par];
-	if(!paracc->Children.size())
+	if(paracc->Children.size())
 	{
-		// TODO
+		// TODO - fix parent account
 	}
 	acc = new Account(name,0,paracc->Type,cur);
 	paracc->Children[acc->Name] = acc;
@@ -529,14 +537,19 @@ void Finances::RecordTra(Tra* tra)
 	}
 	else
 	{
-		tra->Amount *= -1;
-		PercolateTra(tra,tra->From);
-		tra->Amount *= -1;
-
+		UnPercolateTra(tra,tra->From);
 		PercolateTra(tra,tra->To);
 	}
 
 	InsertTraIntoMap(tra,Tras);
+}
+
+void Finances::UnPercolateTra(Tra* tra, Account* a)
+{
+	// foreign TODO
+	tra->Amount *= -1;
+	PercolateTra(tra,a);
+	tra->Amount *= -1;
 }
 
 void Finances::PercolateTra(Tra* tra, Account* a)
