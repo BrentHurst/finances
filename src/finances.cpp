@@ -75,7 +75,9 @@ void Finances::GetCommand(vector<string>& CommandVec, const string& Prompt)
 	istringstream ss;
 	string s;
 
+	ColorOutput("Bold Magenta");
 	printf("%s ",Prompt.c_str());
+	ColorOutput("Reset");
 
 	line = ReadString();
 
