@@ -135,7 +135,6 @@ void Finances::DeleteTra(Tra* tra)
 void Finances::ChangeSomething(Tra* tra)
 {
 	// TODO - Change currency
-	// TODO
 
 	string AccountTypeToChange;
 
@@ -163,7 +162,7 @@ void Finances::ChangeSomething(Tra* tra)
 		}
 	}
 
-	if(AccountTypeToChange == "Tag" || AccountTypeToChange == "Location" || AccountTypeToChange == "Earmark" | AccountTypeToChange == "ToFrom")
+	if(AccountTypeToChange == "Tag" || AccountTypeToChange == "Location" || AccountTypeToChange == "Earmark" || AccountTypeToChange == "ToFrom")
 		ChangeTransactionAccount(tra,AccountTypeToChange);
 	else if(AccountTypeToChange == "From" || AccountTypeToChange == "To")
 		ChangeTransferAccount(tra,AccountTypeToChange);
@@ -182,19 +181,140 @@ void Finances::ChangeSomething(Tra* tra)
 
 void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange)
 {
-	// TODO - tra - Change Tag
-	// TODO - tra - Change Location
-	// TODO - tra - Change Earmark
-	// TODO - tra - Change ToFrom
+	string NewAcctName;
+	Account* oldacc;
+	Account* newacc;
+
+	if(!GetNewTransactionAccountsInner(NewAcctName, AccountTypeToChange, 0))
+	{
+		printf("Your account has been left as it was.\n");
+		return;
+	}
+
+	newacc = AllAccounts[NewAcctName];
+
+	if(AccountTypeToChange == "Tag")
+	{
+		oldacc = tra->Tag;
+		tra->Tag = newacc;
+	}
+	else if(AccountTypeToChange == "Location")
+	{
+		oldacc = tra->Location;
+		tra->Location = newacc;
+	}
+	else if(AccountTypeToChange == "Earmark")
+	{
+		oldacc = tra->Earmark;
+		tra->Earmark = newacc;
+	}
+	else if(AccountTypeToChange == "ToFrom")
+	{
+		oldacc = tra->ToFrom;
+		tra->ToFrom = newacc;
+	}
+
+
+	if(!AskAccurateChangedTra(tra,DefaultCurrency))
+	{
+		if(AccountTypeToChange == "Tag")
+			tra->Tag = oldacc;
+		else if(AccountTypeToChange == "Location")
+			tra->Location = oldacc;
+		else if(AccountTypeToChange == "Earmark")
+			tra->Earmark = oldacc;
+		else if(AccountTypeToChange == "ToFrom")
+			tra->ToFrom = oldacc;
+
+		printf("Your changes have been undone.\n");
+	}
+	else
+	{
+		UnPercolateTra(tra, oldacc);
+		PercolateTra(tra,newacc);
+
+		tra->Unreconcile();
+
+		printf("Your changes have been saved.\n");
+	}
 }
 void Finances::ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange)
 {
-	// TODO - tra - Change From
-	// TODO - tra - Change To
+	string NewAcctName;
+	Account* oldacc;
+	Account* newacc;
+
+	if(!GetNewTransferAccountsInner(NewAcctName, AccountTypeToChange, 0))
+	{
+		printf("Your account has been left as it was.\n");
+		return;
+	}
+
+	newacc = AllAccounts[NewAcctName];
+
+	if(newacc->Type != tra->From->Type)
+	{
+		printf("%s is of type %s, but this Transfer involves accounts of type %s.\n",NewAcctName.c_str(),newacc->Type.c_str(),tra->From->Type.c_str());
+		printf("Your changes have been discarded and your transfer is being left as it was.\n");
+		return;
+	}
+
+	if(AccountTypeToChange == "From")
+	{
+		oldacc = tra->From;
+		tra->From = newacc;
+	}
+	else if(AccountTypeToChange == "To")
+	{
+		oldacc = tra->To;
+		tra->To = newacc;
+	}
+
+	if(!AskAccurateChangedTra(tra,DefaultCurrency))
+	{
+		if(AccountTypeToChange == "From")
+			tra->From = oldacc;
+		else if(AccountTypeToChange == "To")
+			tra->To = oldacc;
+
+		printf("Your changes have been undone.\n");
+	}
+	else
+	{
+		if(AccountTypeToChange == "From")
+		{
+			PercolateTra(tra, oldacc);
+			UnPercolateTra(tra, newacc);
+		}
+		else if(AccountTypeToChange == "To")
+		{
+			UnPercolateTra(tra, oldacc);
+			PercolateTra(tra, newacc);
+		}
+
+		tra->Unreconcile();
+
+		printf("Your changes have been saved.\n");
+	}
 }
 void Finances::ChangeTraDate(Tra* tra)
 {
-	// TODO - tra - Change Date
+	unsigned long long olddate = tra->Date;
+	unsigned long long oldid = tra->Id;
+	tra->Date = ReadInDate();
+	tra->Id = 0;
+	if(!AskAccurateChangedTra(tra,DefaultCurrency))
+	{
+		tra->Date = olddate;
+		tra->Id = oldid;
+		printf("Your changes have been undone.\n");
+	}
+	else
+	{
+		Tras.erase(oldid);
+		InsertTraIntoMap(tra,Tras);
+		printf("Your changes have been saved.\n");
+	}
 }
 void Finances::ChangeTraInfo(Tra* tra)
 {
@@ -212,7 +332,47 @@ void Finances::ChangeTraInfo(Tra* tra)
 }
 void Finances::ChangeTraAmount(Tra* tra)
 {
-	// TODO - tra - Change Amount
+	// TODO - foreign
+
+	double newamt;
+	double oldamt = tra->Amount;
+	tra->Amount = ReadInAmount();
+	if(!AskAccurateChangedTra(tra,DefaultCurrency))
+	{
+		tra->Amount = oldamt;
+		printf("Your changes have been undone.\n");
+	}
+	else
+	{
+		newamt = tra->Amount;
+		tra->Amount = oldamt;
+		if(tra->Type == "Transaction")
+		{
+			UnPercolateTra(tra,tra->Tag);
+			UnPercolateTra(tra,tra->Location);
+			UnPercolateTra(tra,tra->Earmark);
+			UnPercolateTra(tra,tra->ToFrom);
+
+			tra->Amount = newamt;
+
+			PercolateTra(tra,tra->Tag);
+			PercolateTra(tra,tra->Location);
+			PercolateTra(tra,tra->Earmark);
+			PercolateTra(tra,tra->ToFrom);
+		}
+		else
+		{
+			PercolateTra(tra,tra->From);
+			UnPercolateTra(tra,tra->To);
+
+			tra->Amount = newamt;
+
+			UnPercolateTra(tra,tra->From);
+			PercolateTra(tra,tra->To);
+		}
+
+		printf("Your changes have been saved.\n");
+	}
 }
 
 void Finances::SelectAccount()
