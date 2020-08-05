@@ -377,6 +377,59 @@ void Finances::ChangeTraAmount(Tra* tra)
 
 void Finances::SelectAccount()
 {
-	// TODO
+	map<string,Account*>::iterator mit;
+	string accname;
+	Account* acc;
+
+	accname = ReadInNewTraAccount("Account");
+
+	if((mit = AllAccounts.find(accname)) == AllAccounts.end())
+	{
+		printf("\"%s\" doesn't exist as an account.\n",accname.c_str());
+		return;
+	}
+
+	acc = mit->second;
+
+	InteractWithUserAccount(acc);
 }
 
+void Finances::InteractWithUserAccount(Account* acc)
+{
+	char c;
+	string prompt;
+	vector<string> CommandVecAcc;
+
+	prompt = DefaultPrompt;
+	c = prompt.back();
+	prompt.pop_back();
+	prompt += acc->Name;
+	prompt.push_back(c);
+
+	while(true)
+	{
+		GetCommand(CommandVecAcc,prompt);
+
+		if(!CommandVecAcc.size())
+		{
+			if(cin.eof())
+				return;
+			// else do nothing and continue
+		}
+		else if(CommandVecAcc[0] == "help" || CommandVecAcc[0] == "h" || CommandVecAcc[0] == "?")
+		{
+			// TODO
+			printf("I should probably have this print a help menu.\n");
+		}
+		else if(CommandVecAcc[0] == "back" || CommandVecAcc[0] == "b")
+		{
+			return;
+		}
+		else if(CommandVecAcc[0] == "select" || CommandVecAcc[0] == "s")
+		{
+			if(CommandVecAcc.size() > 1 && (CommandVecAcc[1] == "tra" || CommandVecAcc[1] == "t"))
+				SelectTra();
+		}
+
+	}
+}

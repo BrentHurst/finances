@@ -18,20 +18,20 @@ const string DefaultPrompt = "~~~~/>";
 // TODO - Debts
 // TODO - What happens if give a child account to already existing account with no children
 // TODO - Require Heads and Deletes
+//        !!~del_T~!!
+//        !!~del_L~!!
+//        !!~del_E~!!
+//        !!~del_TF~!!
 
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
 
-/* case 31: f.SelectAccount(); return 1; */  // TODO
-// TODO - Prompt change
-// TODO - List tras
-// TODO - List Unreconciled tras
-// TODO - Select tra
-// TODO - Reconcile
-// TODO - Rename except Heads and Deletes
-// TODO - Give Different Parent Account except Heads and Deletes
-// TODO - Delete except Heads and Deletes
-// TODO - Return to home
+// TODO - account - List tras
+// TODO - account - List Unreconciled tras
+// TODO - account - Reconcile
+// TODO - account - Rename except Heads and Deletes
+// TODO - account - Give Different Parent Account except Heads and Deletes
+// TODO - account - Delete except Heads and Deletes
 
 // TODO - Select Macro
 // TODO - Prompt change
@@ -167,6 +167,8 @@ class Finances
 		void ChangeTraDate(Tra* tra);
 		void ChangeTraInfo(Tra* tra);
 		void ChangeTraAmount(Tra* tra);
+
+		void InteractWithUserAccount(Account* acc);
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
 		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
