@@ -263,19 +263,40 @@ int AskReconcileTra(Tra* tra,const string& DefaultCurrency)
 
 int IsAccountPartOfTra(Account* acc, Tra* tra)
 {
+	Account* target;
+
 	if(!acc || !tra)
 		return 0;
 
-	if(tra->Tag == acc)
-		return 1;
-	if(tra->Location == acc)
-		return 1;
-	if(tra->Earmark == acc)
-		return 1;
-	if(tra->ToFrom == acc)
-		return 1;
+	if(tra->Type == "Transaction")
+	{
+		if(acc->Type == "Tag")
+			target = tra->Tag;
+		else if(acc->Type == "Location")
+			target = tra->Location;
+		else if(acc->Type == "Earmark")
+			target = tra->Earmark;
+		else if(acc->Type == "ToFrom")
+			target = tra->ToFrom;
 
-	return 0;
+		for( ; target; target = target->Parent)
+			if(target == acc)
+				return 1;
+
+		return 0;
+	}
+	else
+	{
+		for(target = tra->From; target; target = target->Parent)
+			if(target == acc)
+				return 1;
+
+		for(target = tra->To; target; target = target->Parent)
+			if(target == acc)
+				return 1;
+
+		return 0;
+	}
 }
 
 

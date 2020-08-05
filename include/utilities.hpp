@@ -31,7 +31,7 @@ int AskConfirmDeleteTra(class Tra* tra,const string& DefaultCurrency);
 int AskAddNonexistentAccount(const string& acc_n);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
 int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
-int AskAccurateChangedTra(Tra* tra, const string& DefaultCurrency);
+int AskAccurateChangedTra(class Tra* tra, const string& DefaultCurrency);
 int AskReconcileTra(Tra* tra,const string& DefaultCurrency);
 
 int IsAccountPartOfTra(class Account* acc, class Tra* tra);

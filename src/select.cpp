@@ -430,6 +430,34 @@ void Finances::InteractWithUserAccount(Account* acc)
 			if(CommandVecAcc.size() > 1 && (CommandVecAcc[1] == "tra" || CommandVecAcc[1] == "t"))
 				SelectTra();
 		}
+		else if(CommandVecAcc[0] == "print" || CommandVecAcc[0] == "p" || CommandVecAcc[0] == "l")
+		{
+			PrintSomethingAcc(CommandVecAcc,acc);
+		}
+	}
+}
 
+void Finances::PrintSomethingAcc(const vector<string>& CommandVec, Account* acc)
+{
+	if(CommandVec.size() == 1)
+	{
+		acc->Print("\t");
+	}
+	else
+	{
+		if(CommandVec[1] == "tras" || CommandVec[1] == "t")
+		{
+			if(CommandVec.size() == 2)
+				PrintTras(0,0,acc);
+			else
+				PrintTras(stoi_(CommandVec[2]),0,acc);
+		}
+		else if(CommandVec[1] == "utras" || CommandVec[1] == "ut" || CommandVec[1] == "tu")
+		{
+			if(CommandVec.size() == 2)
+				PrintTras(0,1,acc);
+			else
+				PrintTras(stoi_(CommandVec[2]),1,acc);
+		}
 	}
 }

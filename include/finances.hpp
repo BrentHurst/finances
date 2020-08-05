@@ -32,8 +32,6 @@ const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
 
-// TODO - account - List tras
-// TODO - account - List Unreconciled tras
 // TODO - account - Reconcile
 // TODO - account - Rename except Heads and Deletes
 // TODO - account - Give Different Parent Account except Heads and Deletes
@@ -156,7 +154,7 @@ class Finances
 		void GetCommand(vector<string>& CommandVec, const string& Prompt);
 
 		void PrintSomething(const vector<string>& CommandVec);
-		void PrintTras(int num, int OnlyUnreconciled);
+		void PrintTras(int num, int OnlyUnreconciled, Account* acc);
 		void PrintAccounts(const string& which);
 
 		void NewSomething(const vector<string>& CommandVec);
@@ -177,6 +175,7 @@ class Finances
 		void ChangeTraAmount(Tra* tra);
 
 		void InteractWithUserAccount(Account* acc);
+		void PrintSomethingAcc(const vector<string>& CommandVec, Account* acc);
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
 		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);

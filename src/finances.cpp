@@ -157,16 +157,16 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 		if(CommandVec[1] == "tras" || CommandVec[1] == "t")
 		{
 			if(CommandVec.size() == 2)
-				PrintTras(0,0);
+				PrintTras(0,0,NULL);
 			else
-				PrintTras(stoi_(CommandVec[2]),0);
+				PrintTras(stoi_(CommandVec[2]),0,NULL);
 		}
 		else if(CommandVec[1] == "utras" || CommandVec[1] == "ut" || CommandVec[1] == "tu")
 		{
 			if(CommandVec.size() == 2)
-				PrintTras(0,1);
+				PrintTras(0,1,NULL);
 			else
-				PrintTras(stoi_(CommandVec[2]),1);
+				PrintTras(stoi_(CommandVec[2]),1,NULL);
 		}
 		else if(CommandVec[1] == "accounts" || CommandVec[1] == "a")
 			PrintAccounts("a");
@@ -181,14 +181,19 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 	}
 }
 
-void Finances::PrintTras(int num, int OnlyUnreconciled)
+void Finances::PrintTras(int num, int OnlyUnreconciled, Account* acc)
 {
 	map<unsigned long long, Tra*>::iterator mit;
 	int i;
 	unsigned long long lastDate;
 
 	if(num > 0)
-		for(mit = Tras.end() , i = 0; mit != Tras.begin() && i < num; --mit , i++);
+	{
+		mit = Tras.end();
+		for(--mit , i = 0; mit != Tras.begin() && i < num; --mit)
+			if(!acc || IsAccountPartOfTra(acc,mit->second))
+				i++;
+	}
 	else
 		mit = Tras.begin();
 
@@ -196,10 +201,13 @@ void Finances::PrintTras(int num, int OnlyUnreconciled)
 	for( ; mit != Tras.end(); ++mit)
 		if(!OnlyUnreconciled || !mit->second->Reconciled)
 		{
-			if(mit->second->Date != lastDate)
-				printf("\n\n");
-			mit->second->Print(DefaultCurrency);
-			lastDate = mit->second->Date;
+			if(!acc || IsAccountPartOfTra(acc,mit->second))
+			{
+				if(mit->second->Date != lastDate)
+					printf("\n\n");
+				mit->second->Print(DefaultCurrency);
+				lastDate = mit->second->Date;
+			}
 		}
 }
 
