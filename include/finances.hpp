@@ -13,15 +13,21 @@ using nlohmann::json;
 const string ErrorAsterisks = "*!*!*!*!*!*";
 const string DefaultPrompt = "~~~~/>";
 
-// TODO - Write some checks for after reading, including to require HeadAccounts and Deleted accounts
+const string HEAD_TAG_NAME = "TAGS";
+const string HEAD_LOCATION_NAME = "LOCATIONS";
+const string HEAD_EARMARK_NAME = "EARMARKS";
+const string HEAD_TOFROM_NAME = "TOFROMS";
+
+const string DELETE_TAG_NAME = "!!~del_T~!!";
+const string DELETE_LOCATION_NAME = "!!~del_L~!!";
+const string DELETE_EARMARK_NAME = "!!~del_E~!!";
+const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
+
+// TODO - Write some checks for after reading
 // TODO - Get Foreign Working
 // TODO - Debts
 // TODO - What happens if give a child account to already existing account with no children
-// TODO - Require Heads and Deletes
-//        !!~del_T~!!
-//        !!~del_L~!!
-//        !!~del_E~!!
-//        !!~del_TF~!!
+// TODO - Make sure deletes don't get children
 
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
@@ -142,6 +148,8 @@ class Finances
 
 		void FromJsonError(const string& s);
 
+		void SetHeadsAndDeletes();
+
 		void Clear();
 
 		int InteractWithUser();
@@ -182,6 +190,10 @@ class Finances
 
 		int AskWhetherToSave();
 
+		void CheckHeadsAndDeletes();
+		void CheckHeadAccountExists(const string& name);
+		void CheckDeleteAccountExists(const string& name, const string& type, const string& parname);
+
 		string filename;
 		string DefaultCurrency;
 
@@ -191,6 +203,11 @@ class Finances
 		Account* HeadLocation;
 		Account* HeadEarmark;
 		Account* HeadToFrom;
+
+		Account* DeleteTag;
+		Account* DeleteLocation;
+		Account* DeleteEarmark;
+		Account* DeleteToFrom;
 
 		map<string, Macro*> Macros;
 		map<unsigned long long, Tra*> Tras;

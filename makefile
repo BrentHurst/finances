@@ -11,6 +11,7 @@ OBJECTS = $(OBJ)/finances.o              \
 		  $(OBJ)/ioandconstructors.o     \
 		  $(OBJ)/select.o     \
 		  $(OBJ)/main.o                  \
+		  $(OBJ)/check.o                  \
 		  $(OBJ)/utilities.o
 
 DATENAME = gbhdate

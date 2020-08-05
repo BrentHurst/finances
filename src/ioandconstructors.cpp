@@ -26,10 +26,15 @@ void Finances::Clear()
 
 	AllAccounts.clear();
 
+	HeadTag = NULL;
 	HeadLocation = NULL;
 	HeadEarmark = NULL;
-	HeadTag = NULL;
 	HeadToFrom = NULL;
+
+	DeleteTag = NULL;
+	DeleteLocation = NULL;
+	DeleteEarmark = NULL;
+	DeleteToFrom = NULL;
 
 	Macros.clear();
 	Tras.clear();
@@ -91,8 +96,6 @@ Account::Account()
 
 	Children.clear();
 	Parent = NULL;
-
-	/* Tras.clear(); */
 }
 Account::Account(string n, double a, string t, string c)
 {
@@ -504,22 +507,22 @@ void Finances::FromJson(const json& j)
 	else
 		FromJsonError("CurrencyConversions");
 
+	CheckHeadsAndDeletes();
 
-	for(mit = AllAccounts.begin(); mit != AllAccounts.end() && mit->second->Type != "Tag"; ++mit);
-	if(mit != AllAccounts.end())
-		for(HeadTag = mit->second; HeadTag->Parent; HeadTag = HeadTag->Parent);
+	SetHeadsAndDeletes();
+}
 
-	for(mit = AllAccounts.begin(); mit != AllAccounts.end() && mit->second->Type != "Location"; ++mit);
-	if(mit != AllAccounts.end())
-		for(HeadLocation = mit->second; HeadLocation->Parent; HeadLocation = HeadLocation->Parent);
+void Finances::SetHeadsAndDeletes()
+{
+	HeadTag = AllAccounts[HEAD_TAG_NAME];
+	HeadLocation = AllAccounts[HEAD_LOCATION_NAME];
+	HeadEarmark = AllAccounts[HEAD_EARMARK_NAME];
+	HeadToFrom = AllAccounts[HEAD_TOFROM_NAME];
 
-	for(mit = AllAccounts.begin(); mit != AllAccounts.end() && mit->second->Type != "Earmark"; ++mit);
-	if(mit != AllAccounts.end())
-		for(HeadEarmark = mit->second; HeadEarmark->Parent; HeadEarmark = HeadEarmark->Parent);
-
-	for(mit = AllAccounts.begin(); mit != AllAccounts.end() && mit->second->Type != "ToFrom"; ++mit);
-	if(mit != AllAccounts.end())
-		for(HeadToFrom = mit->second; HeadToFrom->Parent; HeadToFrom = HeadToFrom->Parent);
+	DeleteTag = AllAccounts[DELETE_TAG_NAME];
+	DeleteLocation = AllAccounts[DELETE_LOCATION_NAME];
+	DeleteEarmark = AllAccounts[DELETE_EARMARK_NAME];
+	DeleteToFrom = AllAccounts[DELETE_TOFROM_NAME];
 }
 
 
