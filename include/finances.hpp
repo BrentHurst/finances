@@ -10,18 +10,7 @@
 using namespace std;
 using nlohmann::json;
 
-const string ErrorAsterisks = "*!*!*!*!*!*";
-const string DefaultPrompt = "~~~~/>";
 
-const string HEAD_TAG_NAME = "TAGS";
-const string HEAD_LOCATION_NAME = "LOCATIONS";
-const string HEAD_EARMARK_NAME = "EARMARKS";
-const string HEAD_TOFROM_NAME = "TOFROMS";
-
-const string DELETE_TAG_NAME = "!!~del_T~!!";
-const string DELETE_LOCATION_NAME = "!!~del_L~!!";
-const string DELETE_EARMARK_NAME = "!!~del_E~!!";
-const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
 
 // TODO - Write some checks for after reading
 // TODO - Get Foreign Working
@@ -32,7 +21,6 @@ const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
 
-// TODO - account - Reconcile
 // TODO - account - Rename except Heads and Deletes
 // TODO - account - Give Different Parent Account except Heads and Deletes
 // TODO - account - Delete except Heads and Deletes
@@ -48,6 +36,21 @@ const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
 /* case 61: f.NewYear(); return 1; */  // TODO
 
 // TODO - New file
+
+
+
+const string ErrorAsterisks = "*!*!*!*!*!*";
+const string DefaultPrompt = "~~~~/>";
+
+const string HEAD_TAG_NAME = "TAGS";
+const string HEAD_LOCATION_NAME = "LOCATIONS";
+const string HEAD_EARMARK_NAME = "EARMARKS";
+const string HEAD_TOFROM_NAME = "TOFROMS";
+
+const string DELETE_TAG_NAME = "!!~del_T~!!";
+const string DELETE_LOCATION_NAME = "!!~del_L~!!";
+const string DELETE_EARMARK_NAME = "!!~del_E~!!";
+const string DELETE_TOFROM_NAME = "!!~del_TF~!!";
 
 class Account
 {

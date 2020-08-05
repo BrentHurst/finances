@@ -434,6 +434,10 @@ void Finances::InteractWithUserAccount(Account* acc)
 		{
 			PrintSomethingAcc(CommandVecAcc,acc);
 		}
+		else if(CommandVecAcc[0] == "reconcile" || CommandVecAcc[0] == "r")
+		{
+			Reconcile(acc);
+		}
 	}
 }
 
