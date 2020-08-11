@@ -438,6 +438,11 @@ void Finances::InteractWithUserAccount(Account* acc)
 		{
 			Reconcile(acc);
 		}
+		else if(CommandVecAcc[0] == "delete" || CommandVecAcc[0] == "d")
+		{
+			if(Delete_Acc(acc))
+				return;
+		}
 	}
 }
 
@@ -464,4 +469,105 @@ void Finances::PrintSomethingAcc(const vector<string>& CommandVec, Account* acc)
 				PrintTras(stoi_(CommandVec[2]),1,acc);
 		}
 	}
+}
+
+int Finances::IsHeadAccount(Account* acc)
+{
+	return (acc == HeadTag || acc == HeadLocation || acc == HeadEarmark || acc == HeadToFrom);
+}
+int Finances::IsDeleteAccount(Account* acc)
+{
+	return (acc == DeleteTag || acc == DeleteLocation || acc == DeleteEarmark || acc == DeleteToFrom);
+}
+
+int Finances::Delete_Acc(Account* acc)
+{
+	Account* TargetDeleteAccount;
+	map<unsigned long long, Tra*>::iterator mit;
+
+	if(IsHeadAccount(acc))
+	{
+		printf("Head accounts can't be deleted.\n");
+		return 0;
+	}
+
+	if(IsDeleteAccount(acc))
+	{
+		printf("Delete accounts can't be deleted.\n");
+		return 0;
+	}
+
+	if(acc->Children.size())
+	{
+		printf("Accounts with child accounts can't be deleted.\n");
+		return 0;
+	}
+
+	if(acc->Amount)
+	{
+		printf("Accounts with nonzero amounts can't be deleted.\n");
+		return 0;
+	}
+
+	if(!AskConfirmDeleteAccount(acc))
+		return 0;
+
+	if(acc->Type == "Tag")
+		TargetDeleteAccount = DeleteTag;
+	else if(acc->Type == "Location")
+		TargetDeleteAccount = DeleteLocation;
+	else if(acc->Type == "Earmark")
+		TargetDeleteAccount = DeleteEarmark;
+	else if(acc->Type == "ToFrom")
+		TargetDeleteAccount = DeleteToFrom;
+
+	for(mit = Tras.begin(); mit != Tras.end(); ++mit)
+	{
+		if(mit->second->Tag == acc)
+		{
+			mit->second->Tag = TargetDeleteAccount;
+			mit->second->Info += " ====Original " + acc->Type + " account: " + acc->Name + "==== ";
+		}
+		else if(mit->second->Location == acc)
+		{
+			mit->second->Location = TargetDeleteAccount;
+			mit->second->Info += " ====Original " + acc->Type + " account: " + acc->Name + "==== ";
+		}
+		else if(mit->second->Earmark == acc)
+		{
+			mit->second->Earmark = TargetDeleteAccount;
+			mit->second->Info += " ====Original " + acc->Type + " account: " + acc->Name + "==== ";
+		}
+		else if(mit->second->ToFrom == acc)
+		{
+			mit->second->ToFrom = TargetDeleteAccount;
+			mit->second->Info += " ====Original " + acc->Type + " account: " + acc->Name + "==== ";
+		}
+		else if(mit->second->From == acc)
+		{
+			mit->second->From = TargetDeleteAccount;
+			mit->second->Info += " ====Original From account: " + acc->Name + "==== ";
+		}
+		else if(mit->second->To == acc)
+		{
+			mit->second->To = TargetDeleteAccount;
+			mit->second->Info += " ====Original To account: " + acc->Name + "==== ";
+		}
+	}
+
+	for(mit = Tras.begin(); mit != Tras.end(); ++mit)
+		if(IsAccountPartOfTra(acc,mit->second))
+		{
+			printf("Something went wrong: Error 21.%llu. Your account hasn't been completely deleted for some reason.\n",mit->second->Id);
+			return 0;
+		}
+
+	AllAccounts.erase(acc->Name);
+	acc->Parent->Children.erase(acc->Name);
+
+	printf("Account \"%s\" has been deleted.\n",acc->Name.c_str());
+
+	delete acc;
+
+	return 1;
 }

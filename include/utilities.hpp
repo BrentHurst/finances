@@ -28,6 +28,7 @@ void ColorOutput(const string& s);
 
 int AskTryAgain(string s);
 int AskConfirmDeleteTra(class Tra* tra,const string& DefaultCurrency);
+int AskConfirmDeleteAccount(class Account* acc);
 int AskAddNonexistentAccount(const string& acc_n);
 int AskAccurateAccount(const string& name, const string& cur, const string& par);
 int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);

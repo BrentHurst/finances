@@ -182,6 +182,21 @@ int AskConfirmDeleteTra(Tra* tra, const string& DefaultCurrency)
 	return (c == 'y');
 }
 
+int AskConfirmDeleteAccount(Account* acc)
+{
+	char c;
+
+	acc->Print("\t");
+
+	do
+	{
+		printf("Are you sure you want to delete %s with name \"%s\"? [y/n]: ",acc->Type.c_str(),acc->Name.c_str());
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
 int AskAddNonexistentAccount(const string& acc_n)
 {
 	char c;

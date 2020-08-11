@@ -179,6 +179,7 @@ class Finances
 
 		void InteractWithUserAccount(Account* acc);
 		void PrintSomethingAcc(const vector<string>& CommandVec, Account* acc);
+		int Delete_Acc(Account* acc);
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
 		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
@@ -195,6 +196,9 @@ class Finances
 		void CheckHeadsAndDeletes();
 		void CheckHeadAccountExists(const string& name);
 		void CheckDeleteAccountExists(const string& name, const string& type, const string& parname);
+
+		int IsHeadAccount(Account* acc);
+		int IsDeleteAccount(Account* acc);
 
 		string filename;
 		string DefaultCurrency;
