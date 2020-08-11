@@ -23,7 +23,6 @@ using nlohmann::json;
 
 // TODO - account - Rename except Heads and Deletes
 // TODO - account - Give Different Parent Account except Heads and Deletes
-// TODO - account - Delete except Heads and Deletes
 
 // TODO - Select Macro
 // TODO - Prompt change
