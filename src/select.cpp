@@ -443,6 +443,20 @@ void Finances::InteractWithUserAccount(Account* acc)
 			if(Delete_Acc(acc))
 				return;
 		}
+		else if(CommandVecAcc[0] == "rename" || CommandVecAcc[0] == "rn")
+		{
+			RenameAccount(acc);
+
+			prompt = DefaultPrompt;
+			c = prompt.back();
+			prompt.pop_back();
+			prompt += acc->Name;
+			prompt.push_back(c);
+		}
+		else if(CommandVecAcc[0] == "reparent" || CommandVecAcc[0] == "rp")
+		{
+			ReparentAccount(acc);
+		}
 	}
 }
 
@@ -570,4 +584,48 @@ int Finances::Delete_Acc(Account* acc)
 	delete acc;
 
 	return 1;
+}
+
+void Finances::RenameAccount(Account* acc)
+{
+	string newname;
+	string oldname;
+
+	if(IsHeadAccount(acc))
+	{
+		printf("Head accounts can't be renamed.\n");
+		return;
+	}
+
+	if(IsDeleteAccount(acc))
+	{
+		printf("Delete accounts can't be renamed.\n");
+		return;
+	}
+
+	oldname = acc->Name;
+
+	newname = ReadInNewAccountName();
+	while(AllAccounts.find(newname) != AllAccounts.end())
+	{
+		if(!AskTryAgain("An account with the name \"" + newname + "\" already exists."))
+		{
+			printf("Your account's name has not been changed.");
+			return;
+		}
+		newname = ReadInNewAccountName();
+	}
+
+	acc->Name = newname;
+
+	AllAccounts.erase(oldname);
+	AllAccounts[newname] = acc;
+
+	acc->Parent->Children.erase(oldname);
+	acc->Parent->Children[newname] = acc;
+}
+
+void Finances::ReparentAccount(Account* acc)
+{
+	//TODO
 }
