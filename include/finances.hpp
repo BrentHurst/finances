@@ -33,8 +33,6 @@ using nlohmann::json;
 
 /* case 61: f.NewYear(); return 1; */  // TODO
 
-// TODO - New file
-
 
 
 const string ErrorAsterisks = "*!*!*!*!*!*";
