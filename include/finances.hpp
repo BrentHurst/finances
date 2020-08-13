@@ -140,6 +140,8 @@ class CurrencyConversion
 class Finances
 {
 	protected:
+		void NewFinances();
+
 		void LoadFromFile();
 		void SaveToFile(int StartNewTimePeriodFromHere);
 		void FromJson(const json& j);
@@ -222,7 +224,7 @@ class Finances
 
 	public:
 		Finances(const string& fn);
-		void Run();
+		void Run(int newfin);
 };
 
 #endif

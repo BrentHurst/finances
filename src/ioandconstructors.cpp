@@ -13,8 +13,6 @@ typedef std::runtime_error SRE;
 
 Finances::Finances(const string& fn)
 {
-	/* FillCmdList(); */
-
 	Clear();
 
 	filename = fn;

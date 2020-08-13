@@ -11,8 +11,11 @@ using nlohmann::json;
 typedef std::runtime_error SRE;
 
 
-void Finances::Run()
+void Finances::Run(int newfin)
 {
+	if(newfin)
+		NewFinances();
+
 	LoadFromFile();
 
 	if(InteractWithUser() == 1)
@@ -22,6 +25,53 @@ void Finances::Run()
 		printf("\n");
 }
 
+void Finances::NewFinances()
+{
+	DefaultCurrency = ReadInDefaultCurrency();
+
+	HeadTag = new Account(HEAD_TAG_NAME,0,"Tag",DefaultCurrency);
+	HeadLocation = new Account(HEAD_LOCATION_NAME,0,"Location",DefaultCurrency);
+	HeadEarmark = new Account(HEAD_EARMARK_NAME,0,"Earmark",DefaultCurrency);
+	HeadToFrom = new Account(HEAD_TOFROM_NAME,0,"ToFrom",DefaultCurrency);
+	AllAccounts[HeadTag->Name] = HeadTag;
+	AllAccounts[HeadLocation->Name] = HeadLocation;
+	AllAccounts[HeadEarmark->Name] = HeadEarmark;
+	AllAccounts[HeadToFrom->Name] = HeadToFrom;
+
+	//TODO - Create Delete Accounts
+	DeleteTag = new Account(DELETE_TAG_NAME,0,"Tag",DefaultCurrency);
+	DeleteLocation = new Account(DELETE_LOCATION_NAME,0,"Location",DefaultCurrency);
+	DeleteEarmark = new Account(DELETE_EARMARK_NAME,0,"Earmark",DefaultCurrency);
+	DeleteToFrom = new Account(DELETE_TOFROM_NAME,0,"ToFrom",DefaultCurrency);
+	AllAccounts[DeleteTag->Name] = DeleteTag;
+	AllAccounts[DeleteLocation->Name] = DeleteLocation;
+	AllAccounts[DeleteEarmark->Name] = DeleteEarmark;
+	AllAccounts[DeleteToFrom->Name] = DeleteToFrom;
+	DeleteTag->Parent = HeadTag;
+	DeleteLocation->Parent = HeadLocation;
+	DeleteEarmark->Parent = HeadEarmark;
+	DeleteToFrom->Parent = HeadToFrom;
+	HeadTag->Children[DeleteTag->Name] = DeleteTag;
+	HeadLocation->Children[DeleteLocation->Name] = DeleteLocation;
+	HeadEarmark->Children[DeleteEarmark->Name] = DeleteEarmark;
+	HeadToFrom->Children[DeleteToFrom->Name] = DeleteToFrom;
+
+	SaveToFile(0);
+
+	printf("Your file has been created.\n");
+	printf("Type ? to see menu options.\n");
+
+	delete HeadTag;
+	delete HeadLocation;
+	delete HeadEarmark;
+	delete HeadToFrom;
+	delete DeleteTag;
+	delete DeleteLocation;
+	delete DeleteEarmark;
+	delete DeleteToFrom;
+
+	AllAccounts.clear();
+}
 
 int Finances::InteractWithUser()
 {

@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <string>
 #include <cstdio>
 #include <iostream>
@@ -120,6 +121,58 @@ string ReadInAccountTypeToChange()
 	return s;
 }
 
+static int FileExists(const string& name)
+{
+	FILE* file;
+	if((file = fopen(name.c_str(), "r")))
+	{
+		fclose(file);
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+string ReadInFilename()
+{
+	string s;
+	string OutMessage = "Please enter a filename";
+
+	printf("%s: ",OutMessage.c_str());
+	s = ReadString();
+	while(!s.size() || FileExists(s))
+	{
+		if(s.size())
+		{
+			if(!AskTryAgain("File \"" + s + "\" already exists."))
+				return "";
+		}
+		printf("%s: ",OutMessage.c_str());
+		s = ReadString();
+	}
+
+	return s;
+}
+
+string ReadInDefaultCurrency()
+{
+	string s;
+	char c;
+	do
+	{
+		printf("Default Currency: ");
+		s = ReadString();
+		do
+		{
+			printf("You entered \"%s\" as your default currency symbol. Is that correct? [y/n]: ",s.c_str());
+			c = ReadChar();
+		}while(c != 'y' && c != 'n');
+	}while(c != 'y');
+	return s;
+}
+
 
 void ColorOutput(const string& s)
 {
@@ -161,6 +214,19 @@ int AskTryAgain(string s)
 	do
 	{
 		printf("Would you like to try again? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
+int AskSetUpNewFinances()
+{
+	char c;
+
+	do
+	{
+		printf("Would you like to set up a new finances file? [y/n]: ");
 		c = ReadChar();
 	}while(c != 'y' && c != 'n');
 

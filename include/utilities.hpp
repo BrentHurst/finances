@@ -23,10 +23,14 @@ string ReadInAccountTypeToChange();
 string ReadInNewAccountName();
 string ReadInParentAccountName();
 string ReadInNewTraAccount(const string& s);
+string ReadInDefaultCurrency();
+
+string ReadInFilename();
 
 void ColorOutput(const string& s);
 
 int AskTryAgain(string s);
+int AskSetUpNewFinances();
 int AskConfirmDeleteTra(class Tra* tra,const string& DefaultCurrency);
 int AskConfirmDeleteAccount(class Account* acc);
 int AskAddNonexistentAccount(const string& acc_n);
