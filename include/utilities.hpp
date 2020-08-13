@@ -22,6 +22,7 @@ string ReadInAccountTypeToChange();
 
 string ReadInNewAccountName();
 string ReadInParentAccountName();
+string ReadInParentAccountName_Reparenting();
 string ReadInNewTraAccount(const string& s);
 string ReadInDefaultCurrency();
 
@@ -38,6 +39,7 @@ int AskAccurateAccount(const string& name, const string& cur, const string& par)
 int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
 int AskAccurateChangedTra(class Tra* tra, const string& DefaultCurrency);
 int AskReconcileTra(Tra* tra,const string& DefaultCurrency);
+int AskCreateTmpChildAccount(const string& parname, const string& newchildname);
 
 int IsAccountPartOfTra(class Account* acc, class Tra* tra);
 
@@ -59,5 +61,7 @@ class cmdcomp
 unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras);
 void PrintCurrencyAmount(const string& Currency, double Amount);
 void InsertTraIntoMap(Tra* tra,map<unsigned long long,Tra*>& Tras);
+
+
 
 #endif

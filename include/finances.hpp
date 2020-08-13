@@ -15,13 +15,11 @@ using nlohmann::json;
 // TODO - Write some checks for after reading
 // TODO - Get Foreign Working
 // TODO - Debts
-// TODO - What happens if give a child account to already existing account with no children
-// TODO - Make sure deletes don't get children
 
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
 
-// TODO - account - Give Different Parent Account except Heads and Deletes
+// TODO - account - Give Different Parent Account
 
 // TODO - Select Macro
 // TODO - Prompt change
@@ -199,6 +197,8 @@ class Finances
 
 		int IsHeadAccount(Account* acc);
 		int IsDeleteAccount(Account* acc);
+
+		void ReparentCP(Account* child, Account* parent);
 
 		string filename;
 		string DefaultCurrency;

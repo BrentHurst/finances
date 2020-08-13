@@ -359,13 +359,10 @@ void Finances::NewAccount(const string& acc_n)
 	}
 
 	paracc = AllAccounts[par];
-	if(paracc->Children.size())
-	{
-		// TODO - fix parent account
-	}
 	acc = new Account(name,0,paracc->Type,cur);
-	paracc->Children[acc->Name] = acc;
-	acc->Parent = paracc;
+
+	ReparentCP(acc,paracc);
+
 	AllAccounts[acc->Name] = acc;
 
 	printf("Account \"%s\" successfully created.\n",name.c_str());

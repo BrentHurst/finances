@@ -627,5 +627,23 @@ void Finances::RenameAccount(Account* acc)
 
 void Finances::ReparentAccount(Account* acc)
 {
-	//TODO
+	string newparname;
+
+	newparname = ReadInParentAccountName_Reparenting();
+	while(AllAccounts.find(newparname) == AllAccounts.end())
+	{
+		if(AskAddNonexistentAccount(newparname))
+		{
+			NewAccount(newparname);
+		}
+		else
+		{
+			if(!AskTryAgain(""))
+				return;
+
+			newparname = ReadInParentAccountName_Reparenting();
+		}
+	}
+
+	ReparentCP(acc,AllAccounts[newparname]);
 }

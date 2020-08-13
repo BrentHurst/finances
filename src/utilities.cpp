@@ -105,6 +105,17 @@ string ReadInParentAccountName()
 	return ReadString();
 }
 
+string ReadInParentAccountName_Reparenting()
+{
+	string s;
+	do
+	{
+		printf("Account's New Parent Account: ");
+		s = ReadString();
+	}while(!s.size());
+	return s;
+}
+
 string ReadInAccountTypeToChange()
 {
 	// TODO - something with currency
@@ -343,6 +354,22 @@ int AskReconcileTra(Tra* tra,const string& DefaultCurrency)
 	return (c == 'y');
 }
 
+int AskCreateTmpChildAccount(const string& parname, const string& newchildname)
+{
+	char c;
+
+	do
+	{
+		printf("Account \"%s\" has a nonzero amount and/or tras associated with it.\n",parname.c_str());
+		printf("A new account \"%s\" will be created as a child of \"%s\" and will take over its tras and amount.\n",newchildname.c_str(),parname.c_str());
+		printf("(The new account's name can be changed later.)\n");
+		printf("Would you like to continue and allow this to happen? [y/n]: ");
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
 int IsAccountPartOfTra(Account* acc, Tra* tra)
 {
 	Account* target;
@@ -467,4 +494,99 @@ void InsertTraIntoMap(Tra* tra,map<unsigned long long,Tra*>& Tras)
 	if(!tra->Id || Tras.find(tra->Id) != Tras.end())
 		tra->Id = GetNextValidTraId(tra->Date, Tras);
 	Tras[tra->Id] = tra;
+}
+
+void Finances::ReparentCP(Account* child, Account* parent)
+{
+	string tmpaccname;
+	bool neednewkiddo;
+	Account* thenewkiddo;
+
+	if(!child || !parent)
+		return;
+
+	if(IsDeleteAccount(parent))
+	{
+		printf("Delete accounts can't have children.\n");
+		return;
+	}
+
+	if(IsHeadAccount(child))
+	{
+		printf("Head accounts can't have parents.\n");
+		return;
+	}
+
+	if(child->Type != parent->Type)
+	{
+		printf("Accounts aren't of the same type.\n");
+		return;
+	}
+
+	if(child == parent)
+	{
+		printf("A child can't be its own parent and the fact that the code reached this point might create an issue that Brent needs to fix. Error 1082.\n");
+		return;
+	}
+
+	if(!parent->Children.size())
+	{
+		neednewkiddo = false;
+
+		if(parent->Amount)
+		{
+			neednewkiddo = true;
+		}
+		else
+		{
+			for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+			{
+				if(IsAccountPartOfTra(parent,mit->second))
+				{
+					neednewkiddo = true;
+					break;
+				}
+			}
+		}
+
+		if(neednewkiddo)
+		{
+			for(tmpaccname = parent->Name; AllAccounts.find(tmpaccname) != AllAccounts.end(); tmpaccname += "-tmp");
+
+			if(!AskCreateTmpChildAccount(parent->Name,tmpaccname))
+				return;
+
+			thenewkiddo = new Account(tmpaccname, parent->Amount, parent->Type, parent->Currency);
+			thenewkiddo->Parent = parent;
+			parent->Children[thenewkiddo->Name] = thenewkiddo;
+
+			for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+			{
+				if(mit->second->Tag == parent)
+					mit->second->Tag = thenewkiddo;
+				if(mit->second->Location == parent)
+					mit->second->Location = thenewkiddo;
+				if(mit->second->Earmark == parent)
+					mit->second->Earmark = thenewkiddo;
+				if(mit->second->ToFrom == parent)
+					mit->second->ToFrom = thenewkiddo;
+				if(mit->second->From == parent)
+					mit->second->From = thenewkiddo;
+				if(mit->second->To == parent)
+					mit->second->To = thenewkiddo;
+			}
+		}
+	}
+
+	// TODO - Something with foreign here probably
+	for(Account* a = child->Parent; a; a = a->Parent)
+		a->Amount -= child->Amount;
+	for(Account* a = parent; a; a = a->Parent)
+		a->Amount += child->Amount;
+
+	if(child->Parent)
+		child->Parent->Children.erase(child->Name);
+
+	parent->Children[child->Name] = child;
+	child->Parent = parent;
 }
