@@ -119,7 +119,7 @@ void Finances::DeleteTra(Tra* tra)
 		UnPercolateTra(tra,tra->Earmark);
 		UnPercolateTra(tra,tra->ToFrom);
 	}
-	else
+	else(tra->Type == "Transfer")
 	{
 		PercolateTra(tra,tra->From);
 		UnPercolateTra(tra,tra->To);
@@ -153,7 +153,7 @@ void Finances::ChangeSomething(Tra* tra)
 			return;
 		}
 	}
-	else
+	else if(tra->Type == "Transfer")
 	{
 		if(AccountTypeToChange == "Tag" || AccountTypeToChange == "Location" || AccountTypeToChange == "Earmark" || AccountTypeToChange == "ToFrom")
 		{
@@ -360,7 +360,7 @@ void Finances::ChangeTraAmount(Tra* tra)
 			PercolateTra(tra,tra->Earmark);
 			PercolateTra(tra,tra->ToFrom);
 		}
-		else
+		else if(tra->Type == "Transfer")
 		{
 			PercolateTra(tra,tra->From);
 			UnPercolateTra(tra,tra->To);

@@ -19,8 +19,6 @@ using nlohmann::json;
 // TODO - Flag to toggle listing all accounts in new tra by default
 // TODO - Flag to toggle asking currency
 
-// TODO - account - Give Different Parent Account
-
 // TODO - Select Macro
 // TODO - Prompt change
 // TODO - Add Macro

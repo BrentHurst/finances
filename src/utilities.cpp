@@ -394,7 +394,7 @@ int IsAccountPartOfTra(Account* acc, Tra* tra)
 
 		return 0;
 	}
-	else
+	else if(Type == "Transfer")
 	{
 		for(target = tra->From; target; target = target->Parent)
 			if(target == acc)
@@ -525,7 +525,7 @@ void Finances::ReparentCP(Account* child, Account* parent)
 
 	if(child == parent)
 	{
-		printf("A child can't be its own parent and the fact that the code reached this point might create an issue that Brent needs to fix. Error 1082.\n");
+		printf("A child can't be its own parent and the fact that the code reached this point means that there's a nonzero chance it's created an issue that Brent needs to fix. Error 1082.\n");
 		return;
 	}
 

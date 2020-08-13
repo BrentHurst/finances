@@ -163,7 +163,7 @@ void Tra::Print(const string& DefaultCurrency)
 
 	if(Type == "Transaction")
 		printf("%15s.\t%15s.\t%15s.\t%15s.",Tag->Name.c_str(),Location->Name.c_str(),Earmark->Name.c_str(),ToFrom->Name.c_str());
-	else
+	else if(Type == "Transfer")
 		printf("%15s  ->  %15s",From->Name.c_str(),To->Name.c_str());
 
 	printf("\t");
@@ -592,7 +592,7 @@ void Finances::RecordTra(Tra* tra)
 		PercolateTra(tra,tra->Earmark);
 		PercolateTra(tra,tra->ToFrom);
 	}
-	else
+	else if(tra->Type == "Transfer")
 	{
 		UnPercolateTra(tra,tra->From);
 		PercolateTra(tra,tra->To);
