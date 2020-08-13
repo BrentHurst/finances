@@ -140,6 +140,7 @@ string ReadInFilename()
 	string s;
 	string OutMessage = "Please enter a filename";
 
+	printf("It's recommended that your filename use the extension .fin, but this is not required.\n");
 	printf("%s: ",OutMessage.c_str());
 	s = ReadString();
 	while(!s.size() || FileExists(s))
