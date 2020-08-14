@@ -16,9 +16,6 @@ using nlohmann::json;
 // TODO - Get Foreign Working
 // TODO - Debts
 
-// TODO - Flag to toggle listing all accounts in new tra by default
-// TODO - Flag to toggle asking currency
-
 // TODO - Select Macro
 // TODO - Prompt change
 // TODO - Add Macro
@@ -27,7 +24,7 @@ using nlohmann::json;
 // TODO - print Macro
 // TODO - Return to home
 
-/* case 61: f.NewYear(); return 1; */  // TODO
+// TODO - New Year
 
 
 
@@ -153,6 +150,7 @@ class Finances
 		void PrintSomething(const vector<string>& CommandVec);
 		void PrintTras(int num, int OnlyUnreconciled, Account* acc);
 		void PrintAccounts(const string& which);
+		void PrintFlags();
 
 		void NewSomething(const vector<string>& CommandVec);
 		void NewAccount(const string& acc_n);
@@ -161,6 +159,7 @@ class Finances
 		void SelectSomething(const vector<string>& CommandVec);
 		void SelectTra();
 		void SelectAccount();
+		void SelectFlag();
 
 		void InteractWithUserTra(Tra* tra);
 		void DeleteTra(Tra* tra);
@@ -198,10 +197,14 @@ class Finances
 
 		void ReparentCP(Account* child, Account* parent);
 
+		void SetDefaultFlagsIfFlagDoesntExist();
+
 		string filename;
 		string DefaultCurrency;
 
 		map<string, Account*> AllAccounts;
+
+		map<string, int> Flags;
 
 		Account* HeadTag;
 		Account* HeadLocation;

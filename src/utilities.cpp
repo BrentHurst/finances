@@ -132,6 +132,19 @@ string ReadInAccountTypeToChange()
 	return s;
 }
 
+string ReadInFlag()
+{
+	string s;
+
+	do
+	{
+		printf("Flag: ");
+		s = ReadString();
+	}while(!s.size());
+
+	return s;
+}
+
 static int FileExists(const string& name)
 {
 	FILE* file;
@@ -394,7 +407,7 @@ int IsAccountPartOfTra(Account* acc, Tra* tra)
 
 		return 0;
 	}
-	else if(Type == "Transfer")
+	else if(tra->Type == "Transfer")
 	{
 		for(target = tra->From; target; target = target->Parent)
 			if(target == acc)
@@ -406,6 +419,8 @@ int IsAccountPartOfTra(Account* acc, Tra* tra)
 
 		return 0;
 	}
+
+	return 0;
 }
 
 
@@ -456,7 +471,7 @@ double Round2Decimals(double d)
 }
 
 
-bool cmdcomp::operator() (int a,int b)
+/* bool cmdcomp::operator() (int a,int b)
 {
 	if(b==a) return false;
 	if(b==0) return true;
@@ -466,7 +481,7 @@ bool cmdcomp::operator() (int a,int b)
 	if(b==8) return true;
 	if(a==8) return false;
 	return (a<b);
-}
+} */
 
 unsigned long long GetNextValidTraId(unsigned long long Date, const map<unsigned long long, class Tra*>& Tras)
 {

@@ -20,6 +20,8 @@ void Finances::SelectSomething(const vector<string>& CommandVec)
 			SelectTra();
 		else if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
 			SelectAccount();
+		else if(CommandVec[1] == "flag" || CommandVec[1] == "f")
+			SelectFlag();
 		else
 			printf("Unrecognized option \"%s\"\n",CommandVec[1].c_str());
 	}
@@ -119,7 +121,7 @@ void Finances::DeleteTra(Tra* tra)
 		UnPercolateTra(tra,tra->Earmark);
 		UnPercolateTra(tra,tra->ToFrom);
 	}
-	else(tra->Type == "Transfer")
+	else if(tra->Type == "Transfer")
 	{
 		PercolateTra(tra,tra->From);
 		UnPercolateTra(tra,tra->To);
@@ -172,11 +174,6 @@ void Finances::ChangeSomething(Tra* tra)
 		ChangeTraInfo(tra);
 	else if(AccountTypeToChange == "Amount")
 		ChangeTraAmount(tra);
-	else
-	{
-		printf("Brent apparently forgot to code something because this line of code should never run....\n");
-		printf("Please contact him and let him know. Tell him \"Error 8\". Thanks.\n");
-	}
 }
 
 void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange)
@@ -185,7 +182,7 @@ void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToCha
 	Account* oldacc;
 	Account* newacc;
 
-	if(!GetNewTransactionAccountsInner(NewAcctName, AccountTypeToChange, 0))
+	if(!GetNewTransactionAccountsInner(NewAcctName, AccountTypeToChange, Flags["ListAccountsForNewTrasByDefault"]))
 	{
 		printf("Your account has been left as it was.\n");
 		return;
@@ -244,7 +241,7 @@ void Finances::ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange
 	Account* oldacc;
 	Account* newacc;
 
-	if(!GetNewTransferAccountsInner(NewAcctName, AccountTypeToChange, 0))
+	if(!GetNewTransferAccountsInner(NewAcctName, AccountTypeToChange, Flags["ListAccountsForNewTrasByDefault"]))
 	{
 		printf("Your account has been left as it was.\n");
 		return;
@@ -646,4 +643,25 @@ void Finances::ReparentAccount(Account* acc)
 	}
 
 	ReparentCP(acc,AllAccounts[newparname]);
+}
+
+void Finances::SelectFlag()
+{
+	string flag;
+
+	printf("\n");
+	PrintFlags();
+	printf("\n");
+
+	flag = ReadInFlag();
+	while(Flags.find(flag) == Flags.end())
+	{
+		if(!AskTryAgain("No flag with the name \"" + flag + "\" exists."))
+			return;
+		flag = ReadInFlag();
+	}
+
+	printf("What would you like to change the state of this flag to? 0 for off, 1 for on. [0/1]: ");
+	Flags[flag] = ReadInt();
+	printf("%s has been set to %d.\n",flag.c_str(),Flags[flag]);
 }

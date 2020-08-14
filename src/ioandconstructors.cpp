@@ -359,6 +359,9 @@ json Finances::AsJson()
 	for(map<string, CurrencyConversion*>::iterator mit = CurrencyConversions.begin(); mit != CurrencyConversions.end(); ++mit)
 		j["CurrencyConversions"].push_back(mit->second->AsJson());
 
+	j["Flags"] = json::object();
+	for(map<string, int>::iterator mit = Flags.begin(); mit != Flags.end(); ++mit)
+		j["Flags"][mit->first] = mit->second;
 
 	return j;
 }
@@ -505,9 +508,26 @@ void Finances::FromJson(const json& j)
 	else
 		FromJsonError("CurrencyConversions");
 
+
+	if(j.find("Flags") != j.end())
+	{
+		for(jit = j["Flags"].begin(); jit != j["Flags"].end(); ++jit)
+			Flags[jit.key()] = jit.value();
+	}
+	SetDefaultFlagsIfFlagDoesntExist();
+
+
 	CheckHeadsAndDeletes();
 
 	SetHeadsAndDeletes();
+}
+
+void Finances::SetDefaultFlagsIfFlagDoesntExist()
+{
+	if(Flags.find("AskCurrency") == Flags.end())
+		Flags["AskCurrency"] = 0;
+	if(Flags.find("ListAccountsForNewTrasByDefault") == Flags.end())
+		Flags["ListAccountsForNewTrasByDefault"] = 0;
 }
 
 void Finances::SetHeadsAndDeletes()

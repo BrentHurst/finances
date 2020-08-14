@@ -228,7 +228,15 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 			PrintAccounts("e");
 		else if(CommandVec[1] == "tofroms" || CommandVec[1] == "tf")
 			PrintAccounts("tf");
+		else if(CommandVec[1] == "flags" || CommandVec[1] == "f")
+			PrintFlags();
 	}
+}
+
+void Finances::PrintFlags()
+{
+	for(map<string,int>::iterator mit = Flags.begin(); mit != Flags.end(); ++mit)
+		printf("\t%d - %s\n",mit->second,mit->first.c_str());
 }
 
 void Finances::PrintTras(int num, int OnlyUnreconciled, Account* acc)
@@ -297,9 +305,11 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 		else if(CommandVec[1] == "tra" || CommandVec[1] == "t")
 		{
 			if(CommandVec.size() == 2)
-				NewTra(0);
+				NewTra(Flags["ListAccountsForNewTrasByDefault"]);
 			else if(CommandVec[2] == "-pa")
 				NewTra(1);
+			else if(CommandVec[2] == "-dpa")
+				NewTra(0);
 			else
 				printf("Unrecognized option: %s",CommandVec[2].c_str());
 		}
@@ -330,7 +340,10 @@ void Finances::NewAccount(const string& acc_n)
 		}
 	}
 
-	cur = ReadInCurrency();
+	if(Flags["AskCurrency"])
+		cur = ReadInCurrency();
+	else
+		cur = DefaultCurrency;
 
 	par = ReadInParentAccountName();
 	while(AllAccounts.find(par) == AllAccounts.end())
@@ -408,7 +421,16 @@ void Finances::NewTra(int PrintAccountsByDefault)
 		return;
 	}
 
-	cur = ReadInCurrency();
+	if(Flags["AskCurrency"])
+	{
+		cur = ReadInCurrency();
+	}
+	else
+	{
+		cur = DefaultCurrency;
+		printf("Currency set to default currency: %s\n",DefaultCurrency.c_str());
+	}
+
 	amt = ReadInAmount();
 	info = ReadInInfo();
 

@@ -19,12 +19,14 @@ string ReadInInfo();
 double ReadInAmount();
 string ReadInCurrency();
 string ReadInAccountTypeToChange();
+string ReadInFlag();
 
 string ReadInNewAccountName();
 string ReadInParentAccountName();
 string ReadInParentAccountName_Reparenting();
 string ReadInNewTraAccount(const string& s);
 string ReadInDefaultCurrency();
+
 
 string ReadInFilename();
 
