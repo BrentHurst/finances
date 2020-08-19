@@ -100,6 +100,12 @@ void Finances::InteractWithUserTra(Tra* tra)
 		else if(CommandVecTra[0] == "change" || CommandVecTra[0] == "c")
 		{
 			ChangeSomething(tra);
+
+			prompt = DefaultPrompt;
+			c = prompt.back();
+			prompt.pop_back();
+			prompt += ulltos_(tra->Id);
+			prompt.push_back(c);
 		}
 	}
 }
