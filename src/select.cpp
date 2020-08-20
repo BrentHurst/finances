@@ -71,7 +71,7 @@ void Finances::InteractWithUserTra(Tra* tra)
 		}
 		else if(CommandVecTra[0] == "help" || CommandVecTra[0] == "h" || CommandVecTra[0] == "?")
 		{
-			// TODO
+			// TODO - Help Menu
 			printf("I should probably have this print a help menu.\n");
 		}
 		else if(CommandVecTra[0] == "back" || CommandVecTra[0] == "b")
@@ -148,7 +148,7 @@ void Finances::ChangeSomething(Tra* tra)
 
 	tra->Print(DefaultCurrency);
 
-	AccountTypeToChange = ReadInAccountTypeToChange();
+	AccountTypeToChange = ReadInAccountTypeToChange(tra);
 
 	if(AccountTypeToChange == "q")
 		return;
@@ -421,7 +421,7 @@ void Finances::InteractWithUserAccount(Account* acc)
 		}
 		else if(CommandVecAcc[0] == "help" || CommandVecAcc[0] == "h" || CommandVecAcc[0] == "?")
 		{
-			// TODO
+			// TODO - Help Menu
 			printf("I should probably have this print a help menu.\n");
 		}
 		else if(CommandVecAcc[0] == "back" || CommandVecAcc[0] == "b")

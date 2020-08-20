@@ -38,7 +38,6 @@ void Finances::NewFinances()
 	AllAccounts[HeadEarmark->Name] = HeadEarmark;
 	AllAccounts[HeadToFrom->Name] = HeadToFrom;
 
-	//TODO - Create Delete Accounts
 	DeleteTag = new Account(DELETE_TAG_NAME,0,"Tag",DefaultCurrency);
 	DeleteLocation = new Account(DELETE_LOCATION_NAME,0,"Location",DefaultCurrency);
 	DeleteEarmark = new Account(DELETE_EARMARK_NAME,0,"Earmark",DefaultCurrency);
@@ -89,7 +88,7 @@ int Finances::InteractWithUser()
 		}
 		else if(CommandVec[0] == "help" || CommandVec[0] == "h" || CommandVec[0] == "?")
 		{
-			// TODO
+			// TODO - Help Menu
 			printf("I should probably have this print a help menu.\n");
 		}
 		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
@@ -444,7 +443,7 @@ void Finances::NewTra(int PrintAccountsByDefault)
 		tra->DefaultCurrencyAmount = amt;
 	else
 	{
-		// TODO
+		// TODO - else if cur != DefaultCurrencyAmount
 	}
 	if(tra->Type == "Transaction")
 	{

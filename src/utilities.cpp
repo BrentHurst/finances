@@ -116,14 +116,14 @@ string ReadInParentAccountName_Reparenting()
 	return s;
 }
 
-string ReadInAccountTypeToChange()
+string ReadInAccountTypeToChange(Tra* tra)
 {
 	// TODO - something with currency
 	string s;
 
 	do
 	{
-		printf("What attribute of this transaction would you like to change?\n");
+		printf("What attribute of this %s would you like to change?\n",tra->Type.c_str());
 		printf("Options: Tag, Location, Earmark, ToFrom, From, To, Date, Info, Amount.\n");
 		printf("Enter q to quit.\n");
 		s = ReadString();
@@ -343,7 +343,7 @@ int AskAccurateChangedTra(Tra* tra, const string& DefaultCurrency)
 
 	do
 	{
-		printf("If the above transaction is not correct, it will be undone.\n");
+		printf("If the above %s is not correct, it will be undone.\n",tra->Type.c_str());
 		printf("Is the above %s correct? [y/n]: ",tra->Type.c_str());
 		c = ReadChar();
 	}while(c != 'y' && c != 'n');

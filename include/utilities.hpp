@@ -18,7 +18,7 @@ unsigned long long ReadInTraId();
 string ReadInInfo();
 double ReadInAmount();
 string ReadInCurrency();
-string ReadInAccountTypeToChange();
+string ReadInAccountTypeToChange(class Tra* tra);
 string ReadInFlag();
 
 string ReadInNewAccountName();

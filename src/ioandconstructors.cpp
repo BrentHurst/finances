@@ -77,7 +77,7 @@ void Finances::SaveToFile(int StartNewTimePeriodFromHere)
 
 	if(StartNewTimePeriodFromHere)
 	{
-		// TODO
+		// TODO - if(StartNewTimePeriodFromHere)
 	}
 	else
 		ofs << AsJson().dump(4) << endl;
