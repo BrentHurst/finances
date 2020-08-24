@@ -18,7 +18,8 @@ char ReadChar()
 {
 	char c;
 	scanf("%c",&c);
-	cin.ignore();
+	if(c != '\n')
+		cin.ignore();
 	return c;
 }
 
