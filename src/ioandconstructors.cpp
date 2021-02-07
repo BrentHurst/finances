@@ -69,20 +69,40 @@ void Finances::LoadFromFile()
 void Finances::SaveToFile(int StartNewTimePeriodFromHere)
 {
 	ofstream ofs;
+	json j;
+	string newfilename;
 
 	ofs.clear();
 	ofs.open(filename, ofstream::out);
 	if(!ofs.is_open())
 		throw SRE("Finances::SaveToFile(): Couldn't open file " + filename);
 
-	if(StartNewTimePeriodFromHere)
-	{
-		// TODO - if(StartNewTimePeriodFromHere)
-	}
-	else
-		ofs << AsJson().dump(4) << endl;
+	j = AsJson();
+	ofs << j.dump(4) << endl;
 
 	ofs.close();
+
+	if(StartNewTimePeriodFromHere)
+	{
+		newfilename = ReadInFilename();
+
+		ofs.clear();
+		ofs.open(newfilename, ofstream::out);
+		if(!ofs.is_open())
+			throw SRE("Finances::SaveToFile(): Couldn't open file " + newfilename);
+
+		// Change amounts of ToFroms and Tags
+		for(unsigned int i = 0; i < j["Accounts"].size(); ++i)
+			if(j["Accounts"][i]["Type"] == "Tag" || j["Accounts"][i]["Type"] == "ToFrom")
+				j["Accounts"][i]["Amount"] = 0;
+
+		// Wipe tras
+		j["Tras"] = json::array();
+
+		ofs << j.dump(4) << endl;
+
+		ofs.close();
+	}
 }
 
 Account::Account()

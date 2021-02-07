@@ -71,8 +71,29 @@ void Finances::InteractWithUserTra(Tra* tra)
 		}
 		else if(CommandVecTra[0] == "help" || CommandVecTra[0] == "h" || CommandVecTra[0] == "?")
 		{
-			// TODO - Help Menu
-			printf("I should probably have this print a help menu.\n");
+			printf("Commands:\n");
+			printf("\n");
+
+			printf("\tback | b -- return to main menu\n");
+			printf("\n");
+
+			printf("\treconcile | r -- reconcile this tra\n");
+			printf("\n");
+
+			printf("\tunreconcile | ur -- unreconcile this tra\n");
+			printf("\n");
+
+			printf("\tdelete -- delete this transaction\n");
+			printf("\n");
+
+			printf("\tprint | p | l -- print info\n");
+			printf("\n");
+
+			printf("\tchange | c -- change something about this tra\n");
+			printf("\n");
+
+			printf("\thelp | h | ? -- print help menu\n");
+			printf("\n");
 		}
 		else if(CommandVecTra[0] == "back" || CommandVecTra[0] == "b")
 		{
@@ -421,8 +442,33 @@ void Finances::InteractWithUserAccount(Account* acc)
 		}
 		else if(CommandVecAcc[0] == "help" || CommandVecAcc[0] == "h" || CommandVecAcc[0] == "?")
 		{
-			// TODO - Help Menu
-			printf("I should probably have this print a help menu.\n");
+			printf("Commands:\n");
+			printf("\n");
+
+			printf("\tback | b -- return to main menu\n");
+			printf("\n");
+
+			printf("\tselect | s -- select a tra\n");
+			printf("\t\tusage: s tra     (OR s t)\n");
+			printf("\n");
+
+			printf("\tprint | p | l -- print info\n");
+			printf("\n");
+
+			printf("\treconcile | r -- reconcile tras in this account\n");
+			printf("\n");
+
+			printf("\tdelete | d -- delete this account\n");
+			printf("\n");
+
+			printf("\trename | rn -- rename this account\n");
+			printf("\n");
+
+			printf("\treparent | rp -- change the parent account of this account\n");
+			printf("\n");
+
+			printf("\thelp | h | ? -- print help menu\n");
+			printf("\n");
 		}
 		else if(CommandVecAcc[0] == "back" || CommandVecAcc[0] == "b")
 		{

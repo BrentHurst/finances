@@ -88,8 +88,33 @@ int Finances::InteractWithUser()
 		}
 		else if(CommandVec[0] == "help" || CommandVec[0] == "h" || CommandVec[0] == "?")
 		{
-			// TODO - Help Menu
-			printf("I should probably have this print a help menu.\n");
+			printf("Commands:\n");
+			printf("\n");
+
+			printf("\tquit | q -- exit program\n");
+			printf("\n");
+
+			printf("\tprint | p | l -- print information to the screen\n");
+			printf("\t\tusage: p tras|utras [num]     (OR p t|ut [num])\n");
+			printf("\t\tusage: p accounts|tags|locations|earmarks|tofroms|flags     (OR p a|ta|l|e|tf|f)\n");
+			printf("\n");
+
+			printf("\tnew | n -- create either a new account or a new tra (transaction/transfer)\n");
+			printf("\t\tusage: n account|tra     (OR n a|t)\n");
+			printf("\n");
+
+			printf("\treconcile | r -- reconcile unreconciled transactions\n");
+			printf("\n");
+
+			printf("\tselect | s -- select something to enter a new menu\n");
+			printf("\t\tusage: s account|tra|flag     (OR s a|t|f)\n");
+			printf("\n");
+
+			printf("\tny -- start new year from here\n");
+			printf("\n");
+
+			printf("\thelp | h | ? -- print help menu\n");
+			printf("\n");
 		}
 		else if(CommandVec[0] == "quit" || CommandVec[0] == "q")
 		{
@@ -110,6 +135,10 @@ int Finances::InteractWithUser()
 		else if(CommandVec[0] == "select" || CommandVec[0] == "s")
 		{
 			SelectSomething(CommandVec);
+		}
+		else if(CommandVec[0] == "ny")
+		{
+			SaveToFile(1);
 		}
 		else
 		{
@@ -244,6 +273,12 @@ void Finances::PrintTras(int num, int OnlyUnreconciled, Account* acc)
 	int i;
 	unsigned long long lastDate;
 
+	if(Tras.size() == 0)
+	{
+		printf("There are no tras to print.\n");
+		return;
+	}
+
 	if(num > 0)
 	{
 		mit = Tras.end();
@@ -310,7 +345,7 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 			else if(CommandVec[2] == "-dpa")
 				NewTra(0);
 			else
-				printf("Unrecognized option: %s",CommandVec[2].c_str());
+				printf("Unrecognized option: %s\n",CommandVec[2].c_str());
 		}
 	}
 }
