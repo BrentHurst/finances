@@ -100,6 +100,12 @@ string ReadInCurrency()
 	return ReadString();
 }
 
+string ReadInMacroName()
+{
+	printf("Macro Name: ");
+	return ReadString();
+}
+
 string ReadInParentAccountName()
 {
 	printf("New Account's Parent Account: ");

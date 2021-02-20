@@ -16,13 +16,10 @@ using nlohmann::json;
 // TODO - Get Foreign Working
 // TODO - Debts
 
-// TODO - Select Macro
-// TODO - Prompt change
-// TODO - Add Macro
-// TODO - Edit Macro
+
+// TODO - Add Tras
+// TODO - Select Tras
 // TODO - Run Macro
-// TODO - print Macro
-// TODO - Return to home
 
 
 
@@ -108,6 +105,11 @@ class Macro
 		void FromJsonError(const string& s);
 
 		Macro();
+
+		void Print();
+		void NewTra();
+		void SelectTra();
+		void InteractWithUserTra(Tra*);
 };
 
 class CurrencyConversion
@@ -149,6 +151,7 @@ class Finances
 		void PrintTras(int num, int OnlyUnreconciled, Account* acc);
 		void PrintAccounts(const string& which);
 		void PrintFlags();
+		void PrintMacros();
 
 		void NewSomething(const vector<string>& CommandVec);
 		void NewAccount(const string& acc_n);
@@ -158,6 +161,7 @@ class Finances
 		void SelectTra();
 		void SelectAccount();
 		void SelectFlag();
+		void SelectMacro();
 
 		void InteractWithUserTra(Tra* tra);
 		void DeleteTra(Tra* tra);
@@ -173,6 +177,9 @@ class Finances
 		int Delete_Acc(Account* acc);
 		void RenameAccount(Account* acc);
 		void ReparentAccount(Account* acc);
+
+		void InteractWithUserMacro(Macro* macro);
+		void RenameMacro(Macro*);
 
 		int GetNewTransactionAccounts(string& tag_n,string& loc_n,string& ear_n,string& tf_n, int PrintAccountsByDefault);
 		int GetNewTransactionAccountsInner(string& acc_n, const string& type, int PrintAccountsByDefault);
@@ -194,6 +201,8 @@ class Finances
 		int IsDeleteAccount(Account* acc);
 
 		void ReparentCP(Account* child, Account* parent);
+
+		void RunMacro(Macro*);
 
 		void SetDefaultFlagsIfFlagDoesntExist();
 

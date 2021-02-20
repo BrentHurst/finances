@@ -96,18 +96,18 @@ int Finances::InteractWithUser()
 
 			printf("\tprint | p | l -- print information to the screen\n");
 			printf("\t\tusage: p tras|utras [num]     (OR p t|ut [num])\n");
-			printf("\t\tusage: p accounts|tags|locations|earmarks|tofroms|flags     (OR p a|ta|l|e|tf|f)\n");
+			printf("\t\tusage: p accounts|tags|locations|earmarks|tofroms|flags|macros     (OR p a|ta|l|e|tf|f|m)\n");
 			printf("\n");
 
-			printf("\tnew | n -- create either a new account or a new tra (transaction/transfer)\n");
-			printf("\t\tusage: n account|tra     (OR n a|t)\n");
+			printf("\tnew | n -- create either a new account, a new tra (transaction/transfer), or a new macro\n");
+			printf("\t\tusage: n account|tra|macro     (OR n a|t|m)\n");
 			printf("\n");
 
 			printf("\treconcile | r -- reconcile unreconciled transactions\n");
 			printf("\n");
 
 			printf("\tselect | s -- select something to enter a new menu\n");
-			printf("\t\tusage: s account|tra|flag     (OR s a|t|f)\n");
+			printf("\t\tusage: s account|tra|flag|macro     (OR s a|t|f|m)\n");
 			printf("\n");
 
 			printf("\tny -- start new year from here\n");
@@ -258,6 +258,8 @@ void Finances::PrintSomething(const vector<string>& CommandVec)
 			PrintAccounts("tf");
 		else if(CommandVec[1] == "flags" || CommandVec[1] == "f")
 			PrintFlags();
+		else if(CommandVec[1] == "macros" || CommandVec[1] == "m")
+			PrintMacros();
 	}
 }
 
@@ -265,6 +267,15 @@ void Finances::PrintFlags()
 {
 	for(map<string,int>::iterator mit = Flags.begin(); mit != Flags.end(); ++mit)
 		printf("\t%d - %s\n",mit->second,mit->first.c_str());
+}
+
+void Finances::PrintMacros()
+{
+	for(map<string,Macro*>::iterator mit = Macros.begin(); mit != Macros.end(); ++mit)
+	{
+		mit->second->Print();
+		printf("\n\n\n");
+	}
 }
 
 void Finances::PrintTras(int num, int OnlyUnreconciled, Account* acc)
@@ -330,6 +341,8 @@ void Finances::PrintAccounts(const string& which)
 
 void Finances::NewSomething(const vector<string>& CommandVec)
 {
+	string s;
+
 	if(CommandVec.size() >= 2)
 	{
 		if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
@@ -346,6 +359,19 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 				NewTra(0);
 			else
 				printf("Unrecognized option: %s\n",CommandVec[2].c_str());
+		}
+		else if(CommandVec[1] == "macro" || CommandVec[1] == "m")
+		{
+			s = ReadInMacroName();
+			if(Macros.find(s) == Macros.end())
+			{
+				Macros[s] = new Macro;
+				printf("Macro \"%s\" successfully created.\n",s.c_str());
+			}
+			else
+			{
+				printf("Macro with name \"%s\" already exists.\n",s.c_str());
+			}
 		}
 	}
 }
@@ -684,4 +710,12 @@ void Finances::Reconcile(Account* acc)
 				mit->second->Reconcile();
 
 	printf("\nYour reconciliations have been recorded.\n");
+}
+
+void Macro::Print()
+{
+	string s = "$";
+	printf("\n%s\n",Name.c_str());
+	for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
+		mit->second->Print(s); //TODO - Change when doing foreign
 }

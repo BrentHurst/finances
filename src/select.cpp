@@ -22,6 +22,8 @@ void Finances::SelectSomething(const vector<string>& CommandVec)
 			SelectAccount();
 		else if(CommandVec[1] == "flag" || CommandVec[1] == "f")
 			SelectFlag();
+		else if(CommandVec[1] == "macro" || CommandVec[1] == "m")
+			SelectMacro();
 		else
 			printf("Unrecognized option \"%s\"\n",CommandVec[1].c_str());
 	}
@@ -572,6 +574,14 @@ int Finances::Delete_Acc(Account* acc)
 		return 0;
 	}
 
+	for(map<string,Macro*>::iterator mit = Macros.begin(); mit != Macros.end(); ++mit)
+		for(map<unsigned long long, Tra*>::iterator mit2 = mit->second->Tras.begin(); mit2 != mit->second->Tras.end(); ++mit2)
+			if(IsAccountPartOfTra(acc,mit2->second))
+			{
+				printf("Account is used in macro \"%s\". Please change the macro before deleting the account.\n",mit->first.c_str());
+				return 0;
+			}
+
 	if(!AskConfirmDeleteAccount(acc))
 		return 0;
 
@@ -716,4 +726,167 @@ void Finances::SelectFlag()
 	printf("What would you like to change the state of this flag to? 0 for off, 1 for on. [0/1]: ");
 	Flags[flag] = ReadInt();
 	printf("%s has been set to %d.\n",flag.c_str(),Flags[flag]);
+}
+
+void Finances::SelectMacro()
+{
+	map<string,Macro*>::iterator mit;
+	string name;
+	Macro* m;
+
+	name = ReadInMacroName();
+	if((mit = Macros.find(name)) == Macros.end())
+	{
+		printf("There is no macro named \"%s\".\n",name.c_str());
+		return;
+	}
+
+	m = mit->second;
+
+	InteractWithUserMacro(m);
+}
+
+void Finances::InteractWithUserMacro(Macro* macro)
+{
+	char c;
+	string prompt;
+	vector<string> CommandVecMacro;
+
+	prompt = DefaultPrompt;
+	c = prompt.back();
+	prompt.pop_back();
+	prompt += "Macros/";
+	prompt += macro->Name;
+	prompt.push_back(c);
+
+	while(true)
+	{
+		GetCommand(CommandVecMacro,prompt);
+
+		if(!CommandVecMacro.size())
+		{
+			if(cin.eof())
+				return;
+			// else do nothing and continue
+		}
+		else if(CommandVecMacro[0] == "help" || CommandVecMacro[0] == "h" || CommandVecMacro[0] == "?")
+		{
+			printf("Commands:\n");
+			printf("\n");
+
+			printf("\tback | b -- return to main menu\n");
+			printf("\n");
+
+			printf("\tprint | p | l -- print info\n");
+			printf("\n");
+
+			printf("\trename | rn -- rename this macro\n");
+			printf("\n");
+
+			printf("\tn t -- add a new tra to this macro\n");
+			printf("\n");
+
+			printf("\ts t -- select one of this macro's tras\n");
+			printf("\n");
+
+			printf("\trun -- run this macro\n");
+			printf("\n");
+
+			printf("\thelp | h | ? -- print help menu\n");
+			printf("\n");
+		}
+		else if(CommandVecMacro[0] == "back" || CommandVecMacro[0] == "b")
+		{
+			return;
+		}
+		else if(CommandVecMacro[0] == "print" || CommandVecMacro[0] == "p" || CommandVecMacro[0] == "l")
+		{
+			macro->Print();
+		}
+		else if(CommandVecMacro[0] == "rename" || CommandVecMacro[0] == "rn")
+		{
+			RenameMacro(macro);
+
+			prompt = DefaultPrompt;
+			c = prompt.back();
+			prompt.pop_back();
+			prompt += "Macros/";
+			prompt += macro->Name;
+			prompt.push_back(c);
+		}
+		else if(CommandVecMacro[0] == "n" && CommandVecMacro.size() > 1 && CommandVecMacro[1] == "t")
+		{
+			macro->NewTra();
+		}
+		else if(CommandVecMacro[0] == "s" && CommandVecMacro.size() > 1 && CommandVecMacro[1] == "t")
+		{
+			macro->SelectTra();
+		}
+		else if(CommandVecMacro[0] == "run")
+		{
+			RunMacro(macro);
+		}
+	}
+}
+
+void Finances::RenameMacro(Macro* macro)
+{
+	string oldname;
+	string newname;
+
+	oldname = macro->Name;
+
+	newname = ReadInMacroName();
+	if(newname == oldname)
+		return;
+	while(Macros.find(newname) != Macros.end())
+	{
+		if(!AskTryAgain("A macro with the name \"" + newname + "\" already exists."))
+		{
+			printf("Your macro's name has not been changed.");
+			return;
+		}
+		newname = ReadInMacroName();
+	}
+
+	macro->Name = newname;
+
+	Macros.erase(oldname);
+	Macros[newname] = macro;
+}
+
+void Macro::SelectTra()
+{
+	string s = "$"; // TODO - foreign
+	map<unsigned long long,Tra*>::iterator mit;
+	unsigned long long traid;
+	Tra* tra;
+
+	traid = ReadInTraId();
+
+	if((mit = Tras.find(traid)) == Tras.end())
+	{
+		printf("Transaction/Transfer with Id %llu doesn't exist in this macro.\n",traid);
+		return;
+	}
+
+	tra = mit->second;
+	tra->Print(s);
+
+	InteractWithUserTra(tra);
+}
+
+void Macro::InteractWithUserTra(Tra* tra)
+{
+	// TODO
+}
+
+void Macro::NewTra()
+{
+	// TODO
+}
+
+void Finances::RunMacro(Macro* macro)
+{
+	// TODO
 }
