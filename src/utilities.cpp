@@ -575,6 +575,7 @@ void Finances::ReparentCP(Account* child, Account* parent)
 			thenewkiddo = new Account(tmpaccname, parent->Amount, parent->Type, parent->Currency);
 			thenewkiddo->Parent = parent;
 			parent->Children[thenewkiddo->Name] = thenewkiddo;
+			AllAccounts[thenewkiddo->Name] = thenewkiddo;
 
 			for(map<unsigned long long, Tra*>::iterator mit = Tras.begin(); mit != Tras.end(); ++mit)
 			{
