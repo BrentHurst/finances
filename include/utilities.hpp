@@ -43,6 +43,7 @@ int AskAccurateTra(class Tra* tra, const string& DefaultCurrency);
 int AskAccurateChangedTra(class Tra* tra, const string& DefaultCurrency);
 int AskReconcileTra(Tra* tra,const string& DefaultCurrency);
 int AskCreateTmpChildAccount(const string& parname, const string& newchildname);
+int AskSureRunMacro(class Macro* m);
 
 int IsAccountPartOfTra(class Account* acc, class Tra* tra);
 

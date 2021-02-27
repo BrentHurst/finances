@@ -352,11 +352,11 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 		else if(CommandVec[1] == "tra" || CommandVec[1] == "t")
 		{
 			if(CommandVec.size() == 2)
-				NewTra(Flags["ListAccountsForNewTrasByDefault"]);
+				NewTra(Flags["ListAccountsForNewTrasByDefault"],NULL);
 			else if(CommandVec[2] == "-pa")
-				NewTra(1);
+				NewTra(1,NULL);
 			else if(CommandVec[2] == "-dpa")
-				NewTra(0);
+				NewTra(0,NULL);
 			else
 				printf("Unrecognized option: %s\n",CommandVec[2].c_str());
 		}
@@ -366,7 +366,8 @@ void Finances::NewSomething(const vector<string>& CommandVec)
 			if(Macros.find(s) == Macros.end())
 			{
 				Macros[s] = new Macro;
-				printf("Macro \"%s\" successfully created.\n",s.c_str());
+				Macros[s]->Name = s;
+				printf("Macro \"%s\" successfully created.\n",Macros[s]->Name.c_str());
 			}
 			else
 			{
@@ -441,7 +442,7 @@ void Finances::NewAccount(const string& acc_n)
 	printf("Account \"%s\" successfully created.\n",name.c_str());
 }
 
-void Finances::NewTra(int PrintAccountsByDefault)
+void Finances::NewTra(int PrintAccountsByDefault, Macro* macro)
 {
 	Tra* tra;
 	string type;
@@ -457,7 +458,11 @@ void Finances::NewTra(int PrintAccountsByDefault)
 	string from_n;
 
 	type = ReadInType();
-	date = ReadInDate();
+
+	if(macro)
+		printf("Date isn't used in macros.\n");
+	else
+		date = ReadInDate();
 
 	if(type == "Transaction")
 	{
@@ -533,7 +538,11 @@ void Finances::NewTra(int PrintAccountsByDefault)
 		return;
 	}
 
-	RecordTra(tra);
+	if(macro)
+		macro->SaveTra(tra);
+	else
+		RecordTra(tra);
+
 	printf("%s successfully recorded.\n",tra->Type.c_str());
 }
 
@@ -663,6 +672,11 @@ int Finances::GetNewTransferAccountsInner(string& acc_n, const string& type, int
 	}
 
 	return 1;
+}
+
+void Macro::SaveTra(Tra* tra)
+{
+	InsertTraIntoMap(tra,Tras);
 }
 
 void Finances::RecordTra(Tra* tra)

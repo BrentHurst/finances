@@ -390,6 +390,19 @@ int AskCreateTmpChildAccount(const string& parname, const string& newchildname)
 	return (c == 'y');
 }
 
+int AskSureRunMacro(Macro* m)
+{
+	char c;
+
+	do
+	{
+		printf("Run macro \"%s\"? (This can't be undone.) [y/n]: ",m->Name.c_str());
+		c = ReadChar();
+	}while(c != 'y' && c != 'n');
+
+	return (c == 'y');
+}
+
 int IsAccountPartOfTra(Account* acc, Tra* tra)
 {
 	Account* target;

@@ -17,7 +17,7 @@ void Finances::SelectSomething(const vector<string>& CommandVec)
 	if(CommandVec.size() >= 2)
 	{
 		if(CommandVec[1] == "tra" || CommandVec[1] == "t")
-			SelectTra();
+			SelectTra(NULL);
 		else if(CommandVec[1] == "account" || CommandVec[1] == "acc" || CommandVec[1] == "a")
 			SelectAccount();
 		else if(CommandVec[1] == "flag" || CommandVec[1] == "f")
@@ -29,7 +29,7 @@ void Finances::SelectSomething(const vector<string>& CommandVec)
 	}
 }
 
-void Finances::SelectTra()
+void Finances::SelectTra(Macro* macro)
 {
 	map<unsigned long long,Tra*>::iterator mit;
 	unsigned long long traid;
@@ -37,19 +37,30 @@ void Finances::SelectTra()
 
 	traid = ReadInTraId();
 
-	if((mit = Tras.find(traid)) == Tras.end())
+	if(macro)
 	{
-		printf("Transaction/Transfer with Id %llu doesn't exist.\n",traid);
-		return;
+		if((mit = macro->Tras.find(traid)) == macro->Tras.end())
+		{
+			printf("Transaction/Transfer with Id %llu doesn't exist in macro \"%s\".\n",traid,macro->Name.c_str());
+			return;
+		}
+	}
+	else
+	{
+		if((mit = Tras.find(traid)) == Tras.end())
+		{
+			printf("Transaction/Transfer with Id %llu doesn't exist.\n",traid);
+			return;
+		}
 	}
 
 	tra = mit->second;
 	tra->Print(DefaultCurrency);
 
-	InteractWithUserTra(tra);
+	InteractWithUserTra(tra,macro);
 }
 
-void Finances::InteractWithUserTra(Tra* tra)
+void Finances::InteractWithUserTra(Tra* tra, Macro* macro)
 {
 	char c;
 	string prompt;
@@ -58,6 +69,7 @@ void Finances::InteractWithUserTra(Tra* tra)
 	prompt = DefaultPrompt;
 	c = prompt.back();
 	prompt.pop_back();
+	if(macro) prompt += "Macros/" + macro->Name + "/";
 	prompt += ulltos_(tra->Id);
 	prompt.push_back(c);
 
@@ -79,13 +91,19 @@ void Finances::InteractWithUserTra(Tra* tra)
 			printf("\tback | b -- return to main menu\n");
 			printf("\n");
 
-			printf("\treconcile | r -- reconcile this tra\n");
-			printf("\n");
+			if(!macro)
+			{
+				printf("\treconcile | r -- reconcile this tra\n");
+				printf("\n");
+			}
 
-			printf("\tunreconcile | ur -- unreconcile this tra\n");
-			printf("\n");
+			if(!macro)
+			{
+				printf("\tunreconcile | ur -- unreconcile this tra\n");
+				printf("\n");
+			}
 
-			printf("\tdelete -- delete this transaction\n");
+			printf("\tdelete -- delete this tra\n");
 			printf("\n");
 
 			printf("\tprint | p | l -- print info\n");
@@ -101,19 +119,23 @@ void Finances::InteractWithUserTra(Tra* tra)
 		{
 			return;
 		}
-		else if(CommandVecTra[0] == "reconcile" || CommandVecTra[0] == "r")
+		else if(!macro && (CommandVecTra[0] == "reconcile" || CommandVecTra[0] == "r"))
 		{
 			tra->Reconcile();
 			printf("Your %s has been reconciled.\n",tra->Type.c_str());
 		}
-		else if(CommandVecTra[0] == "unreconcile" || CommandVecTra[0] == "ur")
+		else if(!macro && (CommandVecTra[0] == "unreconcile" || CommandVecTra[0] == "ur"))
 		{
 			tra->Unreconcile();
 			printf("Your %s has been unreconciled.\n",tra->Type.c_str());
 		}
 		else if(CommandVecTra[0] == "delete")
 		{
-			DeleteTra(tra);
+			if(macro)
+				macro->RemoveTra(tra);
+			else
+				DeleteTra(tra);
+
 			return;
 		}
 		else if(CommandVecTra[0] == "print" || CommandVecTra[0] == "p" || CommandVecTra[0] == "l")
@@ -122,15 +144,32 @@ void Finances::InteractWithUserTra(Tra* tra)
 		}
 		else if(CommandVecTra[0] == "change" || CommandVecTra[0] == "c")
 		{
-			ChangeSomething(tra);
+			ChangeSomething(tra,macro);
 
 			prompt = DefaultPrompt;
 			c = prompt.back();
 			prompt.pop_back();
+			if(macro) prompt += "Macros/" + macro->Name + "/";
 			prompt += ulltos_(tra->Id);
 			prompt.push_back(c);
 		}
 	}
+}
+
+void Macro::RemoveTra(Tra* tra)
+{
+	string s = "$"; // TODO - foreign
+	if(!tra)
+		return;
+
+	if(!AskConfirmDeleteTra(tra,s))
+		return;
+
+	Tras.erase(tra->Id);
+
+	printf("%s %llu has been deleted.\n",tra->Type.c_str(),tra->Id);
+
+	delete tra;
 }
 
 void Finances::DeleteTra(Tra* tra)
@@ -163,7 +202,7 @@ void Finances::DeleteTra(Tra* tra)
 	delete tra;
 }
 
-void Finances::ChangeSomething(Tra* tra)
+void Finances::ChangeSomething(Tra* tra, Macro* macro)
 {
 	// TODO - Change currency
 
@@ -192,20 +231,25 @@ void Finances::ChangeSomething(Tra* tra)
 			return;
 		}
 	}
+	else if(macro && AccountTypeToChange == "Date")
+	{
+		printf("Attribute \"Date\" can't be changed in macro transfers.\n");
+		return;
+	}
 
 	if(AccountTypeToChange == "Tag" || AccountTypeToChange == "Location" || AccountTypeToChange == "Earmark" || AccountTypeToChange == "ToFrom")
-		ChangeTransactionAccount(tra,AccountTypeToChange);
+		ChangeTransactionAccount(tra,AccountTypeToChange,macro);
 	else if(AccountTypeToChange == "From" || AccountTypeToChange == "To")
-		ChangeTransferAccount(tra,AccountTypeToChange);
+		ChangeTransferAccount(tra,AccountTypeToChange,macro);
 	else if(AccountTypeToChange == "Date")
 		ChangeTraDate(tra);
 	else if(AccountTypeToChange == "Info")
 		ChangeTraInfo(tra);
 	else if(AccountTypeToChange == "Amount")
-		ChangeTraAmount(tra);
+		ChangeTraAmount(tra,macro);
 }
 
-void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange)
+void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange,Macro* macro)
 {
 	string NewAcctName;
 	Account* oldacc;
@@ -256,15 +300,18 @@ void Finances::ChangeTransactionAccount(Tra* tra, const string& AccountTypeToCha
 	}
 	else
 	{
-		UnPercolateTra(tra, oldacc);
-		PercolateTra(tra,newacc);
+		if(!macro)
+		{
+			UnPercolateTra(tra, oldacc);
+			PercolateTra(tra,newacc);
+		}
 
 		tra->Unreconcile();
 
 		printf("Your changes have been saved.\n");
 	}
 }
-void Finances::ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange)
+void Finances::ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange, Macro* macro)
 {
 	string NewAcctName;
 	Account* oldacc;
@@ -307,15 +354,18 @@ void Finances::ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange
 	}
 	else
 	{
-		if(AccountTypeToChange == "From")
+		if(!macro)
 		{
-			PercolateTra(tra, oldacc);
-			UnPercolateTra(tra, newacc);
-		}
-		else if(AccountTypeToChange == "To")
-		{
-			UnPercolateTra(tra, oldacc);
-			PercolateTra(tra, newacc);
+			if(AccountTypeToChange == "From")
+			{
+				PercolateTra(tra, oldacc);
+				UnPercolateTra(tra, newacc);
+			}
+			else if(AccountTypeToChange == "To")
+			{
+				UnPercolateTra(tra, oldacc);
+				PercolateTra(tra, newacc);
+			}
 		}
 
 		tra->Unreconcile();
@@ -356,7 +406,7 @@ void Finances::ChangeTraInfo(Tra* tra)
 		printf("Your changes have been saved.\n");
 	}
 }
-void Finances::ChangeTraAmount(Tra* tra)
+void Finances::ChangeTraAmount(Tra* tra,Macro* macro)
 {
 	// TODO - foreign
 
@@ -370,31 +420,34 @@ void Finances::ChangeTraAmount(Tra* tra)
 	}
 	else
 	{
-		newamt = tra->Amount;
-		tra->Amount = oldamt;
-		if(tra->Type == "Transaction")
+		if(!macro)
 		{
-			UnPercolateTra(tra,tra->Tag);
-			UnPercolateTra(tra,tra->Location);
-			UnPercolateTra(tra,tra->Earmark);
-			UnPercolateTra(tra,tra->ToFrom);
+			newamt = tra->Amount;
+			tra->Amount = oldamt;
+			if(tra->Type == "Transaction")
+			{
+				UnPercolateTra(tra,tra->Tag);
+				UnPercolateTra(tra,tra->Location);
+				UnPercolateTra(tra,tra->Earmark);
+				UnPercolateTra(tra,tra->ToFrom);
 
-			tra->Amount = newamt;
+				tra->Amount = newamt;
 
-			PercolateTra(tra,tra->Tag);
-			PercolateTra(tra,tra->Location);
-			PercolateTra(tra,tra->Earmark);
-			PercolateTra(tra,tra->ToFrom);
-		}
-		else if(tra->Type == "Transfer")
-		{
-			PercolateTra(tra,tra->From);
-			UnPercolateTra(tra,tra->To);
+				PercolateTra(tra,tra->Tag);
+				PercolateTra(tra,tra->Location);
+				PercolateTra(tra,tra->Earmark);
+				PercolateTra(tra,tra->ToFrom);
+			}
+			else if(tra->Type == "Transfer")
+			{
+				PercolateTra(tra,tra->From);
+				UnPercolateTra(tra,tra->To);
 
-			tra->Amount = newamt;
+				tra->Amount = newamt;
 
-			UnPercolateTra(tra,tra->From);
-			PercolateTra(tra,tra->To);
+				UnPercolateTra(tra,tra->From);
+				PercolateTra(tra,tra->To);
+			}
 		}
 
 		printf("Your changes have been saved.\n");
@@ -479,7 +532,7 @@ void Finances::InteractWithUserAccount(Account* acc)
 		else if(CommandVecAcc[0] == "select" || CommandVecAcc[0] == "s")
 		{
 			if(CommandVecAcc.size() > 1 && (CommandVecAcc[1] == "tra" || CommandVecAcc[1] == "t"))
-				SelectTra();
+				SelectTra(NULL);
 		}
 		else if(CommandVecAcc[0] == "print" || CommandVecAcc[0] == "p" || CommandVecAcc[0] == "l")
 		{
@@ -816,11 +869,11 @@ void Finances::InteractWithUserMacro(Macro* macro)
 		}
 		else if(CommandVecMacro[0] == "n" && CommandVecMacro.size() > 1 && CommandVecMacro[1] == "t")
 		{
-			macro->NewTra();
+			NewTra(Flags["ListAccountsForNewTrasByDefault"],macro);
 		}
 		else if(CommandVecMacro[0] == "s" && CommandVecMacro.size() > 1 && CommandVecMacro[1] == "t")
 		{
-			macro->SelectTra();
+			SelectTra(macro);
 		}
 		else if(CommandVecMacro[0] == "run")
 		{
@@ -855,38 +908,26 @@ void Finances::RenameMacro(Macro* macro)
 	Macros[newname] = macro;
 }
 
-void Macro::SelectTra()
-{
-	string s = "$"; // TODO - foreign
-	map<unsigned long long,Tra*>::iterator mit;
-	unsigned long long traid;
-	Tra* tra;
-
-	traid = ReadInTraId();
-
-	if((mit = Tras.find(traid)) == Tras.end())
-	{
-		printf("Transaction/Transfer with Id %llu doesn't exist in this macro.\n",traid);
-		return;
-	}
-
-	tra = mit->second;
-	tra->Print(s);
-
-	InteractWithUserTra(tra);
-}
-
-void Macro::InteractWithUserTra(Tra* tra)
-{
-	// TODO
-}
-
-void Macro::NewTra()
-{
-	// TODO
-}
-
 void Finances::RunMacro(Macro* macro)
 {
-	// TODO
+	unsigned long long date;
+	Tra* macrotra;
+	Tra* recordedtra;
+
+	if(!AskSureRunMacro(macro))
+		return;
+
+	date = ReadInDate();
+
+	for(map<unsigned long long, class Tra*>::iterator mit = macro->Tras.begin(); mit != macro->Tras.end(); ++mit)
+	{
+		macrotra = mit->second;
+
+		recordedtra = new Tra;
+		recordedtra->FromJson(macrotra->AsJson(),AllAccounts);
+		recordedtra->Id = 0;
+		recordedtra->Date = date;
+
+		RecordTra(recordedtra);
+	}
 }

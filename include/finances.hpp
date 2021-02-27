@@ -17,9 +17,7 @@ using nlohmann::json;
 // TODO - Debts
 
 
-// TODO - Add Tras
 // TODO - Select Tras
-// TODO - Run Macro
 
 
 
@@ -107,9 +105,8 @@ class Macro
 		Macro();
 
 		void Print();
-		void NewTra();
-		void SelectTra();
-		void InteractWithUserTra(Tra*);
+		void SaveTra(Tra* tra);
+		void RemoveTra(Tra* tra);
 };
 
 class CurrencyConversion
@@ -155,22 +152,22 @@ class Finances
 
 		void NewSomething(const vector<string>& CommandVec);
 		void NewAccount(const string& acc_n);
-		void NewTra(int PrintAccountsByDefault);
+		void NewTra(int PrintAccountsByDefault, Macro* macro);
 
 		void SelectSomething(const vector<string>& CommandVec);
-		void SelectTra();
+		void SelectTra(Macro* macro);
 		void SelectAccount();
 		void SelectFlag();
 		void SelectMacro();
 
-		void InteractWithUserTra(Tra* tra);
+		void InteractWithUserTra(Tra* tra,Macro* macro);
 		void DeleteTra(Tra* tra);
-		void ChangeSomething(Tra* tra);
-		void ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange);
-		void ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange);
+		void ChangeSomething(Tra* tra,Macro* macro);
+		void ChangeTransactionAccount(Tra* tra, const string& AccountTypeToChange,Macro* macro);
+		void ChangeTransferAccount(Tra* tra, const string& AccountTypeToChange,Macro* macro);
 		void ChangeTraDate(Tra* tra);
 		void ChangeTraInfo(Tra* tra);
-		void ChangeTraAmount(Tra* tra);
+		void ChangeTraAmount(Tra* tra,Macro* macro);
 
 		void InteractWithUserAccount(Account* acc);
 		void PrintSomethingAcc(const vector<string>& CommandVec, Account* acc);
